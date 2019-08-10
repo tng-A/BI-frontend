@@ -1,1 +1,48 @@
 // Here you can add other styles
+.app-body {
+    background-color: #3a4149 !important;
+}
+
+.app-header {
+    background-color: #3a4149 !important;
+}
+
+.nav-link{
+   color: white !important;
+}
+
+.app-footer {
+    background-color: #3a4149 !important;
+}
+
+.card{
+    background-color: #3a4149 !important;
+}
+
+.card-header{
+    background-color: #3a4149 !important;
+    color: white !important;
+}
+
+.card-title{
+    color: white !important;
+}
+
+.card-footer{
+    background-color: #2f353a !important;
+    color: white !important;
+}
+
+.breadcrumb {
+    background-color: #2f353a !important;
+}
+
+.breadcrumb-item {
+    a:active{
+        color: blue
+    }
+}
+
+thead{
+    background-color: #2f353a !important;
+}
