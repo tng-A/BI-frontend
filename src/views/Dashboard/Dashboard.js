@@ -8,7 +8,6 @@ import {
   ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   CardTitle,
   Col,
@@ -22,6 +21,7 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import kenya from "../../assets/img/brand/kenya.svg"
 
 const Widget03 = lazy(() => import('../../views/Widgets/Widget03'));
 
@@ -226,61 +226,6 @@ const cardChartOpts4 = {
   },
 };
 
-// Social Box Chart
-const socialBoxData = [
-  { data: [65, 59, 84, 84, 51, 55, 40], label: 'facebook' },
-  { data: [1, 13, 9, 17, 34, 41, 38], label: 'twitter' },
-  { data: [78, 81, 80, 45, 34, 12, 40], label: 'linkedin' },
-  { data: [35, 23, 56, 22, 97, 23, 64], label: 'google' },
-];
-
-const makeSocialBoxData = (dataSetNo) => {
-  const dataset = socialBoxData[dataSetNo];
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        backgroundColor: 'rgba(255,255,255,.1)',
-        borderColor: 'rgba(255,255,255,.55)',
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
-        data: dataset.data,
-        label: dataset.label,
-      },
-    ],
-  };
-  return () => data;
-};
-
-const socialChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  responsive: true,
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: false,
-      }],
-    yAxes: [
-      {
-        display: false,
-      }],
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3,
-    },
-  },
-};
 
 // sparkline charts
 const sparkLineChartData = [
@@ -485,7 +430,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info">
+            <Card className="text-white" style={{backgroundColor:"black"}}>
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
@@ -500,11 +445,12 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">Target:9823</div>
                 <div>Members online</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
+                  <strong style={{color:"white"}}>29.703  (40%)</strong>
+                  <Progress className="progress-xs mt-2" color="success" value="40" />
               </div>
             </Card>
           </Col>
@@ -524,11 +470,12 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">Target:9823</div>
                 <div>Members online</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
+                <strong style={{color:"white"}}>29.703  (40%)</strong>
+                <Progress className="progress-xs mt-2" color="success" value="40" />
               </div>
             </Card>
           </Col>
@@ -548,11 +495,12 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">Target:9823</div>
                 <div>Members online</div>
               </CardBody>
               <div className="chart-wrapper" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
+                <strong style={{color:"white"}}>29.703  (20%)</strong>
+                <Progress className="progress-xs mt-2" color="warning" value="40" />
               </div>
             </Card>
           </Col>
@@ -572,18 +520,66 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">Target:9823</div>
                 <div>Members online</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
+                <strong style={{color:"white"}}>29.703  (10%)</strong>
+                <Progress className="progress-xs mt-2" color="danger" value="40" />
               </div>
             </Card>
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Card>
+          <Col  sm="12">
+            <Card style={{backgroundColor:"#000000"}}>
+              <Row>
+              <CardBody>
+                <Row className="text-center">
+                  <Col sm={12} md className="mb-sm-6 mb-0">
+                    <div className="text-muted" style={{color:"white"}}>Visits</div>
+                    <strong style={{color:"white"}}>29.703 Users (40%)</strong>
+                    <Progress className="progress-xs mt-2" color="success" value="40" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-6 mb-0">
+                    <div className="text-muted" style={{color:"white"}}>Visits</div>
+                    <strong style={{color:"white"}}>29.703 Users (40%)</strong>
+                    <Progress className="progress-xs mt-2" color="success" value="40" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-6 mb-0">
+                    <div className="text-muted" style={{color:"white"}}>Visits</div>
+                    <strong style={{color:"white"}}>29.703 Users (40%)</strong>
+                    <Progress className="progress-xs mt-2" color="success" value="40" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
+                    <div className="text-muted" style={{color:"white"}}>Unique</div>
+                    <strong style={{color:"white"}}>24.093 Users (20%)</strong>
+                    <Progress className="progress-xs mt-2" color="info" value="20" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-2 mb-0">
+                    <div className="text-muted" style={{color:"white"}}>Pageviews</div>
+                    <strong style={{color:"white"}}>78.706 Views (60%)</strong>
+                    <Progress className="progress-xs mt-2" color="warning" value="60" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-2 mb-0">
+                    <div className="text-muted" style={{color:"white"}}>New Users</div>
+                    <strong style={{color:"white"}}>22.123 Users (80%)</strong>
+                    <Progress className="progress-xs mt-2" color="danger" value="80" />
+                  </Col>
+                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
+                    <div className="text-muted" style={{color:"white"}}>Bounce Rate</div>
+                    <strong style={{color:"white"}}>Average Rate (40.15%)</strong>
+                    <Progress className="progress-xs mt-2" color="primary" value="40" />
+                  </Col>
+                </Row>
+              </CardBody>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" sm="6" lg="4">
+            <Card >
               <CardBody>
                 <Row>
                   <Col sm="5">
@@ -605,80 +601,45 @@ class Dashboard extends Component {
                   <Line data={mainChart} options={mainChartOpts} height={300} />
                 </div>
               </CardBody>
-              <CardFooter>
-                <Row className="text-center">
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Visits</div>
-                    <strong>29.703 Users (40%)</strong>
-                    <Progress className="progress-xs mt-2" color="success" value="40" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Unique</div>
-                    <strong>24.093 Users (20%)</strong>
-                    <Progress className="progress-xs mt-2" color="info" value="20" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
-                    <Progress className="progress-xs mt-2" color="warning" value="60" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">New Users</div>
-                    <strong>22.123 Users (80%)</strong>
-                    <Progress className="progress-xs mt-2" color="danger" value="80" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Bounce Rate</div>
-                    <strong>Average Rate (40.15%)</strong>
-                    <Progress className="progress-xs mt-2" color="primary" value="40" />
-                  </Col>
-                </Row>
-              </CardFooter>
             </Card>
           </Col>
+          <Col xs="12" sm="6" lg="4">
+            <Card >
+              <CardBody>
+                <div className="chart-wrapper" style={{ height: 335 + 'px', marginTop: 40 + 'px' }}>
+                <img src={kenya} style={{height:350,width:420, marginTop:-50}} />
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xs="12" sm="6" lg="4">
+            <Card >
+              <CardBody>
+                <Row>
+                  <Col sm="5">
+                    <CardTitle className="mb-0">Traffic</CardTitle>
+                    <div className="small text-muted">November 2015</div>
+                  </Col>
+                  <Col sm="7" className="d-none d-sm-inline-block">
+                    <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
+                    <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
+                      <ButtonGroup className="mr-3" aria-label="First group">
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Day</Button>
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Month</Button>
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>Year</Button>
+                      </ButtonGroup>
+                    </ButtonToolbar>
+                  </Col>
+                </Row>
+                <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
+                  <Line data={mainChart} options={mainChartOpts} height={300} />
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+         
         </Row>
 
-        <Row>
-          <Col xs="6" sm="6" lg="3">
-            <Suspense fallback={this.loading()}>
-              <Widget03 dataBox={() => ({ variant: 'facebook', friends: '89k', feeds: '459' })} >
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(0)} options={socialChartOpts} height={90} />
-                </div>
-              </Widget03>
-            </Suspense>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <Suspense fallback={this.loading()}>
-              <Widget03 dataBox={() => ({ variant: 'twitter', followers: '973k', tweets: '1.792' })} >
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(1)} options={socialChartOpts} height={90} />
-                </div>
-              </Widget03>
-            </Suspense>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <Suspense fallback={this.loading()}>
-              <Widget03 dataBox={() => ({ variant: 'linkedin', contacts: '500+', feeds: '292' })} >
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(2)} options={socialChartOpts} height={90} />
-                </div>
-              </Widget03>
-            </Suspense>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <Suspense fallback={this.loading()}>
-              <Widget03 dataBox={() => ({ variant: 'google-plus', followers: '894', circles: '92' })} >
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(3)} options={socialChartOpts} height={90} />
-                </div>
-              </Widget03>
-            </Suspense>
-          </Col>
-        </Row>
 
         <Row>
           <Col>
