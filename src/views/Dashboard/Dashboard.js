@@ -42,24 +42,24 @@ const bar = {
   labels: ["January", "February", "March", "April", "May", "June", "July"],
   datasets: [
     {
-      label: "My First dataset",
+      label: "Revenue",
       backgroundColor: "rgba(255,99,132,0.2)",
       borderColor: "rgba(255,99,132,1)",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: [100, 59, 80, 81, 56, 55, 0]
     }
   ]
 };
 
 const pie = {
-  labels: ["Red", "Green", "Yellow"],
+  labels: ["Business", "Legal", "HR", "Finance"],
   datasets: [
     {
-      data: [300, 50, 100],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+      data: [300, 50, 100, 400],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"]
     }
   ]
 };
@@ -394,14 +394,8 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="6">
             <Card style={{ height: 93 + "%" }}>
               <CardHeader>
-                Bar Chart
+                Target Achievements Trends
                 <div className="card-header-actions">
-                  <a
-                    href="http://www.chartjs.org"
-                    className="card-header-action"
-                  >
-                    <small className="text-muted">docs</small>
-                  </a>
                 </div>
               </CardHeader>
               <CardBody>
@@ -419,14 +413,8 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="6">
             <Card>
               <CardHeader>
-                Pie Chart
+                Department Analytics
                 <div className="card-header-actions">
-                  <a
-                    href="http://www.chartjs.org"
-                    className="card-header-action"
-                  >
-                    <small className="text-muted">docs</small>
-                  </a>
                 </div>
               </CardHeader>
               <CardBody>
@@ -441,7 +429,11 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <Card>
+            <CardHeader>
+                Product Analysis
+            </CardHeader>
               <CardBody>
+             
                 <br />
                 <Table
                   hover
@@ -450,9 +442,6 @@ class Dashboard extends Component {
                 >
                   <thead className="thead-light">
                     <tr>
-                      <th className="text-center">
-                        <i className="icon-people" />
-                      </th>
                       <th>Product</th>
                       <th>Perfomance</th>
                       <th className="text-center">Income Generated</th>
@@ -461,14 +450,6 @@ class Dashboard extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product a</div>
                       </td>
@@ -498,14 +479,6 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product f</div>
                       </td>
@@ -535,14 +508,6 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product a</div>
                       </td>
@@ -572,14 +537,6 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product d</div>
                       </td>
@@ -609,14 +566,6 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product b</div>
                       </td>
@@ -646,14 +595,6 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + "px" }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product c</div>
                       </td>
