@@ -22,12 +22,22 @@ export default {
     {
       name: 'Business',
       url: '/base/breadcrumbs',
-      icon: 'icon-puzzle',
+      icon: '',
       children: [
         {
+          title: true,
           name: 'Products',
+          wrapper: {
+            // optional wrapper object
+            element: '', // required valid HTML5 element tag
+            attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+          },
+          class: '' // optional class names space delimited list for title item ex: "text-center"
+        },
+        {
+          name: 'County System',
           url: '/product',
-          icon: 'icon-puzzle',
+          icon: 'icon-task',
           children: [
             {
               name: 'Product Perfomance',
@@ -46,22 +56,17 @@ export default {
 
             {
               name: 'Parking',
-              url: '/base/breadcrumbs',
+              url: '/income-streams',
               icon: 'icon-puzzle'
             },
             {
               name: 'Land Rates',
-              url: '/base/cards',
+              url: '/income-streams',
               icon: 'icon-puzzle'
             },
             {
               name: 'Transactions',
-              url: '/base/carousels',
-              icon: 'icon-puzzle'
-            },
-            {
-              name: 'Collapses',
-              url: '/base/collapses',
+              url: '/income-streams',
               icon: 'icon-puzzle'
             }
           ]
@@ -70,17 +75,17 @@ export default {
     },
     {
       name: 'Legal',
-      url: '/base/breadcrumbs',
+      url: '/#',
       icon: 'icon-puzzle'
     },
     {
       name: 'Human Resource',
-      url: '/base/breadcrumbs',
+      url: '/#',
       icon: 'icon-puzzle'
     },
     {
       name: 'Finance',
-      url: '/base/breadcrumbs',
+      url: '/#',
       icon: 'icon-puzzle'
     }
   ]

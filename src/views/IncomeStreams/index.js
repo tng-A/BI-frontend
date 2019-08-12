@@ -301,7 +301,7 @@ const Mdata = {
   ]
 };
 
-class Product extends Component {
+class IncomeStreams extends Component {
   constructor(props) {
     super(props);
 
@@ -332,9 +332,9 @@ class Product extends Component {
       className = 'bg-danger';
     } else if (value <= 40) {
       className = 'bg-warning';
-    } else if (value <= 60) {
+    } else if (value <= 50) {
       className = 'bg-info';
-    } else if (value <= 100) {
+    } else if (value > 79) {
       className = 'bg-primary';
     }
     return className;
@@ -347,67 +347,6 @@ class Product extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={'card1'}
-              toggle={() => {
-                this.setState({ card1: !this.state.card1 });
-              }}
-              isOpen={this.state.card1}
-              metric={'Land Rates'}
-              value={30.987}
-              percentage={100}
-              target={100}
-              className={this.determineCardColor(100)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={'card2'}
-              toggle={() => {
-                this.setState({ card2: !this.state.card2 });
-              }}
-              isOpen={this.state.card2}
-              metric={'Parking'}
-              value={80.987}
-              percentage={80}
-              target={100}
-              className={this.determineCardColor(56)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={'card3'}
-              toggle={() => {
-                this.setState({ card3: !this.state.card3 });
-              }}
-              isOpen={this.state.card4}
-              metric={'Transaction'}
-              value={50.987}
-              percentage={50}
-              target={100}
-              className={this.determineCardColor(35)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={'card4'}
-              toggle={() => {
-                this.setState({ card4: !this.state.card4 });
-              }}
-              isOpen={this.state.card5}
-              metric={'Revenue'}
-              value={30.987}
-              percentage={30}
-              target={100}
-              className={this.determineCardColor(10)}
-            />
-          </Col>
-        </Row>
         <Row>
           <Col xs="12" sm="6" lg="8">
             <Card>
@@ -461,7 +400,7 @@ class Product extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs="12" sm="6" lg="6">
+          <Col xs="12" sm="12" lg="12">
             <Card style={{ height: 93 + '%' }}>
               <CardHeader>
                 Target Achievements Trends
@@ -478,138 +417,11 @@ class Product extends Component {
               </CardBody>
             </Card>
           </Col>
-
-          <Col xs="12" sm="6" lg="6">
-            <Card>
-              <CardHeader>
-                Income Streams Analytics
-                <div className="card-header-actions" />
-              </CardHeader>
-              <CardBody>
-                <div className="chart-wrapper">
-                  <Pie data={pie} />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
         </Row>
 
-        <Row>
-          <Col>
-            <Card>
-              <CardHeader>Income Streams Analysis</CardHeader>
-              <CardBody>
-                <br />
-                <Table
-                  hover
-                  responsive
-                  className="table-outline mb-0 d-none d-sm-table"
-                >
-                  <thead className="thead-light">
-                    <tr>
-                      <th>Income Stream</th>
-                      <th>Perfomance</th>
-                      <th className="text-center">Income Generated</th>
-                      <th>Activity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div>Parking</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>50%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="success"
-                          value="50"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 12,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Land Rates</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>24%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="24"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 1,000,050 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Transaction Charge</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>50%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="success"
-                          value="50"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 12,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
       </div>
     );
   }
 }
 
-export default Product;
+export default IncomeStreams;

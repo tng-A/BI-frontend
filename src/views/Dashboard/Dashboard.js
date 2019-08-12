@@ -382,11 +382,17 @@ class Dashboard extends Component {
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="4">
-            <Card style={{ height: 580 + "px" }}>
-              <SvgLoader path={kenya} id="maps">
+            <Card>
+            <CardHeader>
+                Active Areas
+              </CardHeader>
+              <CardBody>
+              <SvgLoader path={kenya} id="maps" style={{ display:"flex", "flex-grow": 1 +"fr"}}>
                 <SvgProxy selector="path" fill="grey" />
                 <SvgProxy selector="#KE-13,#KE-12,#KE-26,#KE-14" fill="black" />
               </SvgLoader>
+              </CardBody>
+              
             </Card>
           </Col>
         </Row>
