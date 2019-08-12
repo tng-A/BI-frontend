@@ -1,10 +1,14 @@
 // Here you can add other styles
-.app-body {
-    background-color: #3a4149 !important;
+body {
+    background-color: #2f353a !important;
+    color: #3a4149;
 }
-
+.app-body {
+    border-right: 1px solid #23282c;
+}
 .app-header {
     background-color: #3a4149 !important;
+    border: 0.5px solid #23282c;
 }
 
 .nav-link{
@@ -13,15 +17,18 @@
 
 .app-footer {
     background-color: #3a4149 !important;
+    border: 1px solid #23282c;
 }
 
 .card{
     background-color: #3a4149 !important;
+    border: 1px solid #23282c !important;
 }
 
 .card-header{
-    background-color: #3a4149 !important;
+    background-color:#343b41 !important;
     color: white !important;
+    border-bottom: 1px solid #23282c !important;
 }
 
 .card-title{
@@ -34,7 +41,8 @@
 }
 
 .breadcrumb {
-    background-color: #2f353a !important;
+    background-color: #3a4149 !important;
+    border: 1px solid #23282c
 }
 
 .breadcrumb-item {
@@ -43,9 +51,6 @@
     }
 }
 
-thead{
-    background-color: #2f353a !important;
-}
 
 .bg-primary {
     background-color: #20a8d8!important;
@@ -62,3 +67,29 @@ thead{
 .bg-danger {
      background-color: #f86c6b!important
 }
+
+.table {
+
+    .thead-light th{
+        background-color: #3a4149 !important;
+        border: 0px solid #23282c;
+        color: white;
+    }
+
+    th, td {
+        border-top: 1px solid #23282c;
+    }
+
+    color: white;
+    border-right: 1px solid #23282c !important;
+}
+
+.table-outline {
+    border: 1px solid #23282c;
+}
+
+.sidebar {
+    background: #3a4149;
+    border-right: 1px solid #23282c;
+}
+

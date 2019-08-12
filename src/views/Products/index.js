@@ -422,9 +422,6 @@ class Product extends Component {
                 >
                   <thead className="thead-light">
                     <tr>
-                      <th className="text-center">
-                        <i className="icon-people" />
-                      </th>
                       <th>Product</th>
                       <th>Perfomance</th>
                       <th className="text-center">Income Generated</th>
@@ -433,14 +430,6 @@ class Product extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product a</div>
                       </td>
@@ -470,14 +459,6 @@ class Product extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product f</div>
                       </td>
@@ -507,14 +488,6 @@ class Product extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product a</div>
                       </td>
@@ -544,14 +517,6 @@ class Product extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product d</div>
                       </td>
@@ -581,14 +546,6 @@ class Product extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product b</div>
                       </td>
@@ -618,14 +575,6 @@ class Product extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-center">
-                        <div className="avatar">
-                          <i
-                            className="fa fa-cc-mastercard"
-                            style={{ fontSize: 24 + 'px' }}
-                          />
-                        </div>
-                      </td>
                       <td>
                         <div>Product c</div>
                       </td>
