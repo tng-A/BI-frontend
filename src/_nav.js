@@ -19,10 +19,16 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'County Goverment',
-      url: '/base',
+      name: 'County System',
+      url: '/product',
       icon: 'icon-puzzle',
       children: [
+        {
+          name: 'Product Perfomance',
+          url: '/product',
+          icon: 'icon-puzzle',
+        },
+
         {
           name: 'Parking',
           url: '/base/breadcrumbs',

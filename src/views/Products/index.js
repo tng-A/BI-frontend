@@ -19,7 +19,6 @@ import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import kenya from '../../assets/img/brand/kenya.svg';
 import { SvgLoader, SvgProxy } from 'react-svgmt';
 
-
 // eslint-disable-next-line no-unused-vars
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
@@ -60,7 +59,16 @@ const pie = {
   ]
 };
 
-
+const doughnut = {
+  labels: ['Red', 'Green', 'Yellow'],
+  datasets: [
+    {
+      data: [300, 50, 100],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+    }
+  ]
+};
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -186,7 +194,7 @@ const mainChartOpts = {
   }
 };
 
-class Dashboard extends Component {
+class Product extends Component {
   constructor(props) {
     super(props);
 
@@ -212,17 +220,17 @@ class Dashboard extends Component {
   }
 
   determineCardColor(value) {
-    let className = ''
-    if(value <= 20){
-      className = 'bg-danger'
-    }else if(value <= 40){
-      className = 'bg-warning'
-    }else if(value <= 50){
-      className = 'bg-info'
-    }else if(value > 79){
-      className = 'bg-primary'
+    let className = '';
+    if (value <= 20) {
+      className = 'bg-danger';
+    } else if (value <= 40) {
+      className = 'bg-warning';
+    } else if (value <= 50) {
+      className = 'bg-info';
+    } else if (value > 79) {
+      className = 'bg-primary';
     }
-    return className
+    return className;
   }
 
   loading = () => (
@@ -240,135 +248,57 @@ class Dashboard extends Component {
                 this.setState({ card1: !this.state.card1 });
               }}
               isOpen={this.state.card1}
-              metric={'Business'}
+              metric={'Revenue'}
               value={30.987}
-              percentage={30}
+              percentage={100}
               target={100}
-              className={this.determineCardColor(30)}
+              className={this.determineCardColor(100)}
             />
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-          <ProgressBarCard
-          cardId={'card2'}
-          toggle={() => {
-            this.setState({ card2: !this.state.card2 });
-          }}
-          isOpen={this.state.card2}
-          metric={'Legal'}
-          value={80.987}
-          percentage={80}
-          target={100}
-          className={this.determineCardColor(80)}
-        />
+            <ProgressBarCard
+              cardId={'card2'}
+              toggle={() => {
+                this.setState({ card2: !this.state.card2 });
+              }}
+              isOpen={this.state.card2}
+              metric={'Customers'}
+              value={80.987}
+              percentage={80}
+              target={100}
+              className={this.determineCardColor(80)}
+            />
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-          <ProgressBarCard
-          cardId={'card3'}
-          toggle={() => {
-            this.setState({ card3: !this.state.card3 });
-          }}
-          isOpen={this.state.card4}
-          metric={'Finance'}
-          value={50.987}
-          percentage={50}
-          target={100}
-          className={this.determineCardColor(50)}
-        />
+            <ProgressBarCard
+              cardId={'card3'}
+              toggle={() => {
+                this.setState({ card3: !this.state.card3 });
+              }}
+              isOpen={this.state.card4}
+              metric={'Reliability'}
+              value={50.987}
+              percentage={50}
+              target={100}
+              className={this.determineCardColor(50)}
+            />
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-          <ProgressBarCard
-          cardId={'card4'}
-          toggle={() => {
-            this.setState({ card4: !this.state.card4 });
-          }}
-          isOpen={this.state.card5}
-          metric={'Operations'}
-          value={30.987}
-          percentage={30}
-          target={100}
-          className={this.determineCardColor(10)}
-        />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm="12">
-            <Card style={{ backgroundColor: '#000000' }}>
-              <Row>
-                <CardBody>
-                  <Row className="text-center">
-                    <Col sm={12} md className="mb-sm-6 mb-0">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        County System
-                      </div>
-                      <strong style={{ color: 'white' }}>29.703 (40%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="success"
-                        value="40"
-                      />
-                    </Col>
-                    <Col sm={12} md className="mb-sm-6 mb-0">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        Produvt b
-                      </div>
-                      <strong style={{ color: 'white' }}>29.703 (40%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="success"
-                        value="40"
-                      />
-                    </Col>
-                    <Col sm={12} md className="mb-sm-6 mb-0">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        Product c
-                      </div>
-                      <strong style={{ color: 'white' }}>29.703 (40%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="success"
-                        value="40"
-                      />
-                    </Col>
-                    <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        Product d
-                      </div>
-                      <strong style={{ color: 'white' }}>24.093 (20%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="info"
-                        value="20"
-                      />
-                    </Col>
-                    <Col sm={12} md className="mb-sm-2 mb-0">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        Product e{' '}
-                      </div>
-                      <strong style={{ color: 'white' }}>78.706 (60%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="warning"
-                        value="60"
-                      />
-                    </Col>
-                    <Col sm={12} md className="mb-sm-2 mb-0">
-                      <div className="text-muted" style={{ color: 'white' }}>
-                        Product f
-                      </div>
-                      <strong style={{ color: 'white' }}>22.123 (80%)</strong>
-                      <Progress
-                        className="progress-xs mt-2"
-                        color="danger"
-                        value="80"
-                      />
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Row>
-            </Card>
+            <ProgressBarCard
+              cardId={'card4'}
+              toggle={() => {
+                this.setState({ card4: !this.state.card4 });
+              }}
+              isOpen={this.state.card5}
+              metric={'Revenue'}
+              value={30.987}
+              percentage={30}
+              target={100}
+              className={this.determineCardColor(10)}
+            />
           </Col>
         </Row>
         <Row>
@@ -448,7 +378,11 @@ class Dashboard extends Component {
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Bar data={bar} options={options} style={{ height: 70 + '%' }} />
+                  <Bar
+                    data={bar}
+                    options={options}
+                    style={{ height: 70 + '%' }}
+                  />
                 </div>
               </CardBody>
             </Card>
@@ -731,4 +665,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default Product;
