@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Bar, Doughnut, Line, Pie } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
+import { NavLink } from "react-router-dom";
+import "./index.css";
+
 import {
   Button,
   ButtonGroup,
@@ -279,73 +282,81 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card1"}
-              toggle={() => {
-                this.setState({ card1: !this.state.card1 });
-              }}
-              isOpen={this.state.card1}
-              metric={"Business"}
-              value={30.987}
-              percentage={30}
-              target={100}
-              className={this.determineCardColor(30)}
-            />
+            <NavLink to="#" className="nav-link">
+              <ProgressBarCard
+                cardId={"card1"}
+                toggle={() => {
+                  this.setState({ card1: !this.state.card1 });
+                }}
+                isOpen={this.state.card1}
+                metric={"Business"}
+                value={30.987}
+                percentage={30}
+                target={100}
+                className={this.determineCardColor(30)}
+              />
+            </NavLink>
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card2"}
-              toggle={() => {
-                this.setState({ card2: !this.state.card2 });
-              }}
-              isOpen={this.state.card2}
-              metric={"Legal"}
-              value={80.987}
-              percentage={80}
-              target={100}
-              className={this.determineCardColor(80)}
-            />
+            <NavLink to="#" className="nav-link">
+              <ProgressBarCard
+                cardId={"card2"}
+                toggle={() => {
+                  this.setState({ card2: !this.state.card2 });
+                }}
+                isOpen={this.state.card2}
+                metric={"Legal"}
+                value={80.987}
+                percentage={80}
+                target={100}
+                className={this.determineCardColor(80)}
+              />
+            </NavLink>
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card3"}
-              toggle={() => {
-                this.setState({ card3: !this.state.card3 });
-              }}
-              isOpen={this.state.card4}
-              metric={"Finance"}
-              value={50.987}
-              percentage={50}
-              target={100}
-              className={this.determineCardColor(50)}
-            />
+            <NavLink to="#" className="nav-link">
+              <ProgressBarCard
+                cardId={"card3"}
+                toggle={() => {
+                  this.setState({ card3: !this.state.card3 });
+                }}
+                isOpen={this.state.card4}
+                metric={"Finance"}
+                value={50.987}
+                percentage={50}
+                target={100}
+                className={this.determineCardColor(50)}
+              />
+            </NavLink>
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card4"}
-              toggle={() => {
-                this.setState({ card4: !this.state.card4 });
-              }}
-              isOpen={this.state.card5}
-              metric={"Operations"}
-              value={30.987}
-              percentage={30}
-              target={100}
-              className={this.determineCardColor(10)}
-            />
+            <NavLink to="#" className="nav-link">
+              <ProgressBarCard
+                cardId={"card4"}
+                toggle={() => {
+                  this.setState({ card4: !this.state.card4 });
+                }}
+                isOpen={this.state.card5}
+                metric={"Operations"}
+                value={30.987}
+                percentage={30}
+                target={100}
+                className={this.determineCardColor(10)}
+              />
+            </NavLink>
           </Col>
         </Row>
         <Row>
-          <Col xs="12" sm="6" lg="8">
+          <Col xs="12" sm="6" lg="9">
             <Card>
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
+                    <CardTitle className="mb-0">Perfomnace</CardTitle>
+                    <div className="small text-muted">Yearly</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonGroup className="float-right">
@@ -381,18 +392,23 @@ class Dashboard extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col xs="12" sm="6" lg="4">
-            <Card>
-            <CardHeader>
-                Active Areas
-              </CardHeader>
-              <CardBody>
-              <SvgLoader path={kenya} id="maps" style={{ display:"flex", "flex-grow": 1 +"fr"}}>
-                <SvgProxy selector="path" fill="grey" />
-                <SvgProxy selector="#KE-13,#KE-12,#KE-26,#KE-14" fill="black" />
-              </SvgLoader>
-              </CardBody>
-              
+          <Col xs="12" sm="6" lg="3">
+            <Card style={{ height: 580 }}>
+              <CardHeader id="activeT">Active centers</CardHeader>
+              <div className="svg-container">
+                <SvgLoader
+                  path={kenya}
+                  className="svg-content"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="3 3 600 600"
+                >
+                  <SvgProxy selector="path" fill="grey" />
+                  <SvgProxy
+                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
+                    fill="#20a8d8"
+                  />
+                </SvgLoader>
+              </div>
             </Card>
           </Col>
         </Row>
@@ -401,8 +417,7 @@ class Dashboard extends Component {
             <Card style={{ height: 93 + "%" }}>
               <CardHeader>
                 Target Achievements Trends
-                <div className="card-header-actions">
-                </div>
+                <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -420,8 +435,7 @@ class Dashboard extends Component {
             <Card>
               <CardHeader>
                 Department Analytics
-                <div className="card-header-actions">
-                </div>
+                <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -435,11 +449,8 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <Card>
-            <CardHeader>
-                Product Analysis
-            </CardHeader>
+              <CardHeader>Product Analysis</CardHeader>
               <CardBody>
-             
                 <br />
                 <Table
                   hover
