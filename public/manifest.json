@@ -1,9 +1,9 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "BI-Analytics",
+  "name": "Business Intelligence Analytics",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
+      "src": "./assets/img/favicon2.png",
       "sizes": "100x100",
       "type": "image/png"
     }
