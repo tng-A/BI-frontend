@@ -1,0 +1,17 @@
+.svg-container {
+  display: inline-block;
+  position: relative;
+  vertical-align: center;
+  overflow: hidden;
+}
+.svg-content {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+#activeT {
+  color: rgb(32, 168, 216) !important;
+  font-weight: bold
+}
