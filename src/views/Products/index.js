@@ -431,12 +431,9 @@ class Product extends Component {
                           className="p-0"
                           color="transparent"
                         >
-                          <i className="icon-settings" />
                         </DropdownToggle>
                         <DropdownMenu right>
-                          <DropdownItem>Action</DropdownItem>
-                          <DropdownItem>Another action</DropdownItem>
-                          <DropdownItem>Something else here</DropdownItem>
+                          <DropdownItem>Date picker</DropdownItem>
                         </DropdownMenu>
                       </ButtonDropdown>
                     </ButtonGroup>
@@ -452,11 +449,22 @@ class Product extends Component {
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="4">
-            <Card style={{ height: 580 + 'px' }}>
-              <SvgLoader path={kenya} id="maps">
-                <SvgProxy selector="path" fill="grey" />
-                <SvgProxy selector="#KE-13,#KE-12,#KE-26,#KE-14" fill="black" />
-              </SvgLoader>
+            <Card style={{ height: 580 }}>
+              <CardHeader id="activeT">Active centers</CardHeader>
+              <div className="svg-container" style={{marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em'}}>
+                <SvgLoader
+                  path={kenya}
+                  className="svg-content"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="3 3 600 600"
+                >
+                  <SvgProxy selector="path" fill="grey" />
+                  <SvgProxy
+                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
+                    fill="#20a8d8"
+                  />
+                </SvgLoader>
+              </div>
             </Card>
           </Col>
         </Row>
@@ -465,7 +473,27 @@ class Product extends Component {
             <Card style={{ height: 93 + '%' }}>
               <CardHeader>
                 Target Achievements Trends
-                <div className="card-header-actions" />
+                <div className="card-header-actions" >
+                <ButtonGroup className="float-right">
+                      <ButtonDropdown
+                        id="card1"
+                        isOpen={this.state.card2}
+                        toggle={() => {
+                          this.setState({ card2: !this.state.card2 });
+                        }}
+                      >
+                        <DropdownToggle
+                          caret
+                          className="p-0"
+                          color="transparent"
+                        >
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                          <DropdownItem>Date picker</DropdownItem>
+                        </DropdownMenu>
+                      </ButtonDropdown>
+                    </ButtonGroup>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -483,7 +511,27 @@ class Product extends Component {
             <Card>
               <CardHeader>
                 Income Streams Analytics
-                <div className="card-header-actions" />
+                <div className="card-header-actions">
+                  <ButtonGroup className="float-right">
+                        <ButtonDropdown
+                          id="card1"
+                          isOpen={this.state.card2}
+                          toggle={() => {
+                            this.setState({ card2: !this.state.card2 });
+                          }}
+                        >
+                          <DropdownToggle
+                            caret
+                            className="p-0"
+                            color="transparent"
+                          >
+                          </DropdownToggle>
+                          <DropdownMenu right>
+                            <DropdownItem>Date picker</DropdownItem>
+                          </DropdownMenu>
+                        </ButtonDropdown>
+                      </ButtonGroup>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -497,7 +545,29 @@ class Product extends Component {
         <Row>
           <Col>
             <Card>
-              <CardHeader>Income Streams Analysis</CardHeader>
+              <CardHeader>Income Streams Analysis
+              <div className="card-header-actions">
+                  <ButtonGroup className="float-right">
+                        <ButtonDropdown
+                          id="card1"
+                          isOpen={this.state.card2}
+                          toggle={() => {
+                            this.setState({ card2: !this.state.card2 });
+                          }}
+                        >
+                          <DropdownToggle
+                            caret
+                            className="p-0"
+                            color="transparent"
+                          >
+                          </DropdownToggle>
+                          <DropdownMenu right>
+                            <DropdownItem>Date picker</DropdownItem>
+                          </DropdownMenu>
+                        </ButtonDropdown>
+                      </ButtonGroup>
+                </div>
+              </CardHeader>
               <CardBody>
                 <br />
                 <Table
