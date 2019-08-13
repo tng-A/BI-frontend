@@ -234,69 +234,6 @@ const Mdata = {
       pointRadius: 1,
       pointHitRadius: 10,
       data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
-    },
-    {
-      label: 'product b',
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: 'orange',
-      borderColor: 'orange',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [45, 40, 55, 10, 45, 35, 70, 85, 120, 150, 180, 200]
-    },
-    {
-      label: 'product c',
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: 'purple',
-      borderColor: 'purple',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
-    },
-    {
-      label: 'product d',
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: 'green',
-      borderColor: 'green',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [140, 120, 150, 130, 200, 215, 200, 200, 170, 150, 180, 200]
     }
   ]
 };
@@ -353,8 +290,8 @@ class IncomeStreams extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
+                    <CardTitle className="mb-0">Income Trends</CardTitle>
+                    <div className="small text-muted">2019</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonGroup className="float-right">
