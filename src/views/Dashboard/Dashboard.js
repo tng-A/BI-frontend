@@ -350,7 +350,7 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs="12" sm="6" lg="9">
+          <Col xs="12" sm="6" lg="8">
             <Card>
               <CardBody>
                 <Row>
@@ -392,10 +392,10 @@ class Dashboard extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col xs="12" sm="6" lg="3">
+          <Col xs="12" sm="6" lg="4">
             <Card style={{ height: 580 }}>
               <CardHeader id="activeT">Active centers</CardHeader>
-              <div className="svg-container">
+              <div className="svg-container" style={{marginLeft: 1.2 + 'em'}}>
                 <SvgLoader
                   path={kenya}
                   className="svg-content"

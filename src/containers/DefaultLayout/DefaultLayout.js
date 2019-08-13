@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 
 import {
   AppAside,
@@ -52,7 +52,22 @@ class DefaultLayout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes} router={router}/>
+            <AppBreadcrumb appRoutes={routes} router={router}>
+                <Dropdown isOpen={true} toggle={() => {
+                  this.toggle(0);
+                }}>
+                  <DropdownToggle caret>
+                    Dropdown
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>Header</DropdownItem>
+                    <DropdownItem disabled>Action</DropdownItem>
+                    <DropdownItem>Another Action</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>Another Action</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+            </AppBreadcrumb>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
