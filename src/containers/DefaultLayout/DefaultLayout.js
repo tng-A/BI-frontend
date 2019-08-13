@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
-import { Container, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
+import { Container, Row, Col,ButtonGroup, ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 
 import {
   AppAside,
@@ -32,7 +32,7 @@ class DefaultLayout extends Component {
     e.preventDefault()
     this.props.history.push('/login')
   }
-
+  state = {}
   render() {
     return (
       <div className="app">
@@ -53,21 +53,30 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router}>
-                <Dropdown isOpen={true} toggle={() => {
-                  this.toggle(0);
-                }}>
-                  <DropdownToggle caret>
-                    Dropdown
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem header>Header</DropdownItem>
-                    <DropdownItem disabled>Action</DropdownItem>
-                    <DropdownItem>Another Action</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem>Another Action</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
             </AppBreadcrumb>
+              <Row>
+              <Col sm="8" lg="11" className="d-none d-sm-inline-block">
+                    <ButtonGroup className="float-right" >
+                      <ButtonDropdown 
+                        id="card1"
+                        isOpen={this.state.card1}
+                        toggle={() => {
+                          this.setState({ card1: !this.state.card1 });
+                        }}
+                      >
+                        <DropdownToggle style={{marginRight: -9 + "em"}}
+                          caret
+                          className="p-0"
+                          color="transparent"
+                        >
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                          <DropdownItem>Select Period</DropdownItem>
+                        </DropdownMenu>
+                      </ButtonDropdown>
+                    </ButtonGroup>
+                  </Col>
+              </Row>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>

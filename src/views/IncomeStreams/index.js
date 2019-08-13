@@ -39,7 +39,7 @@ const options = {
 };
 
 const bar = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
   datasets: [
     {
       label: 'My First dataset',
@@ -48,29 +48,7 @@ const bar = {
       borderWidth: 1,
       hoverBackgroundColor: 'rgba(255,99,132,0.4)',
       hoverBorderColor: 'rgba(255,99,132,1)',
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }
-  ]
-};
-
-const pie = {
-  labels: ['Parking', 'Land Rates', 'Transactions'],
-  datasets: [
-    {
-      data: [300, 50, 100],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-    }
-  ]
-};
-
-const doughnut = {
-  labels: ['Red', 'Green', 'Yellow'],
-  datasets: [
-    {
-      data: [300, 50, 100],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+      data: [65, 59, 80, 100, 56, 55, 0]
     }
   ]
 };
@@ -90,65 +68,7 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-const mainChart = {
-  labels: [
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa',
-    'Su',
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa',
-    'Su',
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa',
-    'Su',
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa',
-    'Su'
-  ],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: hexToRgba(brandInfo, 10),
-      borderColor: brandInfo,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data1
-    },
-    {
-      label: 'My Second dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandSuccess,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data2
-    },
-    {
-      label: 'My Third dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandDanger,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5],
-      data: data3
-    }
-  ]
-};
+
 
 const mainChartOpts = {
   tooltips: {
@@ -233,7 +153,7 @@ const Mdata = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
+      data: [100, 59, 80, 81, 56, 55, 0, 79, 85, 120, 150, 155]
     }
   ]
 };
@@ -307,12 +227,9 @@ class IncomeStreams extends Component {
                           className="p-0"
                           color="transparent"
                         >
-                          <i className="icon-settings" />
                         </DropdownToggle>
                         <DropdownMenu right>
-                          <DropdownItem>Action</DropdownItem>
-                          <DropdownItem>Another action</DropdownItem>
-                          <DropdownItem>Something else here</DropdownItem>
+                          <DropdownItem>Date picker</DropdownItem>
                         </DropdownMenu>
                       </ButtonDropdown>
                     </ButtonGroup>
@@ -328,11 +245,22 @@ class IncomeStreams extends Component {
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="4">
-            <Card style={{ height: 580 + 'px' }}>
-              <SvgLoader path={kenya} id="maps">
-                <SvgProxy selector="path" fill="grey" />
-                <SvgProxy selector="#KE-13,#KE-12,#KE-26,#KE-14" fill="black" />
-              </SvgLoader>
+            <Card style={{ height: 580 }}>
+              <CardHeader id="activeT">Active centers</CardHeader>
+              <div className="svg-container" style={{marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em'}}>
+                <SvgLoader
+                  path={kenya}
+                  className="svg-content"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="3 3 600 600"
+                >
+                  <SvgProxy selector="path" fill="grey" />
+                  <SvgProxy
+                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
+                    fill="#20a8d8"
+                  />
+                </SvgLoader>
+              </div>
             </Card>
           </Col>
         </Row>
@@ -344,18 +272,17 @@ class IncomeStreams extends Component {
                 <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
-                <div className="chart-wrapper">
+                <div className="chart-wrapper bg-income">
                   <Bar
                     data={bar}
                     options={options}
-                    style={{ height: 70 + '%' }}
+                    style={{ height: 100 + '%' }}
                   />
                 </div>
               </CardBody>
             </Card>
           </Col>
         </Row>
-
       </div>
     );
   }
