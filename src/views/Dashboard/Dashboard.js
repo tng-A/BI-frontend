@@ -42,7 +42,7 @@ const options = {
 };
 
 const bar = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  labels: ["January", "February", "March"],
   datasets: [
     {
       label: "Revenue",
@@ -51,7 +51,7 @@ const bar = {
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
-      data: [100, 59, 80, 81, 56, 55, 0]
+      data: [100, 59, 80]
     }
   ]
 };
@@ -417,11 +417,11 @@ class Dashboard extends Component {
                 <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
-                <div className="chart-wrapper">
+                <div className="chart-wrapper bar-custom" >
                   <Bar
                     data={bar}
                     options={options}
-                    style={{ height: 70 + "%" }}
+                    style={{ height: 80 + "%" }}
                   />
                 </div>
               </CardBody>
