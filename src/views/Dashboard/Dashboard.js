@@ -372,12 +372,9 @@ class Dashboard extends Component {
                           className="p-0"
                           color="transparent"
                         >
-                          <i className="icon-settings" />
                         </DropdownToggle>
                         <DropdownMenu right>
-                          <DropdownItem>Action</DropdownItem>
-                          <DropdownItem>Another action</DropdownItem>
-                          <DropdownItem>Something else here</DropdownItem>
+                          <DropdownItem>Select Period</DropdownItem>
                         </DropdownMenu>
                       </ButtonDropdown>
                     </ButtonGroup>
