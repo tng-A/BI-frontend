@@ -284,6 +284,11 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
+                cardId={"card1"}
+                toggle={() => {
+                  this.setState({ card1: !this.state.card1 });
+                }}
+                isOpen={this.state.card1}
                 metric={"Business"}
                 value={30.987}
                 percentage={30}
@@ -296,6 +301,11 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
+                cardId={"card2"}
+                toggle={() => {
+                  this.setState({ card2: !this.state.card2 });
+                }}
+                isOpen={this.state.card2}
                 metric={"Legal"}
                 value={80.987}
                 percentage={80}
@@ -308,6 +318,11 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
+                cardId={"card3"}
+                toggle={() => {
+                  this.setState({ card3: !this.state.card3 });
+                }}
+                isOpen={this.state.card4}
                 metric={"Finance"}
                 value={50.987}
                 percentage={50}
@@ -320,6 +335,11 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
+                cardId={"card4"}
+                toggle={() => {
+                  this.setState({ card4: !this.state.card4 });
+                }}
+                isOpen={this.state.card5}
                 metric={"Operations"}
                 value={30.987}
                 percentage={30}
@@ -372,7 +392,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="4">
             <Card style={{ height: 580 }}>
               <CardHeader id="activeT">Active centers</CardHeader>
-              <div className="svg-container" style={{marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em'}}>
+              <div className="svg-container" style={{marginLeft: 1.2 + 'em'}}>
                 <SvgLoader
                   path={kenya}
                   className="svg-content"
@@ -394,27 +414,7 @@ class Dashboard extends Component {
             <Card style={{ height: 93 + "%" }}>
               <CardHeader>
                 Target Achievements Trends
-                <div className="card-header-actions">
-                  <ButtonGroup className="float-right">
-                    <ButtonDropdown
-                      id="card2"
-                      isOpen={this.state.card2}
-                      toggle={() => {
-                        this.setState({ card2: !this.state.card2 });
-                      }}
-                    >
-                      <DropdownToggle
-                        caret
-                        className="p-0"
-                        color="transparent"
-                      >
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        <DropdownItem>Select Period</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </ButtonGroup>
-                </div>
+                <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -432,27 +432,7 @@ class Dashboard extends Component {
             <Card>
               <CardHeader>
                 Department Analytics
-                <div className="card-header-actions">
-                  <ButtonGroup className="float-right">
-                    <ButtonDropdown
-                      id="card3"
-                      isOpen={this.state.card3}
-                      toggle={() => {
-                        this.setState({ card3: !this.state.card3 });
-                      }}
-                    >
-                      <DropdownToggle
-                        caret
-                        className="p-0"
-                        color="transparent"
-                      >
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        <DropdownItem>Select Period</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </ButtonGroup>
-                </div>
+                <div className="card-header-actions" />
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
@@ -466,27 +446,7 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <Card>
-              <CardHeader>Product Analysis
-                <ButtonGroup className="float-right">
-                  <ButtonDropdown
-                    id="card4"
-                    isOpen={this.state.card4}
-                    toggle={() => {
-                      this.setState({ card4: !this.state.card4 });
-                    }}
-                  >
-                    <DropdownToggle
-                      caret
-                      className="p-0"
-                      color="transparent"
-                    >
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Select Period</DropdownItem>
-                    </DropdownMenu>
-                  </ButtonDropdown>
-                </ButtonGroup>
-              </CardHeader>
+              <CardHeader>Product Analysis</CardHeader>
               <CardBody>
                 <br />
                 <Table
