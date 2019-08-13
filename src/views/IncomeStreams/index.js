@@ -24,6 +24,7 @@ import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 import kenya from "../../assets/img/brand/kenya.svg";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 
+
 // eslint-disable-next-line no-unused-vars
 const brandPrimary = getStyle("--primary");
 const brandSuccess = getStyle("--success");
@@ -67,7 +68,6 @@ for (var i = 0; i <= elements; i++) {
   data2.push(random(80, 100));
   data3.push(65);
 }
-
 
 const mainChartOpts = {
   tooltips: {
@@ -162,17 +162,25 @@ class IncomeStreams extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
       dropdownOpen: false,
-      radioSelected: 2
+      radioSelected: 2,
+      modal: false
     };
   }
 
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal
     });
   }
 
@@ -225,8 +233,7 @@ class IncomeStreams extends Component {
                           caret
                           className="p-0"
                           color="transparent"
-                        >
-                        </DropdownToggle>
+                        />
                         <DropdownMenu right>
                           <DropdownItem>Date picker</DropdownItem>
                         </DropdownMenu>

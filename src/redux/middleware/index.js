@@ -1,8 +1,14 @@
-import {all} from 'redux-saga/effects';
+import { all, fork } from "redux-saga/effects";
+import {
+  watchIncomeStreamSagaAsync,
+  WatchIncomeStreamSagaTarget
+} from "./IncomeStreams";
 
-function * rootSaga(){
-    yield all([])
-
+function* rootSaga() {
+  yield all([
+    fork(watchIncomeStreamSagaAsync),
+    fork(WatchIncomeStreamSagaTarget)
+  ]);
 }
 
-export default rootSaga
+export default rootSaga;
