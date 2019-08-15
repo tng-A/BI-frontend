@@ -207,11 +207,11 @@ const Mdata = {
     "May",
     "June",
     "July",
-    "august",
-    "september",
-    "october",
-    "november",
-    "december"
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ],
   datasets: [
     {

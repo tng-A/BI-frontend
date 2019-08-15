@@ -1,7 +1,7 @@
 export default {
   items: [
     {
-      name: 'Value Center',
+      name: 'WEBTRIBE',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
@@ -9,84 +9,148 @@ export default {
         text: 'ADMIN'
       }
     },
+    
     {
-      title: true,
-      name: 'Departments',
-      wrapper: {
-        // optional wrapper object
-        element: '', // required valid HTML5 element tag
-        attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-      },
-      class: '' // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Business',
-      url: '/base/breadcrumbs',
-      icon: '',
+      name: 'VALUE CENTERS',
+      icon: 'icon-home',
+      url: '/pages', 
+      class:"nav-title",
+      wrapper: {            // optional wrapper object
+        element: '',        // required valid HTML5 element tag
+        attributes: {          
+        } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      },  
       children: [
         {
-          title: true,
-          name: 'Products',
-          wrapper: {
-            // optional wrapper object
-            element: '', // required valid HTML5 element tag
-            attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-          },
-          class: '' // optional class names space delimited list for title item ex: "text-center"
+          name: 'Merchant Business',
+          url: '/login',
+          wrapper: {            // optional wrapper object
+            element: 'div',        // required valid HTML5 element tag
+            attributes: { 
+              className:'gov'         
+            } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+          }, 
         },
         {
-          name: 'County System',
-          url: '/product',
-          icon: 'icon-task',
-          children: [
-            {
-              name: 'Product Perfomance',
-              url: '/product',
-              icon: 'icon-puzzle'
-            },
-            {
-              title: true,
-              name: 'Income Streams',
-              wrapper: {
-                element: '',
-                attributes: {}
-              },
-              class: ''
-            },
-
-            {
-              name: 'Parking',
-              url: '/income-streams',
-              icon: 'icon-puzzle'
-            },
-            {
-              name: 'Land Rates',
-              url: '/income-streams',
-              icon: 'icon-puzzle'
-            },
-            {
-              name: 'Transactions',
-              url: '/income-streams',
-              icon: 'icon-puzzle'
-            }
-          ]
-        }
-      ]
+          name: 'Consumer Business',
+          url: '/login',
+          wrapper: {            // optional wrapper object
+            element: 'div',        // required valid HTML5 element tag
+            attributes: { 
+              className:'gov'         
+            } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+          }, 
+        },
+        {
+          name: 'Entreprise Integration',
+          url: '/login',
+          wrapper: {            // optional wrapper object
+            element: 'div',        // required valid HTML5 element tag
+            attributes: { 
+              className:'gov'         
+            } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+          }, 
+        },
+        {
+          name: 'Platform Business',
+          url: '/login',
+        },
+      ],
     },
     {
-      name: 'Legal',
-      url: '/#',
-      icon: 'icon-puzzle'
+      name: 'DEPARTMENTS',
+      url: '/pages', 
+      icon: 'icon-briefcase',
+      class:"nav-title",  
+      children: [
+        {
+          name: 'Business',
+          url: '/login',
+        },
+      ],
     },
     {
-      name: 'Human Resource',
-      url: '/#',
-      icon: 'icon-puzzle'
+      name: 'PRODUCTS',
+      class:"nav-title", 
+      icon: 'icon-bag',  
+      children: [
+        {
+          name: 'Agency Network',
+          url: '/products',
+        },
+        {
+          name: 'Trust Services',
+          url: '/products',
+        },
+        {
+          name: 'Auth Services',
+          url: '/products',
+        },
+        {
+          name: 'Supply Chain',
+          url: '/products',
+        },
+        {
+          name: 'Parastatals',
+          url: '/products',
+        },
+        {
+          name: 'E-commerce',
+          url: '/products',
+        },
+      ],
     },
     {
-      name: 'Finance',
-      url: '/#',
-      icon: 'icon-puzzle'
-    }
+      name: 'REVENUE TYPES',
+      url: '/pages',  
+      class:"nav-title", 
+      icon: 'cui-credit-card',
+      children: [
+        {
+          name: 'County',
+          url: '/login',
+        },
+        {
+          name: 'Billable',
+          url: '/login',
+        },
+      ],
+    },
+    {
+      name: 'REVENUE STREAMS',
+      url: '/pages',
+      icon: 'icon-graph',  
+      class:"nav-title",   
+      children: [
+        {
+          name: 'Embu',
+          url: '/login',
+        },
+        {
+          name: 'Meru',
+          url: '/login',
+        },
+        {
+          name: 'KPLC',
+          url: '/login',
+        },
+      ],
+    },
+    {
+      name: 'INCOME STREAMS',
+      url: '/pages', 
+      icon: 'icon-graph',  
+      class:"nav-title",  
+      children: [
+        {
+          name: 'Parking',
+          url: '/login',
+        },
+        {
+          name: 'Cess',
+          url: '/login',
+        },
+      ],
+    },
   ]
 };

@@ -91,15 +91,15 @@ const Mdata = {
     "May",
     "June",
     "July",
-    "august",
-    "september",
-    "october",
-    "november",
-    "december"
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ],
   datasets: [
     {
-      label: "Product a",
+      label: "Merchant Business",
       fill: false,
       lineTension: 0.3,
       backgroundColor: "rgba(75,192,192,0.4)",
@@ -120,7 +120,7 @@ const Mdata = {
       data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
     },
     {
-      label: "product b",
+      label: "Consumer Business",
       fill: false,
       lineTension: 0.3,
       backgroundColor: "orange",
@@ -141,7 +141,7 @@ const Mdata = {
       data: [45, 40, 55, 10, 45, 35, 70, 85, 120, 150, 180, 200]
     },
     {
-      label: "product c",
+      label: "Enterprise Integration",
       fill: false,
       lineTension: 0.3,
       backgroundColor: "purple",
@@ -162,7 +162,7 @@ const Mdata = {
       data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
     },
     {
-      label: "product d",
+      label: "Platform Business",
       fill: false,
       lineTension: 0.3,
       backgroundColor: "green",
@@ -284,7 +284,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={"Business"}
+                metric={"Merchant Business"}
                 value={30.987}
                 percentage={30}
                 target={100}
@@ -296,7 +296,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={"Legal"}
+                metric={"Consumer Business"}
                 value={80.987}
                 percentage={80}
                 target={100}
@@ -308,7 +308,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={"Finance"}
+                metric={"Enteprise Integration"}
                 value={50.987}
                 percentage={50}
                 target={100}
@@ -320,7 +320,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={"Operations"}
+                metric={"Platform Business"}
                 value={30.987}
                 percentage={30}
                 target={100}
@@ -330,12 +330,12 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs="12" sm="6" lg="8">
+          <Col xs="8" sm="7.3" lg="7.5">
             <Card>
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Perfomnace</CardTitle>
+                    <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
                     <div className="small text-muted">Yearly</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
@@ -369,8 +369,8 @@ class Dashboard extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col xs="12" sm="6" lg="4">
-            <Card style={{ height: 580 }}>
+          <Col xs="4" sm="4.7" lg="4.5">
+            <Card style={{ height: 580}}>
               <CardHeader id="activeT">Active centers</CardHeader>
               <div className="svg-container" style={{marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em'}}>
                 <SvgLoader
@@ -683,7 +683,228 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
-      </div>
+     
+        <Row>
+        <Col>
+          <Card>
+            <CardHeader>Transactions
+              <ButtonGroup className="float-right">
+                <ButtonDropdown
+                  id="card4"
+                  isOpen={this.state.card4}
+                  toggle={() => {
+                    this.setState({ card4: !this.state.card4 });
+                  }}
+                >
+                  <DropdownToggle
+                    caret
+                    className="p-0"
+                    color="transparent"
+                  >
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>Select Period</DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </ButtonGroup>
+            </CardHeader>
+            <CardBody>
+              <br />
+              <Table
+                hover
+                responsive
+                className="table-outline mb-0 d-none d-sm-table"
+              >
+                <thead className="thead-light">
+                  <tr>
+                    <th>Product</th>
+                    <th>Perfomance</th>
+                    <th className="text-center">Income Generated</th>
+                    <th>Activity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>Product a</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>50%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="success"
+                        value="50"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 12,000,000 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>10 Years</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>Product f</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>24%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="danger"
+                        value="24"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 1,000,050 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>10 Years</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>Product a</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>50%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="success"
+                        value="50"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 12,000,000 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>10 Years</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>Product d</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>35%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="warning"
+                        value="35"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 1,000,000 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>5 Years</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>Product b</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>10%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="danger"
+                        value="10"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 1,000,456 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>5 Years</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>Product c</div>
+                    </td>
+                    <td>
+                      <div className="clearfix">
+                        <div className="float-left">
+                          <strong>46%</strong>
+                        </div>
+                        <div className="float-right">
+                          <small className="text-muted">Target: 6666</small>
+                        </div>
+                      </div>
+                      <Progress
+                        className="progress-xs"
+                        color="info"
+                        value="46"
+                      />
+                    </td>
+                    <td className="text-center">
+                      <strong>Ksh: 2,000,000 million</strong>
+                    </td>
+                    <td>
+                      <div className="small text-muted">
+                        Duration of Operation
+                      </div>
+                      <strong>5 Years</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+       </div>
     );
   }
 }
