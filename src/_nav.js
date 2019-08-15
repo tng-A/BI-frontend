@@ -22,38 +22,14 @@ export default {
       },  
       children: [
         {
-          name: 'Merchant Business',
-          url: '/login',
-          wrapper: {            // optional wrapper object
-            element: 'div',        // required valid HTML5 element tag
-            attributes: { 
-              className:'gov'         
-            } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-          }, 
-        },
-        {
-          name: 'Consumer Business',
-          url: '/login',
-          wrapper: {            // optional wrapper object
-            element: 'div',        // required valid HTML5 element tag
-            attributes: { 
-              className:'gov'         
-            } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-          }, 
-        },
-        {
           name: 'Entreprise Integration',
-          url: '/login',
+          url: '/enterprise',
           wrapper: {            // optional wrapper object
             element: 'div',        // required valid HTML5 element tag
             attributes: { 
               className:'gov'         
             } ,       // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
           }, 
-        },
-        {
-          name: 'Platform Business',
-          url: '/login',
         },
       ],
     },
@@ -64,8 +40,8 @@ export default {
       class:"nav-title",  
       children: [
         {
-          name: 'Business',
-          url: '/login',
+          name: 'Goverment Business',
+          url: '/goverment-business',
         },
       ],
     },
@@ -75,29 +51,10 @@ export default {
       icon: 'icon-bag',  
       children: [
         {
-          name: 'Agency Network',
-          url: '/products',
+          name: 'County System',
+          url: '/product',
         },
-        {
-          name: 'Trust Services',
-          url: '/products',
-        },
-        {
-          name: 'Auth Services',
-          url: '/products',
-        },
-        {
-          name: 'Supply Chain',
-          url: '/products',
-        },
-        {
-          name: 'Parastatals',
-          url: '/products',
-        },
-        {
-          name: 'E-commerce',
-          url: '/products',
-        },
+
       ],
     },
     {
@@ -108,11 +65,7 @@ export default {
       children: [
         {
           name: 'County',
-          url: '/login',
-        },
-        {
-          name: 'Billable',
-          url: '/login',
+          url: '/county',
         },
       ],
     },
@@ -125,31 +78,19 @@ export default {
         {
           name: 'Embu',
           url: '/login',
-        },
-        {
-          name: 'Meru',
-          url: '/login',
-        },
-        {
-          name: 'KPLC',
-          url: '/login',
-        },
+        }
       ],
     },
     {
       name: 'INCOME STREAMS',
-      url: '/pages', 
+      url: '/income-stream', 
       icon: 'icon-graph',  
       class:"nav-title",  
       children: [
         {
           name: 'Parking',
-          url: '/login',
-        },
-        {
-          name: 'Cess',
-          url: '/login',
-        },
+          url: '/income-stream',
+        }
       ],
     },
   ]
