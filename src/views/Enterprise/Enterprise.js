@@ -57,12 +57,12 @@ const bar = {
 };
 
 const pie = {
-  labels: ['Business', 'Legal', 'HR', 'Finance'],
+  labels: ['Goverment Business', 'Parastatals', 'Supply Chain'],
   datasets: [
     {
-      data: [300, 50, 100, 400],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997']
+      data: [300, 50, 100],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
     }
   ]
 };
@@ -99,7 +99,7 @@ const Mdata = {
   ],
   datasets: [
     {
-      label: 'Merchant Business',
+      label: 'Supply Chain',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -120,7 +120,7 @@ const Mdata = {
       data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
     },
     {
-      label: 'Consumer Business',
+      label: 'Goverment Business',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'orange',
@@ -141,7 +141,7 @@ const Mdata = {
       data: [45, 40, 55, 10, 45, 35, 70, 85, 120, 150, 180, 200]
     },
     {
-      label: 'Enterprise Integration',
+      label: 'Parastatals',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'purple',
@@ -160,27 +160,6 @@ const Mdata = {
       pointRadius: 1,
       pointHitRadius: 10,
       data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
-    },
-    {
-      label: 'Platform Business',
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: 'green',
-      borderColor: 'green',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [140, 120, 150, 130, 200, 215, 200, 200, 170, 150, 180, 200]
     }
   ]
 };
@@ -281,21 +260,10 @@ class Dashboard extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="enterprise" className="nav-link">
+          <Col xs="12" sm="12" lg="4">
+            <NavLink to="goverment-business" className="nav-link">
               <ProgressBarCard
-                metric={'Enteprise Integration'}
-                value={50.987}
-                percentage={50}
-                target={100}
-                className={this.determineCardColor(50)}
-              />
-            </NavLink>
-          </Col>
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="#" className="nav-link">
-              <ProgressBarCard
-                metric={'Merchant Business'}
+                metric={'Goverment Business'}
                 value={30.987}
                 percentage={30}
                 target={100}
@@ -304,10 +272,10 @@ class Dashboard extends Component {
             </NavLink>
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
+          <Col xs="12" sm="12" lg="4">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={'Consumer Business'}
+                metric={'Supply Chain'}
                 value={80.987}
                 percentage={80}
                 target={100}
@@ -316,26 +284,26 @@ class Dashboard extends Component {
             </NavLink>
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="#" className="nav-link">
+          <Col xs="12" sm="12" lg="4">
+            <NavLink to="product" className="nav-link">
               <ProgressBarCard
-                metric={'Platform Business'}
-                value={30.987}
-                percentage={30}
+                metric={'Parastatals'}
+                value={50.987}
+                percentage={50}
                 target={100}
-                className={this.determineCardColor(10)}
+                className={this.determineCardColor(50)}
               />
             </NavLink>
           </Col>
         </Row>
         <Row>
-          <Col xs="8" sm="7.3" lg="7.5">
+          <Col xs="12" sm="12" lg="12">
             <Card>
               <CardBody>
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">
-                      Value Centers Perfomance
+                      Enterprise Perfomance
                     </CardTitle>
                     <div className="small text-muted">Yearly</div>
                   </Col>
@@ -367,28 +335,6 @@ class Dashboard extends Component {
                   <Line data={Mdata} options={mainChartOpts} height={300} />
                 </div>
               </CardBody>
-            </Card>
-          </Col>
-          <Col xs="4" sm="4.7" lg="4.5">
-            <Card style={{ height: 580 }}>
-              <CardHeader id="activeT">Active centers</CardHeader>
-              <div
-                className="svg-container"
-                style={{ marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em' }}
-              >
-                <SvgLoader
-                  path={kenya}
-                  className="svg-content"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="3 3 600 600"
-                >
-                  <SvgProxy selector="path" fill="grey" />
-                  <SvgProxy
-                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
-                    fill="#20a8d8"
-                  />
-                </SvgLoader>
-              </div>
             </Card>
           </Col>
         </Row>
@@ -433,7 +379,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="6">
             <Card>
               <CardHeader>
-                Department Analytics
+                Enterprise Analytics
                 <div className="card-header-actions">
                   <ButtonGroup className="float-right">
                     <ButtonDropdown

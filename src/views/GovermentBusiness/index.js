@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import { NavLink } from 'react-router-dom';
-import './index.css';
 
 import {
   Button,
@@ -99,7 +98,7 @@ const Mdata = {
   ],
   datasets: [
     {
-      label: 'Merchant Business',
+      label: 'County System',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -120,7 +119,7 @@ const Mdata = {
       data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
     },
     {
-      label: 'Consumer Business',
+      label: 'Product B',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'orange',
@@ -141,7 +140,7 @@ const Mdata = {
       data: [45, 40, 55, 10, 45, 35, 70, 85, 120, 150, 180, 200]
     },
     {
-      label: 'Enterprise Integration',
+      label: 'Product C',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'purple',
@@ -162,7 +161,7 @@ const Mdata = {
       data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
     },
     {
-      label: 'Platform Business',
+      label: 'Product D',
       fill: false,
       lineTension: 0.3,
       backgroundColor: 'green',
@@ -282,9 +281,9 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="3">
-            <NavLink to="enterprise" className="nav-link">
+            <NavLink to="county-system" className="nav-link">
               <ProgressBarCard
-                metric={'Enteprise Integration'}
+                metric={'County System'}
                 value={50.987}
                 percentage={50}
                 target={100}
@@ -295,7 +294,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={'Merchant Business'}
+                metric={'Product B'}
                 value={30.987}
                 percentage={30}
                 target={100}
@@ -307,7 +306,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={'Consumer Business'}
+                metric={'Product B'}
                 value={80.987}
                 percentage={80}
                 target={100}
@@ -319,7 +318,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <NavLink to="#" className="nav-link">
               <ProgressBarCard
-                metric={'Platform Business'}
+                metric={'Product C'}
                 value={30.987}
                 percentage={30}
                 target={100}
@@ -329,14 +328,12 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs="8" sm="7.3" lg="7.5">
+          <Col xs="12" sm="12" lg="12">
             <Card>
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">
-                      Value Centers Perfomance
-                    </CardTitle>
+                    <CardTitle className="mb-0">Product Perfomance</CardTitle>
                     <div className="small text-muted">Yearly</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
@@ -365,99 +362,6 @@ class Dashboard extends Component {
                   style={{ height: 460 + 'px', marginTop: 40 + 'px' }}
                 >
                   <Line data={Mdata} options={mainChartOpts} height={300} />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="4" sm="4.7" lg="4.5">
-            <Card style={{ height: 580 }}>
-              <CardHeader id="activeT">Active centers</CardHeader>
-              <div
-                className="svg-container"
-                style={{ marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em' }}
-              >
-                <SvgLoader
-                  path={kenya}
-                  className="svg-content"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="3 3 600 600"
-                >
-                  <SvgProxy selector="path" fill="grey" />
-                  <SvgProxy
-                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
-                    fill="#20a8d8"
-                  />
-                </SvgLoader>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" sm="6" lg="6">
-            <Card style={{ height: 93 + '%' }}>
-              <CardHeader>
-                Target Achievements Trends
-                <div className="card-header-actions">
-                  <ButtonGroup className="float-right">
-                    <ButtonDropdown
-                      id="card2"
-                      isOpen={this.state.card2}
-                      toggle={() => {
-                        this.setState({ card2: !this.state.card2 });
-                      }}
-                    >
-                      <DropdownToggle
-                        caret
-                        className="p-0"
-                        color="transparent"
-                      />
-                      <DropdownMenu right>
-                        <DropdownItem>Select Period</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-wrapper bar-custom">
-                  <Bar
-                    data={bar}
-                    options={options}
-                    style={{ height: 80 + '%' }}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="6">
-            <Card>
-              <CardHeader>
-                Department Analytics
-                <div className="card-header-actions">
-                  <ButtonGroup className="float-right">
-                    <ButtonDropdown
-                      id="card3"
-                      isOpen={this.state.card3}
-                      toggle={() => {
-                        this.setState({ card3: !this.state.card3 });
-                      }}
-                    >
-                      <DropdownToggle
-                        caret
-                        className="p-0"
-                        color="transparent"
-                      />
-                      <DropdownMenu right>
-                        <DropdownItem>Select Period</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-wrapper">
-                  <Pie data={pie} />
                 </div>
               </CardBody>
             </Card>
