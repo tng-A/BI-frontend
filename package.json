@@ -21,6 +21,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.1.4",
     "date-fns": "^1.30.1",
+    "dotenv": "^8.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "flag-icon-css": "^3.3.0",
@@ -32,6 +33,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-date-range": "^1.0.0-beta",
     "react-dom": "^16.8.6",
+    "react-loader-spinner": "^3.1.2",
     "react-redux": "^7.1.0",
     "react-router-config": "^5.0.1",
     "react-router-dom": "^5.0.1",
@@ -40,6 +42,7 @@
     "react-test-renderer": "^16.8.6",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.5",
     "simple-line-icons": "^2.4.1"
   },

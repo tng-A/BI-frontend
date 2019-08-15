@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import { Bar, Line, Pie } from 'react-chartjs-2';
-import { NavLink } from 'react-router-dom';
-import './index.css';
+import React, { Component } from "react";
+import { Bar, Line, Pie } from "react-chartjs-2";
+import { connect } from "react-redux";
+import { getValueCenter } from "../../redux/actionCreators/ValueCenter";
+import { NavLink } from "react-router-dom";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "./index.css";
 
 import {
   Button,
@@ -20,18 +24,18 @@ import {
   Progress,
   Row,
   Table
-} from 'reactstrap';
-import ProgressBarCard from '../../components/progressBarCard';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-import kenya from '../../assets/img/brand/kenya.svg';
-import { SvgLoader, SvgProxy } from 'react-svgmt';
+} from "reactstrap";
+import ProgressBarCard from "../../components/progressBarCard";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
+import kenya from "../../assets/img/brand/kenya.svg";
+import { SvgLoader, SvgProxy } from "react-svgmt";
 
 // eslint-disable-next-line no-unused-vars
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
-const brandInfo = getStyle('--info');
-const brandDanger = getStyle('--danger');
+const brandPrimary = getStyle("--primary");
+const brandSuccess = getStyle("--success");
+const brandInfo = getStyle("--info");
+const brandDanger = getStyle("--danger");
 
 const options = {
   tooltips: {
@@ -42,27 +46,27 @@ const options = {
 };
 
 const bar = {
-  labels: ['January', 'February', 'March'],
+  labels: ["January", "February", "March"],
   datasets: [
     {
-      label: 'Revenue',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
+      label: "Revenue",
+      backgroundColor: "rgba(255,99,132,0.2)",
+      borderColor: "rgba(255,99,132,1)",
       borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
       data: [100, 59, 80]
     }
   ]
 };
 
 const pie = {
-  labels: ['Business', 'Legal', 'HR', 'Finance'],
+  labels: ["Business", "Legal", "HR", "Finance"],
   datasets: [
     {
       data: [300, 50, 100, 400],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997']
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"]
     }
   ]
 };
@@ -84,99 +88,99 @@ for (var i = 0; i <= elements; i++) {
 
 const Mdata = {
   labels: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ],
   datasets: [
     {
-      label: 'Merchant Business',
+      label: "Merchant Business",
       fill: false,
       lineTension: 0.3,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
       data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
     },
     {
-      label: 'Consumer Business',
+      label: "Consumer Business",
       fill: false,
       lineTension: 0.3,
-      backgroundColor: 'orange',
-      borderColor: 'orange',
-      borderCapStyle: 'butt',
+      backgroundColor: "orange",
+      borderColor: "orange",
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
       data: [45, 40, 55, 10, 45, 35, 70, 85, 120, 150, 180, 200]
     },
     {
-      label: 'Enterprise Integration',
+      label: "Enterprise Integration",
       fill: false,
       lineTension: 0.3,
-      backgroundColor: 'purple',
-      borderColor: 'purple',
-      borderCapStyle: 'butt',
+      backgroundColor: "purple",
+      borderColor: "purple",
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
       data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
     },
     {
-      label: 'Platform Business',
+      label: "Platform Business",
       fill: false,
       lineTension: 0.3,
-      backgroundColor: 'green',
-      borderColor: 'green',
-      borderCapStyle: 'butt',
+      backgroundColor: "green",
+      borderColor: "green",
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
@@ -190,8 +194,8 @@ const mainChartOpts = {
     enabled: false,
     custom: CustomTooltips,
     intersect: true,
-    mode: 'index',
-    position: 'nearest',
+    mode: "index",
+    position: "nearest",
     callbacks: {
       labelColor: function(tooltipItem, chart) {
         return {
@@ -247,6 +251,11 @@ class Dashboard extends Component {
     };
   }
 
+  componentDidMount() {
+    const { getValueCentersAction } = this.props;
+    getValueCentersAction();
+  }
+
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
@@ -259,16 +268,16 @@ class Dashboard extends Component {
     });
   }
 
-  determineCardColor(value) {
-    let className = '';
-    if (value <= 20) {
-      className = 'bg-danger';
-    } else if (value <= 40) {
-      className = 'bg-warning';
-    } else if (value <= 50) {
-      className = 'bg-info';
-    } else if (value > 79) {
-      className = 'bg-primary';
+  determineCardColor(percentage) {
+    let className = "";
+    if (percentage <= 20) {
+      className = "bg-danger";
+    } else if (percentage <= 40) {
+      className = "bg-warning";
+    } else if (percentage <= 50) {
+      className = "bg-info";
+    } else if (percentage > 79) {
+      className = "bg-primary";
     }
     return className;
   }
@@ -278,55 +287,30 @@ class Dashboard extends Component {
   );
 
   render() {
+    const { ValueCenters } = this.props;
+    console.log("ValueCenterswe", ValueCenters);
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="enterprise" className="nav-link">
-              <ProgressBarCard
-                metric={'Enteprise Integration'}
-                value={50.987}
-                percentage={50}
-                target={100}
-                className={this.determineCardColor(50)}
-              />
-            </NavLink>
-          </Col>
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="#" className="nav-link">
-              <ProgressBarCard
-                metric={'Merchant Business'}
-                value={30.987}
-                percentage={30}
-                target={100}
-                className={this.determineCardColor(30)}
-              />
-            </NavLink>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="#" className="nav-link">
-              <ProgressBarCard
-                metric={'Consumer Business'}
-                value={80.987}
-                percentage={80}
-                target={100}
-                className={this.determineCardColor(80)}
-              />
-            </NavLink>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <NavLink to="#" className="nav-link">
-              <ProgressBarCard
-                metric={'Platform Business'}
-                value={30.987}
-                percentage={30}
-                target={100}
-                className={this.determineCardColor(10)}
-              />
-            </NavLink>
-          </Col>
+          {ValueCenters.length === 0 ? (
+            <div style={{ marginLeft: 580 }}>
+              <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+            </div>
+          ) : (
+            ValueCenters.map(center => (
+              <Col xs="12" sm="6" lg="3" key={center.id}>
+                <NavLink to="enterprise" className="nav-link">
+                  <ProgressBarCard
+                    metric={center.name}
+                    value={50.987}
+                    percentage={center.percentage}
+                    target={center.target}
+                    className={this.determineCardColor(50)}
+                  />
+                </NavLink>
+              </Col>
+            ))
+          )}
         </Row>
         <Row>
           <Col xs="8" sm="7.3" lg="7.5">
@@ -362,7 +346,7 @@ class Dashboard extends Component {
                 </Row>
                 <div
                   className="chart-wrapper"
-                  style={{ height: 460 + 'px', marginTop: 40 + 'px' }}
+                  style={{ height: 460 + "px", marginTop: 40 + "px" }}
                 >
                   <Line data={Mdata} options={mainChartOpts} height={300} />
                 </div>
@@ -374,7 +358,7 @@ class Dashboard extends Component {
               <CardHeader id="activeT">Active centers</CardHeader>
               <div
                 className="svg-container"
-                style={{ marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em' }}
+                style={{ marginLeft: 1.2 + "em", marginRight: 1.2 + "em" }}
               >
                 <SvgLoader
                   path={kenya}
@@ -394,7 +378,7 @@ class Dashboard extends Component {
         </Row>
         <Row>
           <Col xs="12" sm="6" lg="6">
-            <Card style={{ height: 93 + '%' }}>
+            <Card style={{ height: 93 + "%" }}>
               <CardHeader>
                 Target Achievements Trends
                 <div className="card-header-actions">
@@ -423,7 +407,7 @@ class Dashboard extends Component {
                   <Bar
                     data={bar}
                     options={options}
-                    style={{ height: 80 + '%' }}
+                    style={{ height: 80 + "%" }}
                   />
                 </div>
               </CardBody>
@@ -902,4 +886,17 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export const mapStateToProps = state => {
+  return {
+    ValueCenters: state.getValueCentersReducer.valueCenters
+  };
+};
+
+const mapDispatchToProps = {
+  getValueCentersAction: getValueCenter
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);
