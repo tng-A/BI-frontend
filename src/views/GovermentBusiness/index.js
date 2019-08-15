@@ -34,18 +34,10 @@ for (var i = 0; i <= elements; i++) {
 
 const Mdata = {
   labels: [
-    'January',
     'February',
     'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    'December',
+    'January'
   ],
   datasets: [
     {
@@ -109,7 +101,7 @@ const Mdata = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 150]
+      data: [34, 12, 25, 30, 58, 15, 92, 77, 80, 100, 118, 1150]
     },
     {
       label: 'Product D',

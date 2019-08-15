@@ -3,15 +3,14 @@ import {
   watchIncomeStreamSagaAsync,
   WatchIncomeStreamSagaTarget
 } from "./IncomeStreams";
-import { watchGetValueCenterPass } from "./ValueCenter";
-import { watchGetTransactionsPass } from "./Transactions";
+import { watchGetValueCenterPass, watchFilteredValueCenterpass } from "./ValueCenter";
 
 function* rootSaga() {
   yield all([
     fork(watchIncomeStreamSagaAsync),
     fork(WatchIncomeStreamSagaTarget),
     fork(watchGetValueCenterPass),
-    fork(watchGetTransactionsPass)
+    fork(watchFilteredValueCenterpass)
   ]);
 }
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { resolveBaseUrl } from '.';
 
 const baseUrl = resolveBaseUrl();
-console.log("baseUrl",baseUrl);
+console.log('baseUrl', baseUrl);
 
 class IncomeStreamService {
   static postIncomeStream(productId, IncomeStreamData) {
@@ -18,6 +18,7 @@ class IncomeStreamService {
       TargetData
     );
   }
+
 }
 
 export default IncomeStreamService;
