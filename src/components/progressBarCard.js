@@ -1,31 +1,24 @@
 import React, { Component } from 'react';
 import {
-  ButtonDropdown,
-  ButtonGroup,
   Card,
   CardBody,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Progress
 } from 'reactstrap';
 
 class ProgressBarCard extends Component {
   render() {
     const {
-      cardId,
-      isOpen,
       metric,
       value,
       percentage,
       target,
-      className,
-      toggle
+      cardClassName, 
+      determineColor
     } = this.props;
+    console.log(cardClassName, '>>>>>')
     return (
       <Card
-        className={className ? ` text-white ${className}` : 'text-white'}
-        style={{ backgroundColor: 'black' }}
+        style={{ backgroundColor:`${cardClassName}` }}
       >
         <CardBody className="pb-0">
           <div className="text-value">{target}</div>
@@ -37,7 +30,7 @@ class ProgressBarCard extends Component {
           </strong>
           <Progress
             className="progress-xs mt-2"
-            color="success"
+            color={determineColor}
             value={value}
           />
         </div>

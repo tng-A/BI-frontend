@@ -15,7 +15,7 @@ body {
   border: 1px solid #23282c;
 }
 .card {
-  background-color: #3a4149 !important;
+  background-color: #3a4149;
   border: 1px solid #23282c !important;
 }
 .card-header {
@@ -39,18 +39,18 @@ body {
     color: blue;
   }
 }
-.bg-primary {
-  background-color: #20a8d8 !important;
-}
-.bg-info {
-  background-color: #63c2de !important;
-}
-.bg-warning {
-  background-color: #ffc107 !important;
-}
-.bg-danger {
-  background-color: #f86c6b !important;
-}
+// .bg-primary {
+//   background-color: #20a8d8 !important;
+// }
+// .bg-info {
+//   background-color: #63c2de !important;
+// }
+// .bg-warning {
+//   background-color: #ffc107 !important;
+// }
+// .bg-danger {
+//   background-color: #f86c6b !important;
+// }
 .table {
   .thead-light th {
     background-color: #3a4149 !important;
