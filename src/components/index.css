@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .divider {
+    border-left: 1px solid black;
+    height: 50px;
+  }
+  
+  p {
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+  }
+  
+  #trans {
+    color: white !important;
+    background-color: #3a4149 !important;
+    font-weight: bold !important;
+  }
+  
