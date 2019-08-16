@@ -1,18 +1,16 @@
 import React, { Component } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { connect } from "react-redux";
 import { getValueCenter } from "../../redux/actionCreators/ValueCenter";
 import { NavLink } from "react-router-dom";
 import Loader from "react-loader-spinner";
+import Pie from "../../components/PieChart";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./index.css";
 
 import {
-  Button,
   ButtonGroup,
-  ButtonToolbar,
   ButtonDropdown,
-  Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -27,15 +25,9 @@ import {
 } from "reactstrap";
 import ProgressBarCard from "../../components/progressBarCard";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
+import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
 import kenya from "../../assets/img/brand/kenya.svg";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-
-// eslint-disable-next-line no-unused-vars
-const brandPrimary = getStyle("--primary");
-const brandSuccess = getStyle("--success");
-const brandInfo = getStyle("--info");
-const brandDanger = getStyle("--danger");
 
 const options = {
   tooltips: {
@@ -56,17 +48,6 @@ const bar = {
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
       data: [100, 59, 80]
-    }
-  ]
-};
-
-const pie = {
-  labels: ["Business", "Legal", "HR", "Finance"],
-  datasets: [
-    {
-      data: [300, 50, 100, 400],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#20c997"]
     }
   ]
 };
@@ -271,13 +252,13 @@ class Dashboard extends Component {
   determineCardColor(percentage) {
     let className = "";
     if (percentage <= 20) {
-      className = "bg-danger";
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "success";
     }
     return className;
   }
@@ -289,6 +270,7 @@ class Dashboard extends Component {
   render() {
     const { ValueCenters } = this.props;
     console.log("ValueCenterswe", ValueCenters);
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -302,10 +284,12 @@ class Dashboard extends Component {
                 <NavLink to="enterprise" className="nav-link">
                   <ProgressBarCard
                     metric={center.name}
-                    value={50.987}
+                    value={center.percentage}
                     percentage={center.percentage}
                     target={center.target}
-                    className={this.determineCardColor(50)}
+                    cardClassName={center.color}
+                    style={{ backgroundColor: "red !important" }}
+                    determineColor={this.determineCardColor(center.percentage)}
                   />
                 </NavLink>
               </Col>
@@ -415,36 +399,15 @@ class Dashboard extends Component {
           </Col>
 
           <Col xs="12" sm="6" lg="6">
-            <Card>
-              <CardHeader>
-                Department Analytics
-                <div className="card-header-actions">
-                  <ButtonGroup className="float-right">
-                    <ButtonDropdown
-                      id="card3"
-                      isOpen={this.state.card3}
-                      toggle={() => {
-                        this.setState({ card3: !this.state.card3 });
-                      }}
-                    >
-                      <DropdownToggle
-                        caret
-                        className="p-0"
-                        color="transparent"
-                      />
-                      <DropdownMenu right>
-                        <DropdownItem>Select Period</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-wrapper">
-                  <Pie data={pie} />
-                </div>
-              </CardBody>
-            </Card>
+            <Pie
+              title={"Value Center"}
+              id={"card3"}
+              isOpen={this.state.card3}
+              toggle={() => {
+                this.setState({ card3: !this.state.card3 });
+              }}
+              ValueCenters={ValueCenters}
+            />
           </Col>
         </Row>
 
