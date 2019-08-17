@@ -12,12 +12,8 @@ class ProgressBarCard extends Component {
       value,
       percentage,
       target,
-<<<<<<< HEAD
       cardClassName, 
       determineColor
-=======
-      className,
->>>>>>> feat(consume-chart-data); consume chart-data
     } = this.props;
     console.log(cardClassName, '>>>>>')
     return (

@@ -8,8 +8,8 @@ class valueCenterService {
     return axios.get(`${baseUrl}/api/value_centre/1/`);
   }
 
-  static getFilteredByYear(type, year) {
-    return axios.get(`${baseUrl}/api/value_centre/1/${type}/${year}`);
+  static getFilteredByYear(periodType, year) {
+    return axios.get(`${baseUrl}/api/value_centre/1/${periodType}/${year}`);
   }
 }
 

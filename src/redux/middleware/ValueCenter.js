@@ -26,8 +26,8 @@ export function* watchGetValueCenterPass() {
 
 export function* getFilteredValueCentersAsync(action) {
   try {
-    const {year, type} = action
-    const response = yield call(valueCenterService.getFilteredByYear, year, type);
+    const {year, periodType} = action
+    const response = yield call(valueCenterService.getFilteredByYear, periodType, year);
     console.log("response", response);
     yield put(getFilteredValueCenterSuccess({ ...response }));
   } catch (error) {

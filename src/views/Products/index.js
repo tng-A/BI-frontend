@@ -1,5 +1,16 @@
-import React, { Component } from "react";
-import {  Line } from "react-chartjs-2";
+import React, { Component } from 'react';
+import LineGraph from '../../components/lineGraph';
+import { connect } from 'react-redux';
+import {
+  getValueCenter,
+  getFilteredValueCenter
+} from '../../redux/actionCreators/ValueCenter';
+import { NavLink } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+import Pie from '../../components/PieChart';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import ReUseTable from '../../components/Table';
+
 import {
   ButtonGroup,
   ButtonDropdown,
@@ -8,12 +19,16 @@ import {
   DropdownToggle,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   Col,
+  Progress,
   Row,
-} from "reactstrap";
-import ProgressBarCard from "../../components/progressBarCard";
-import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+  Table
+} from 'reactstrap';
+import ProgressBarCard from '../../components/progressBarCard';
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import kenya from '../../assets/img/brand/kenya.svg';
+import { SvgLoader, SvgProxy } from 'react-svgmt';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -35,8 +50,8 @@ const mainChartOpts = {
     enabled: false,
     custom: CustomTooltips,
     intersect: true,
-    mode: "index",
-    position: "nearest",
+    mode: 'index',
+    position: 'nearest',
     callbacks: {
       labelColor: function(tooltipItem, chart) {
         return {
@@ -48,13 +63,13 @@ const mainChartOpts = {
   },
   maintainAspectRatio: false,
   legend: {
-    display: false
+    display: true
   },
   scales: {
     xAxes: [
       {
         gridLines: {
-          drawOnChartArea: false
+          drawOnChartArea: true
         }
       }
     ],
@@ -64,7 +79,7 @@ const mainChartOpts = {
           beginAtZero: true,
           maxTicksLimit: 5,
           stepSize: Math.ceil(250 / 5),
-          max: 250
+          max: 1000
         }
       }
     ]
@@ -72,53 +87,14 @@ const mainChartOpts = {
   elements: {
     point: {
       radius: 0,
-      hitRadius: 10,
+      hitRadius: 5,
       hoverRadius: 4,
-      hoverBorderWidth: 3
+      hoverBorderWidth: 1
     }
   }
 };
-const Mdata = {
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  datasets: [
-    {
-      label: "Product a",
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
-      borderCapStyle: "butt",
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: "miter",
-      pointBorderColor: "rgba(75,192,192,1)",
-      pointBackgroundColor: "#fff",
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "rgba(220,220,220,1)",
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
-    }
-  ]
-};
 
-class Product extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props);
 
@@ -129,6 +105,16 @@ class Product extends Component {
       dropdownOpen: false,
       radioSelected: 2
     };
+  }
+
+  componentDidMount() {
+    const { getValueCentersAction } = this.props;
+    getValueCentersAction();
+  }
+
+  handleTypeToggle() {
+    const { getFilteredValueCenter } = this.props;
+    getFilteredValueCenter();
   }
 
   toggle() {
@@ -143,16 +129,16 @@ class Product extends Component {
     });
   }
 
-  determineCardColor(value) {
-    let className = "";
-    if (value <= 20) {
-      className = "bg-danger";
-    } else if (value <= 40) {
-      className = "bg-warning";
-    } else if (value <= 60) {
-      className = "bg-info";
-    } else if (value <= 100) {
-      className = "bg-primary";
+  determineCardColor(percentage) {
+    let className = '';
+    if (percentage <= 20) {
+      className = 'bg-danger';
+    } else if (percentage <= 40) {
+      className = 'bg-warning';
+    } else if (percentage <= 50) {
+      className = 'bg-info';
+    } else if (percentage > 79) {
+      className = 'bg-primary';
     }
     return className;
   }
@@ -162,108 +148,81 @@ class Product extends Component {
   );
 
   render() {
+    const { ValueCenters } = this.props;
+    console.log('ValueCenterswe', ValueCenters);
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card1"}
+          {ValueCenters.length === 0 ? (
+            <div style={{ marginLeft: 580 }}>
+              <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+            </div>
+          ) : (
+            ValueCenters.map(center => (
+              <Col xs="12" sm="6" lg="3" key={center.id}>
+                <NavLink to="enterprise" className="nav-link">
+                  <ProgressBarCard
+                    metric={center.name}
+                    value={center.total_okr}
+                    percentage={center.percentage}
+                    target={center.total_target}
+                    cardClassName={center.color}
+                    style={{ backgroundColor: 'red !important' }}
+                    determineColor={this.determineCardColor(center.percentage)}
+                  />
+                </NavLink>
+              </Col>
+            ))
+          )}
+        </Row>
+        <Row>
+          <Col xs="12" sm="12" lg="12">
+            <LineGraph
+              mainChartOpts={mainChartOpts}
+              id={'card1'}
+              isOpen={this.state.card1}
               toggle={() => {
                 this.setState({ card1: !this.state.card1 });
               }}
-              isOpen={this.state.card1}
-              metric={"Embu"}
-              value={30.987}
-              percentage={100}
-              target={100}
-              className={this.determineCardColor(100)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card2"}
-              toggle={() => {
-                this.setState({ card2: !this.state.card2 });
-              }}
-              isOpen={this.state.card2}
-              metric={"Nairobi"}
-              value={80.987}
-              percentage={80}
-              target={100}
-              className={this.determineCardColor(56)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card3"}
-              toggle={() => {
-                this.setState({ card3: !this.state.card3 });
-              }}
-              isOpen={this.state.card4}
-              metric={"Meru"}
-              value={50.987}
-              percentage={50}
-              target={100}
-              className={this.determineCardColor(35)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card4"}
-              toggle={() => {
-                this.setState({ card4: !this.state.card4 });
-              }}
-              isOpen={this.state.card5}
-              metric={"Kiambu"}
-              value={30.987}
-              percentage={30}
-              target={100}
-              className={this.determineCardColor(10)}
+              ValueCenters={ValueCenters}
+              typeToggle={this.handleTypeToggle}
             />
           </Col>
         </Row>
         <Row>
-          <Col xs="12" sm="12" lg="12">
-            <Card>
-              <CardBody>
-                <Row>
-                  <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
-                  </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonGroup className="float-right">
-                      <ButtonDropdown
-                        id="card1"
-                        isOpen={this.state.card1}
-                        toggle={() => {
-                          this.setState({ card1: !this.state.card1 });
-                        }}
-                      >
-                        <DropdownToggle
-                          caret
-                          className="p-0"
-                          color="transparent"
-                        >
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                          <DropdownItem>Date picker</DropdownItem>
-                        </DropdownMenu>
-                      </ButtonDropdown>
-                    </ButtonGroup>
-                  </Col>
-                </Row>
-                <div
-                  className="chart-wrapper"
-                  style={{ height: 460 + "px", marginTop: 40 + "px" }}
+          <Col xs="12" sm="6" lg="6">
+            <Card style={{ height: 580 }}>
+              <CardHeader id="activeT">Active centers</CardHeader>
+              <div
+                className="svg-container"
+                style={{ marginLeft: 1.2 + 'em', marginRight: 1.2 + 'em' }}
+              >
+                <SvgLoader
+                  path={kenya}
+                  className="svg-content"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="3 3 600 600"
                 >
-                  <Line data={Mdata} options={mainChartOpts} height={300} />
-                </div>
-              </CardBody>
+                  <SvgProxy selector="path" fill="grey" />
+                  <SvgProxy
+                    selector="#KE-13,#KE-12,#KE-26,#KE-14"
+                    fill="#20a8d8"
+                  />
+                </SvgLoader>
+              </div>
             </Card>
+          </Col>
+
+          <Col xs="12" sm="6" lg="6">
+            <Pie
+              title={'Value Center'}
+              id={'card3'}
+              isOpen={this.state.card3}
+              toggle={() => {
+                this.setState({ card3: !this.state.card3 });
+              }}
+              ValueCenters={ValueCenters}
+            />
           </Col>
         </Row>
       </div>
@@ -271,4 +230,19 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export const mapStateToProps = state => {
+  return {
+    ValueCenters: state.getValueCentersReducer.valueCenters,
+    getFilteredValueCenter: getFilteredValueCenter.valueCenters
+  };
+};
+
+const mapDispatchToProps = {
+  getValueCentersAction: getValueCenter,
+  getFilteredValueCenter: getFilteredValueCenter
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

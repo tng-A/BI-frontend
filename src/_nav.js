@@ -18,6 +18,7 @@ export default {
     },
     {
       name: 'PRODUCTS',
+      url:'/product',
       class:"nav-title", 
       icon: 'icon-bag',  
     },

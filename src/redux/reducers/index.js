@@ -7,6 +7,6 @@ const rootReducer = combineReducers({
   incomeStream,
   getValueCentersReducer,
   getTransactionsReducer
-});
+})
 
 export default rootReducer;
