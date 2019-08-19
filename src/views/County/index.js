@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { NavLink } from 'react-router-dom';
 
 import {
-  Button,
   ButtonGroup,
-  ButtonToolbar,
   ButtonDropdown,
-  Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -22,49 +19,7 @@ import {
 } from 'reactstrap';
 import ProgressBarCard from '../../components/progressBarCard';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-import kenya from '../../assets/img/brand/kenya.svg';
-import { SvgLoader, SvgProxy } from 'react-svgmt';
 
-// eslint-disable-next-line no-unused-vars
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
-const brandInfo = getStyle('--info');
-const brandDanger = getStyle('--danger');
-
-const options = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  maintainAspectRatio: false
-};
-
-const bar = {
-  labels: ['January', 'February', 'March'],
-  datasets: [
-    {
-      label: 'Revenue',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
-      data: [100, 59, 80]
-    }
-  ]
-};
-
-const pie = {
-  labels: ['Business', 'Legal', 'HR', 'Finance'],
-  datasets: [
-    {
-      data: [300, 50, 100, 400],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#20c997']
-    }
-  ]
-};
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
