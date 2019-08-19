@@ -25,7 +25,6 @@ import {
 } from "reactstrap";
 import ProgressBarCard from "../../components/progressBarCard";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
 import kenya from "../../assets/img/brand/kenya.svg";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 

@@ -2,31 +2,13 @@ import React, { Component, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
 import { addDays, format } from "date-fns";
-import Targetmodal from "./../../components/Targetmodal";
+// import Targetmodal from "./../../components/Targetmodal";
 
 import {
-  Container,
-  Row,
-  Col,
-  ButtonGroup,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownItem,
-  DropdownMenu,
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText
+  Container
 } from "reactstrap";
 
 import {
-  AppAside,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -42,7 +24,6 @@ import navigation from "../../_nav";
 // routes config
 import routes from "../../routes";
 
-const DefaultAside = React.lazy(() => import("./DefaultAside"));
 const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
 const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
 
@@ -64,7 +45,6 @@ class DefaultLayout extends Component {
   }
 
   openModal() {
-    console.log('>>>>>>>>>>>>')
     this.setState({
       modal: !this.state.modal
     });
@@ -118,7 +98,7 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router} />
-            <Row>
+            {/* <Row>
               <Col sm="8" lg="11" className="d-none d-sm-inline-block">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown
@@ -149,7 +129,7 @@ class DefaultLayout extends Component {
                   </ButtonDropdown>
                 </ButtonGroup>
               </Col>
-            </Row>
+            </Row> */}
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>

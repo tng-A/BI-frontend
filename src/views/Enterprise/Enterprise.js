@@ -4,11 +4,8 @@ import { NavLink } from 'react-router-dom';
 import './index.css';
 
 import {
-  Button,
   ButtonGroup,
-  ButtonToolbar,
   ButtonDropdown,
-  Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -17,21 +14,10 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Progress,
   Row,
-  Table
 } from 'reactstrap';
 import ProgressBarCard from '../../components/progressBarCard';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-import kenya from '../../assets/img/brand/kenya.svg';
-import { SvgLoader, SvgProxy } from 'react-svgmt';
-
-// eslint-disable-next-line no-unused-vars
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
-const brandInfo = getStyle('--info');
-const brandDanger = getStyle('--danger');
 
 const options = {
   tooltips: {
