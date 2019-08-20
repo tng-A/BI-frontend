@@ -18,7 +18,7 @@ class ProgressBarCard extends Component {
     console.log(cardClassName, '>>>>>')
     return (
       <Card
-        style={{ backgroundColor:`${cardClassName}` }}
+        style={{ backgroundColor:`${cardClassName}`,color:"black",fontWeight:"bold" }}
       >
         <CardBody className="pb-0">
           <div className="text-value">{target}</div>

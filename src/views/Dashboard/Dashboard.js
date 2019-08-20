@@ -7,6 +7,7 @@ import Loader from "react-loader-spinner";
 import Pie from "../../components/PieChart";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./index.css";
+import ReUseTable from "../../components/Table";
 
 import {
   ButtonGroup,
@@ -283,9 +284,9 @@ class Dashboard extends Component {
                 <NavLink to="enterprise" className="nav-link">
                   <ProgressBarCard
                     metric={center.name}
-                    value={center.percentage}
+                    value={center.total_okr}
                     percentage={center.percentage}
-                    target={center.target}
+                    target={center.total_target}
                     cardClassName={center.color}
                     style={{ backgroundColor: "red !important" }}
                     determineColor={this.determineCardColor(center.percentage)}
@@ -412,218 +413,20 @@ class Dashboard extends Component {
 
         <Row>
           <Col>
-            <Card>
-              <CardHeader>
-                Product Analysis
-                <ButtonGroup className="float-right">
-                  <ButtonDropdown
-                    id="card4"
-                    isOpen={this.state.card4}
-                    toggle={() => {
-                      this.setState({ card4: !this.state.card4 });
-                    }}
-                  >
-                    <DropdownToggle caret className="p-0" color="transparent" />
-                    <DropdownMenu right>
-                      <DropdownItem>Select Period</DropdownItem>
-                    </DropdownMenu>
-                  </ButtonDropdown>
-                </ButtonGroup>
-              </CardHeader>
-              <CardBody>
-                <br />
-                <Table
-                  hover
-                  responsive
-                  className="table-outline mb-0 d-none d-sm-table"
-                >
-                  <thead className="thead-light">
-                    <tr>
-                      <th>Product</th>
-                      <th>Perfomance</th>
-                      <th className="text-center">Income Generated</th>
-                      <th>Activity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div>Product a</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>50%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="success"
-                          value="50"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 12,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Product f</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>24%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="24"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 1,000,050 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Product a</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>50%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="success"
-                          value="50"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 12,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>10 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Product d</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>35%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="warning"
-                          value="35"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 1,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>5 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Product b</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>10%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="10"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 1,000,456 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>5 Years</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div>Product c</div>
-                      </td>
-                      <td>
-                        <div className="clearfix">
-                          <div className="float-left">
-                            <strong>46%</strong>
-                          </div>
-                          <div className="float-right">
-                            <small className="text-muted">Target: 6666</small>
-                          </div>
-                        </div>
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="46"
-                        />
-                      </td>
-                      <td className="text-center">
-                        <strong>Ksh: 2,000,000 million</strong>
-                      </td>
-                      <td>
-                        <div className="small text-muted">
-                          Duration of Operation
-                        </div>
-                        <strong>5 Years</strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
+            <ReUseTable
+              title={"System Perfomance"}
+              id={"card4"}
+              isOpen={this.state.card4}
+              toggle={() => {
+                this.setState({ card4: !this.state.card4 });
+              }}
+              column1={"name"}
+              column2={"timestamp"}
+              column3={"Transaction ID"}
+              column4={"Status"}
+              column5={"Channel"}
+              ValueCenters={ValueCenters}
+            />
           </Col>
         </Row>
 
