@@ -15,7 +15,6 @@ class ProgressBarCard extends Component {
       cardClassName, 
       determineColor
     } = this.props;
-    console.log(cardClassName, '>>>>>')
     return (
       <Card
         style={{ backgroundColor:`${cardClassName}`,color:"black",fontWeight:"bold" }}

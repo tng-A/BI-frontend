@@ -6,7 +6,10 @@ import {
   CreateIncomeFailure,
   CreateIncomeStreamTarget,
   CreateIncomeStreamTargetSuccess,
-  CreateIncomeStreamTargetFailure
+  CreateIncomeStreamTargetFailure,
+  getFilteredIncomeStream, 
+  getFilteredIncomeStreamSuccess, 
+  getFilteredIncomeStreamFailure
 } from "../actionCreators/IncomeStreams";
 
 export function* watchIncomeStreamSagaAsync() {
@@ -43,4 +46,18 @@ export function* WatchIncomeStreamSagaTarget() {
     CreateIncomeStreamTarget().type,
     IncomeStreamTargetSagaAsync
   );
+}
+
+export function* getFilteredIncomeStreamAsync(action) {
+  try {
+    const {year, periodType} = action
+    const response = yield call(IncomeStreamService.getFilteredIncomeStream, periodType, year);
+    yield put(getFilteredIncomeStreamSuccess(response.data));
+  } catch (error) {
+    yield put(getFilteredIncomeStreamFailure(error));
+  }
+}
+
+export function* watchFilteredIncomestreampass() {
+  yield takeLatest(getFilteredIncomeStream().type, getFilteredIncomeStreamAsync);
 }

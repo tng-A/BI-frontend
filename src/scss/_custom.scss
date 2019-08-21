@@ -60,7 +60,14 @@ body {
   th,
   td {
     border-top: 1px solid #23282c;
+   color: white;
   }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  
+  }
+
+
   color: white;
   border-right: 1px solid #23282c !important;
 }

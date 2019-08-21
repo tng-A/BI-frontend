@@ -13,7 +13,6 @@ import valueCenterService from "../../services/ValueCenter";
 export function* getValueCentersAsync() {
   try {
     const response = yield call(valueCenterService.getIncomeStream);
-    console.log("response", response);
     yield put(getValueCenterSuccess({ ...response }));
   } catch (error) {
     yield put(getValueCenterfailure(error));
@@ -28,7 +27,6 @@ export function* getFilteredValueCentersAsync(action) {
   try {
     const {year, periodType} = action
     const response = yield call(valueCenterService.getFilteredByYear, periodType, year);
-    console.log("response", response);
     yield put(getFilteredValueCenterSuccess({ ...response }));
   } catch (error) {
     yield put(getFilteredValueCenterFailure(error));

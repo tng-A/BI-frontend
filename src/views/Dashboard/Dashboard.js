@@ -150,7 +150,6 @@ class Dashboard extends Component {
 
   render() {
     const { ValueCenters } = this.props;
-    console.log('ValueCenterswe', ValueCenters);
     return (
       <div className="animated fadeIn">
         <Row>

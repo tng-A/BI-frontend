@@ -18,7 +18,6 @@ import "react-date-range/dist/theme/default.css";
 class Targetmodal extends Component {
   render() {
     const {openModal, modal, className, handleRangeChange, dateRangePicker:{ selection } } = this.props
-    console.log(this.props)
     return (
       <Fragment>
         <Modal
