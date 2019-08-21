@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { resolveBaseUrl } from '.';
+import axios from "axios";
+import { resolveBaseUrl } from ".";
 
 const baseUrl = resolveBaseUrl();
 
@@ -8,8 +8,9 @@ class valueCenterService {
     return axios.get(`${baseUrl}/api/value_centre/1/`);
   }
 
-  static getFilteredByYear(periodType, year) {
-    return axios.get(`${baseUrl}/api/value_centre/1/${periodType}/${year}`);
+  static getFilteredByYear(payload) {
+    const { period, year } = payload;
+    return axios.get(`${baseUrl}/api//income_stream/{revenue_stream_id}/${period}/${year}`);
   }
 }
 

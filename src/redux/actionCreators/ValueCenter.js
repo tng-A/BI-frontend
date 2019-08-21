@@ -26,11 +26,10 @@ export const getValueCenterfailure = error => ({
 });
 
 
-export const getFilteredValueCenter = (year, periodType) => {
+export const getFilteredValueCenter = (payload) => {
   return {
     type: GET_FILTERED_VALUE_CENTER, 
-    year, 
-    periodType
+    payload
   };
 };
 

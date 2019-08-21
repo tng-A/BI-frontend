@@ -3,10 +3,9 @@ import {
   getValueCenterSuccess,
   getValueCenterfailure,
   getValueCenter,
-  getFilteredValueCenter, 
+  getFilteredValueCenter,
   getFilteredValueCenterSuccess,
   getFilteredValueCenterFailure
-
 } from "../actionCreators/ValueCenter";
 import valueCenterService from "../../services/ValueCenter";
 
@@ -23,10 +22,9 @@ export function* watchGetValueCenterPass() {
   yield takeEvery(getValueCenter().type, getValueCentersAsync);
 }
 
-export function* getFilteredValueCentersAsync(action) {
+export function* getFilteredValueCentersAsync({ payload }) {
   try {
-    const {year, periodType} = action
-    const response = yield call(valueCenterService.getFilteredByYear, periodType, year);
+    const response = yield call(valueCenterService.getFilteredByYear, payload);
     yield put(getFilteredValueCenterSuccess({ ...response }));
   } catch (error) {
     yield put(getFilteredValueCenterFailure(error));
