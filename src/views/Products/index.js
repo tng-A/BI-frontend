@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import LineGraph from '../../components/lineGraph';
 import { connect } from 'react-redux';
-import { getFilteredIncomeStream } from '../../redux/actionCreators/IncomeStreams';
 import { getProducts } from '../../redux/actionCreators/Products';
+import {getFilteredIncomeStream} from '../../redux/actionCreators/IncomeStreams';
+import { NavLink } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Card, CardHeader, Col, Row } from 'reactstrap';
+import ProgressBarCard from '../../components/progressBarCard';
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import kenya from '../../assets/img/brand/kenya.svg';
 import { SvgLoader, SvgProxy } from 'react-svgmt';
 import TargetAchievement from '../../components/TargetAchievement'
+
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -39,11 +43,17 @@ class Products extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     const { getProducts, getFilteredIncomeStream } = this.props;
-    const monthly = 'monthly';
-    const year = 2019;
-    getFilteredIncomeStream(monthly, year);
+    const monthly ='monthly'
+    const year = 2019
+    getFilteredIncomeStream(monthly, year)
   }
+
+  // handleTypeToggle() {
+  //   const { getFilteredValueCenter } = this.props;
+  //   getFilteredValueCenter();
+  // }
 
   toggle() {
     this.setState({
@@ -112,6 +122,7 @@ const mapDispatchToProps = {
   getProducts: getProducts,
   getFilteredIncomeStream: getFilteredIncomeStream
 };
+
 
 export default connect(
   mapStateToProps,

@@ -38,7 +38,6 @@ const incomeStream = (state = initialState, action) => {
     case GET_FILTERED_INCOME_STREAM: 
       return { ...state, loading: true };
     case GET_FILTERED_INCOME_STREAM_SUCCESS:
-
       return { ...state, incomeStreams: action.incomeStream, loading: false, };
     case GET_FILTERED_INCOME_STREAM_FAILURE:
       return { ...state,  incomeStreams:null, loading: false,};
