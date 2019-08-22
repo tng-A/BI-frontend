@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
 import LineGraph from '../../components/lineGraph';
 import { connect } from 'react-redux';
-import { getFilteredIncomeStream } from '../../redux/actionCreators/IncomeStreams';
+import {
+  getFilteredIncomeStream,
+  getPeriods,
+  getMetrics,
+  CreateIncomeStreamTarget
+} from '../../redux/actionCreators/IncomeStreams';
 import { getProducts } from '../../redux/actionCreators/Products';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { Card, CardHeader, Col, Row } from 'reactstrap';
-import kenya from '../../assets/img/brand/kenya.svg';
-import { SvgLoader, SvgProxy } from 'react-svgmt';
-import TargetAchievement from '../../components/TargetAchievement'
+import {
+  Card,
+  Col,
+  Row,
+  ButtonDropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle
+} from 'reactstrap';
+import TargetAchievement from '../../components/TargetAchievement';
+import Widget02 from "../Widgets/Widget02";
+import Targetmodal from "./../../components/Targetmodal";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -28,26 +41,84 @@ for (var i = 0; i <= elements; i++) {
 class Products extends Component {
   constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
-
     this.state = {
       dropdownOpen: false,
-      radioSelected: 2
+      dropdownOpen2: false,
+      dropdownOpen3: false,
+      radioSelected: 2,
+      period: 'monthly',
+      year: '2019',
+      modal: false,
+      amount: '',
+      metric: '',
+      description: '',
+      IncomeStream: '',
+      period_name: '',
+      period_type: '',
+      period_year: ''
     };
+
+    this.toggle = this.toggle.bind(this);
+    this.toggle2 = this.toggle2.bind(this);
+    this.toggle3 = this.toggle3.bind(this);
+    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.FormhandleChange = this.FormhandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    const { getProducts, getFilteredIncomeStream } = this.props;
-    const monthly = 'monthly';
-    const year = 2019;
-    getFilteredIncomeStream(monthly, year);
+    const {
+      getFilteredIncomeStream,
+      getPeriodsAction,
+      getMetricsActions
+    } = this.props;
+    // setInterval(function(){})
+    getPeriodsAction();
+    getMetricsActions();
+    getFilteredIncomeStream({ ...this.state });
+  }
+
+  openModal() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  closeModal;
+
+  FormhandleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleChange(e) {
+    this.setState(
+      {
+        period: e.currentTarget.textContent
+      },
+      () => {
+        const { getFilteredIncomeStream } = this.props;
+        getFilteredIncomeStream({ ...this.state });
+      }
+    );
   }
 
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  toggle2() {
+    this.setState({
+      dropdownOpen2: !this.state.dropdownOpen2
+    });
+  }
+
+  toggle3() {
+    this.setState({
+      dropdownOpen3: !this.state.dropdownOpen3
     });
   }
 
@@ -75,11 +146,152 @@ class Products extends Component {
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
 
+  handleSubmit = () => {
+    const { CreateIncomeStreamTargetActions } = this.props;
+    CreateIncomeStreamTargetActions(
+      { ...this.state },
+      this.setState({ modal: false })
+    );
+  };
+
+  getTransactionsCount = incomeStreams => {
+    let raw_transactions = [];
+    let total_value;
+    incomeStreams.forEach(income => {
+      raw_transactions.push(income.number_of_transactions);
+      total_value = raw_transactions.reduce((a, b) => a + b, 0);
+    });
+    return total_value;
+  };
+
+  getTransactionValue = incomeStreams => {
+    let raw_total = [];
+    let total_amount;
+    incomeStreams.forEach(income => {
+      raw_total.push(income.transactions_value);
+      total_amount = raw_total.reduce((a, b) => a + b, 0);
+    });
+    return total_amount;
+  };
+
   render() {
-    const { incomeStreams } = this.props;
+    const { incomeStreams, periods, loading, metrics } = this.props;
+    const {period} = this.state
+    console.log(period, '>>>>>')
     return (
       <div className="animated fadeIn">
+        <Row className="float-right">
+          <Col xs="4">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+        <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1"
+                id={'card1'}
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggle}
+              >
+                <DropdownToggle caret color="primary">
+                  Period Type
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+          <Col xs="3">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+        <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1 text-muted"
+                disabled
+                id={'card2'}
+                // isOpen={this.state.dropdownOpen2}
+                // toggle={this.toggle2}
+              >
+                <DropdownToggle caret color="primary" disabled>
+                  Year
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Semi-annually</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+          <Col xs="3">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+        <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1"
+                id={'card3'}
+                isOpen={this.state.dropdownOpen3}
+                toggle={this.toggle3}
+              >
+                <DropdownToggle caret color="primary">
+                  Target
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.openModal}>Set Target</div>
+                    <Targetmodal
+                      modal={this.state.modal}
+                      openModal={this.openModal}
+                      value={this.state.target}
+                      FormhandleChange={this.FormhandleChange}
+                      incomeStreams={incomeStreams}
+                      periods={periods}
+                      metrics={metrics}
+                      handleSubmit={this.handleSubmit}
+                    />
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+        </Row>
         <Row />
+        <Row>
+          <Col xs="12" sm="6" lg="4">
+            <Widget02
+              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
+            />
+          </Col>
+          <Col xs="12" sm="6" lg="4">
+            <Widget02
+              header={
+                loading ? 'Ksh:' + 0 : this.getTransactionValue(incomeStreams)
+              }
+              mainText="Transaction Value(In KSH)"
+              icon="fa fa-money"
+              color="info"
+            />
+          </Col>
+        </Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
             <LineGraph
@@ -90,12 +302,11 @@ class Products extends Component {
               }}
               incomeStreams={incomeStreams}
               title={'IncomeStreams Performance'}
+              period={period}
             />
           </Col>
         </Row>
-          <TargetAchievement
-          incomeStreams={incomeStreams}
-          />
+        <TargetAchievement incomeStreams={incomeStreams} />
       </div>
     );
   }
@@ -104,13 +315,19 @@ class Products extends Component {
 export const mapStateToProps = state => {
   return {
     products: state.getProducts.products,
-    incomeStreams: state.incomeStream.incomeStreams
+    incomeStreams: state.incomeStream.incomeStreams,
+    loading: state.incomeStream.loading,
+    periods: state.incomeStream.periods,
+    metrics: state.incomeStream.metrics
   };
 };
 
 const mapDispatchToProps = {
   getProducts: getProducts,
-  getFilteredIncomeStream: getFilteredIncomeStream
+  getFilteredIncomeStream: getFilteredIncomeStream,
+  getPeriodsAction: getPeriods,
+  getMetricsActions: getMetrics,
+  CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
 };
 
 export default connect(

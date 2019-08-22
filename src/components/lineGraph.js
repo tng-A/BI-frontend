@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Row,
   Card,
   CardBody,
   Col,
   CardTitle,
+  Row
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
@@ -106,7 +106,7 @@ class LineGraph extends Component {
         }
       }
     };
-    const { incomeStreams } = this.props;
+    const { incomeStreams, period } = this.props;
     let datasetsBig = [];
     let datasetSmall = [];
     let labels = [];
@@ -210,7 +210,8 @@ class LineGraph extends Component {
       });
     }
 
-    labels = [
+
+   let monthlyLabels =  [
       'January',
       'February',
       'March',
@@ -223,8 +224,15 @@ class LineGraph extends Component {
       'October',
       'November',
       'December'
-    ].slice(0, lenOfLabels);
-
+    ]
+    let quartelyLabels = ['Q1', 'Q2', 'Q3', 'Q4']
+    if (period === 'Quarterly') {
+      labels = [...quartelyLabels].slice(0, lenOfLabels)
+    }else{
+      labels = [...monthlyLabels].slice(0, lenOfLabels)
+    }
+    console.log(period)
+    labels.slice(0, lenOfLabels);
     const BigMdata = {
       labels: labels,
       datasets: datasetsBig

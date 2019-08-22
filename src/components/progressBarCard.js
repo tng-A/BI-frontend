@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
-import {
-  Card,
-  CardBody,
-  Progress
-} from 'reactstrap';
+import React, { Component } from "react";
+import { Card, CardBody, Progress } from "reactstrap";
 
 class ProgressBarCard extends Component {
   render() {
@@ -12,19 +8,23 @@ class ProgressBarCard extends Component {
       value,
       percentage,
       target,
-      cardClassName, 
+      cardClassName,
       determineColor
     } = this.props;
     return (
       <Card
-        style={{ backgroundColor:`${cardClassName}`,color:"black",fontWeight:"bold" }}
+        style={{
+          backgroundColor: `${cardClassName}`,
+          color: "black",
+          fontWeight: "bold"
+        }}
       >
         <CardBody className="pb-0">
           <div className="text-value">{target}</div>
           <div>{metric}</div>
         </CardBody>
-        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-          <strong style={{ color: 'white' }}>
+        <div className="chart-wrapper mx-3" style={{ height: "70px" }}>
+          <strong style={{ color: "white" }}>
             {value} ({percentage}%)
           </strong>
           <Progress
