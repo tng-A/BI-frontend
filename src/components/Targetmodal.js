@@ -8,17 +8,25 @@ import {
   FormGroup,
   Label,
   Input,
-  Col, 
-  Button
+  Col,
+  Button,
+  Row
 } from "reactstrap";
-import { DateRangePicker } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
 
 class Targetmodal extends Component {
   render() {
-    const {openModal, modal, className, handleRangeChange, dateRangePicker:{ selection } } = this.props
-    console.log(this.props)
+    const {
+      openModal,
+      modal,
+      className,
+      value,
+      FormhandleChange,
+      incomeStreams,
+      periods,
+      metrics,
+      handleSubmit
+    } = this.props;
+
     return (
       <Fragment>
         <Modal
@@ -26,9 +34,7 @@ class Targetmodal extends Component {
           toggle={openModal}
           className={"modal-lg " + className}
         >
-          <ModalHeader toggle={openModal}>
-            Target Entry Point
-          </ModalHeader>
+          <ModalHeader toggle={openModal}>Target Entry Point</ModalHeader>
           <ModalBody>
             <Form>
               <FormGroup row>
@@ -38,9 +44,11 @@ class Targetmodal extends Component {
                 <Col sm={10}>
                   <Input
                     type="text"
-                    name="Tatargetrget"
+                    name="amount"
                     id="target"
                     placeholder="Enter your Target"
+                    value={value}
+                    onChange={FormhandleChange}
                   />
                 </Col>
               </FormGroup>
@@ -49,7 +57,12 @@ class Targetmodal extends Component {
                   Description
                 </Label>
                 <Col sm={10}>
-                  <Input type="textarea" name="description" id="description" />
+                  <Input
+                    type="textarea"
+                    name="description"
+                    id="description"
+                    onChange={FormhandleChange}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -58,32 +71,102 @@ class Targetmodal extends Component {
                 </Label>
                 <Col sm={10}>
                   <Input
-                    type="text"
-                    name="Metric"
+                    type="select"
+                    value={this.props.value}
+                    name="metric"
                     id="metric"
-                    placeholder="Enter your metric e.g ksh"
-                  />
+                    onChange={FormhandleChange}
+                  >
+                    <option>Select Metric ....</option>
+                    {metrics.map(metric => (
+                      <option key={metric.name}>{metric.name}</option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="IncomeStream" sm={2}>
+                  Income Stream
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="select"
+                    name="IncomeStream"
+                    id="IncomeStream"
+                    onChange={FormhandleChange}
+                  >
+                    <option>Select Income stream ....</option>
+                    {incomeStreams.map(income => (
+                      <option key={income.name} value={income.id}>{income.name}</option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="period" sm={2}>
+                  Period Name
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="select"
+                    name="period_name"
+                    id="PeriodName"
+                    onChange={FormhandleChange}
+                  >
+                    <option>Select Period Name ...</option>
+                    {periods.map(period => (
+                      <option defaultValue="select" key={period.name}>
+                        {period.name}
+                      </option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="period" sm={2}>
+                  Period Type
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="select"
+                    name="period_type"
+                    id="PeriodType"
+                    onChange={FormhandleChange}
+                  >
+                    <option>Select Period Type ...</option>
+                    {periods.map(period => (
+                      <option key={period.period_type}>
+                        {period.period_type}
+                      </option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="period" sm={2}>
+                  Year
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="select"
+                    value={this.props.value}
+                    name="period_year"
+                    id="Year"
+                    onChange={FormhandleChange}
+                  >
+                    <option>Select Year ...</option>
+                    <option>2019</option>
+                  </Input>
                 </Col>
               </FormGroup>
             </Form>
-            <div>
-              <DateRangePicker
-                onChange={handleRangeChange.bind(this, "dateRangePicker")}
-                showSelectionPreview={true}
-                moveRangeOnFirstSelection={false}
-                className={"PreviewArea"}
-                months={1}
-                ranges={[selection]}
-                direction="horizontal"
-              />
-            </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={openModal}>
-              Do Something
+            <Button color="primary" onClick={handleSubmit}>
+              Send
             </Button>{" "}
             <Button color="secondary" onClick={openModal}>
-              Cancel
+              close
             </Button>
           </ModalFooter>
         </Modal>

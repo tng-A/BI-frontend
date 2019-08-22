@@ -1,19 +1,27 @@
 import React, { Component } from "react";
-import {  Line } from "react-chartjs-2";
+import LineGraph from "../../components/lineGraph";
+import { connect } from "react-redux";
 import {
-  ButtonGroup,
+  getFilteredIncomeStream,
+  getPeriods,
+  getMetrics,
+  CreateIncomeStreamTarget
+} from "../../redux/actionCreators/IncomeStreams";
+import { getProducts } from "../../redux/actionCreators/Products";
+import Pie from "../../components/PieChart";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {
+  Card,
+  Col,
+  Row,
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle,
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Row,
+  DropdownToggle
 } from "reactstrap";
-import ProgressBarCard from "../../components/progressBarCard";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import Widget02 from "../Widgets/Widget02";
+import Targetmodal from "./../../components/Targetmodal";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -48,13 +56,13 @@ const mainChartOpts = {
   },
   maintainAspectRatio: false,
   legend: {
-    display: false
+    display: true
   },
   scales: {
     xAxes: [
       {
         gridLines: {
-          drawOnChartArea: false
+          drawOnChartArea: true
         }
       }
     ],
@@ -64,7 +72,7 @@ const mainChartOpts = {
           beginAtZero: true,
           maxTicksLimit: 5,
           stepSize: Math.ceil(250 / 5),
-          max: 250
+          max: 1000
         }
       }
     ]
@@ -72,68 +80,94 @@ const mainChartOpts = {
   elements: {
     point: {
       radius: 0,
-      hitRadius: 10,
+      hitRadius: 5,
       hoverRadius: 4,
-      hoverBorderWidth: 3
+      hoverBorderWidth: 1
     }
   }
 };
-const Mdata = {
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  datasets: [
-    {
-      label: "Product a",
-      fill: false,
-      lineTension: 0.3,
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
-      borderCapStyle: "butt",
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: "miter",
-      pointBorderColor: "rgba(75,192,192,1)",
-      pointBackgroundColor: "#fff",
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "rgba(220,220,220,1)",
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [100, 59, 80, 81, 56, 55, 40, 79, 85, 120, 150, 155]
-    }
-  ]
-};
 
-class Product extends Component {
+class Products extends Component {
   constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
-
     this.state = {
       dropdownOpen: false,
-      radioSelected: 2
+      dropdownOpen2: false,
+      dropdownOpen3: false,
+      radioSelected: 2,
+      period: "monthly",
+      year: "2019",
+      modal: false,
+      amount: "",
+      metric: "",
+      description: "",
+      IncomeStream: "",
+      period_name: "",
+      period_type: "",
+      period_year: ""
     };
+
+    this.toggle = this.toggle.bind(this);
+    this.toggle2 = this.toggle2.bind(this);
+    this.toggle3 = this.toggle3.bind(this);
+    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.FormhandleChange = this.FormhandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const {
+      getFilteredIncomeStream,
+      getPeriodsAction,
+      getMetricsActions
+    } = this.props;
+    // setInterval(function(){})
+    getPeriodsAction();
+    getMetricsActions();
+    getFilteredIncomeStream({ ...this.state });
+  }
+
+  openModal() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  closeModal;
+
+  FormhandleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleChange(e) {
+    this.setState(
+      {
+        period: e.currentTarget.textContent
+      },
+      () => {
+        const { getFilteredIncomeStream } = this.props;
+        getFilteredIncomeStream({ ...this.state });
+      }
+    );
   }
 
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  toggle2() {
+    this.setState({
+      dropdownOpen2: !this.state.dropdownOpen2
+    });
+  }
+
+  toggle3() {
+    this.setState({
+      dropdownOpen3: !this.state.dropdownOpen3
     });
   }
 
@@ -143,15 +177,15 @@ class Product extends Component {
     });
   }
 
-  determineCardColor(value) {
+  determineCardColor(percentage) {
     let className = "";
-    if (value <= 20) {
+    if (percentage <= 20) {
       className = "bg-danger";
-    } else if (value <= 40) {
+    } else if (percentage <= 40) {
       className = "bg-warning";
-    } else if (value <= 60) {
+    } else if (percentage <= 50) {
       className = "bg-info";
-    } else if (value <= 100) {
+    } else if (percentage > 79) {
       className = "bg-primary";
     }
     return className;
@@ -161,109 +195,164 @@ class Product extends Component {
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
 
+  handleSubmit = () => {
+    const { CreateIncomeStreamTargetActions } = this.props;
+    CreateIncomeStreamTargetActions(
+      { ...this.state },
+      this.setState({ modal: false })
+    );
+  };
+
+  getTransactionsCount = incomeStreams => {
+    let raw_transactions = [];
+    let total_value;
+    incomeStreams.forEach(income => {
+      raw_transactions.push(income.number_of_transactions);
+      total_value = raw_transactions.reduce((a, b) => a + b, 0);
+    });
+    return total_value;
+  };
+
+  getTransactionValue = incomeStreams => {
+    let raw_total = [];
+    let total_amount;
+    incomeStreams.forEach(income => {
+      raw_total.push(income.transactions_value);
+      total_amount = raw_total.reduce((a, b) => a + b, 0);
+    });
+    return total_amount;
+  };
+
   render() {
+    const { incomeStreams, periods, loading, metrics } = this.props;
+
     return (
       <div className="animated fadeIn">
+        <Row className="float-right">
+          <Col xs="4">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+            <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1"
+                id={"card1"}
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggle}
+              >
+                <DropdownToggle caret color="primary">
+                  Period Type
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+          <Col xs="3">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+            <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1 text-muted"
+                disabled
+                id={"card2"}
+                // isOpen={this.state.dropdownOpen2}
+                // toggle={this.toggle2}
+              >
+                <DropdownToggle caret color="primary" disabled>
+                  Year
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Semi-annually</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+          <Col xs="3">
+            <Col>
+              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
+            <div className="small text-muted">Yearly</div> */}
+            </Col>
+            <Card>
+              <ButtonDropdown
+                className="float-right mr-1"
+                id={"card3"}
+                isOpen={this.state.dropdownOpen3}
+                toggle={this.toggle3}
+              >
+                <DropdownToggle caret color="primary">
+                  Target
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.openModal}>Set Target</div>
+                    <Targetmodal
+                      modal={this.state.modal}
+                      openModal={this.openModal}
+                      value={this.state.target}
+                      FormhandleChange={this.FormhandleChange}
+                      incomeStreams={incomeStreams}
+                      periods={periods}
+                      metrics={metrics}
+                      handleSubmit={this.handleSubmit}
+                    />
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+        </Row>
+        <Row />
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card1"}
-              toggle={() => {
-                this.setState({ card1: !this.state.card1 });
-              }}
-              isOpen={this.state.card1}
-              metric={"Embu"}
-              value={30.987}
-              percentage={100}
-              target={100}
-              className={this.determineCardColor(100)}
+          <Col xs="12" sm="6" lg="4">
+            <Widget02
+              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
             />
           </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card2"}
-              toggle={() => {
-                this.setState({ card2: !this.state.card2 });
-              }}
-              isOpen={this.state.card2}
-              metric={"Nairobi"}
-              value={80.987}
-              percentage={80}
-              target={100}
-              className={this.determineCardColor(56)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card3"}
-              toggle={() => {
-                this.setState({ card3: !this.state.card3 });
-              }}
-              isOpen={this.state.card4}
-              metric={"Meru"}
-              value={50.987}
-              percentage={50}
-              target={100}
-              className={this.determineCardColor(35)}
-            />
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <ProgressBarCard
-              cardId={"card4"}
-              toggle={() => {
-                this.setState({ card4: !this.state.card4 });
-              }}
-              isOpen={this.state.card5}
-              metric={"Kiambu"}
-              value={30.987}
-              percentage={30}
-              target={100}
-              className={this.determineCardColor(10)}
+          <Col xs="12" sm="6" lg="4">
+            <Widget02
+              header={
+                loading ? "Ksh:" + 0 : this.getTransactionValue(incomeStreams)
+              }
+              mainText="Transaction Value(In KSH)"
+              icon="fa fa-money"
+              color="info"
             />
           </Col>
         </Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            <Card>
-              <CardBody>
-                <Row>
-                  <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
-                  </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonGroup className="float-right">
-                      <ButtonDropdown
-                        id="card1"
-                        isOpen={this.state.card1}
-                        toggle={() => {
-                          this.setState({ card1: !this.state.card1 });
-                        }}
-                      >
-                        <DropdownToggle
-                          caret
-                          className="p-0"
-                          color="transparent"
-                        >
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                          <DropdownItem>Date picker</DropdownItem>
-                        </DropdownMenu>
-                      </ButtonDropdown>
-                    </ButtonGroup>
-                  </Col>
-                </Row>
-                <div
-                  className="chart-wrapper"
-                  style={{ height: 460 + "px", marginTop: 40 + "px" }}
-                >
-                  <Line data={Mdata} options={mainChartOpts} height={300} />
-                </div>
-              </CardBody>
-            </Card>
+            <LineGraph
+              mainChartOpts={mainChartOpts}
+              id={"card1"}
+              isOpen={this.state.card1}
+              toggle={() => {
+                this.setState({ card1: !this.state.card1 });
+              }}
+              incomeStreams={incomeStreams}
+              title={'IncomeStreams Performance'}
+              incomeStream={incomeStreams}
+            />
           </Col>
         </Row>
       </div>
@@ -271,4 +360,25 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export const mapStateToProps = state => {
+  return {
+    products: state.getProducts.products,
+    incomeStreams: state.incomeStream.incomeStreams,
+    loading: state.incomeStream.loading,
+    periods: state.incomeStream.periods,
+    metrics: state.incomeStream.metrics
+  };
+};
+
+const mapDispatchToProps = {
+  getProducts: getProducts,
+  getFilteredIncomeStream: getFilteredIncomeStream,
+  getPeriodsAction: getPeriods,
+  getMetricsActions: getMetrics,
+  CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Products);

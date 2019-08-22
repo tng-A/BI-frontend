@@ -17,12 +17,12 @@ export default class PieChart extends Component {
     let data = [];
     let dataColor = [];
 
-    const { title, id, isOpen, toggle, ValueCenters } = this.props;
-    ValueCenters.forEach(center => {
-      labels.push(center.name);
-      data.push(center.total_okr);
-      dataColor.push(center.color);
-    });
+    const { title, id, isOpen, toggle } = this.props;
+    // ValueCenters.forEach(center => {
+    //   labels.push(center.name);
+    //   data.push(center.total_okr);
+    //   dataColor.push(center.color);
+    // });
 
     const pie = {
       labels: labels,

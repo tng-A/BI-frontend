@@ -1,17 +1,27 @@
 import { all, fork } from "redux-saga/effects";
 import {
   watchIncomeStreamSagaAsync,
-  WatchIncomeStreamSagaTarget
+  WatchIncomeStreamSagaTarget,
+  watchFilteredIncomestreampass,
+  watchGetPeriodPass,
+  watchGetMetricPass
 } from "./IncomeStreams";
-import { watchGetValueCenterPass } from "./ValueCenter";
-import { watchGetTransactionsPass } from "./Transactions";
+import {
+  watchGetValueCenterPass,
+  watchFilteredValueCenterpass
+} from "./ValueCenter";
+import { watchGetProductPass } from "./Products";
 
 function* rootSaga() {
   yield all([
     fork(watchIncomeStreamSagaAsync),
     fork(WatchIncomeStreamSagaTarget),
     fork(watchGetValueCenterPass),
-    fork(watchGetTransactionsPass)
+    fork(watchFilteredValueCenterpass),
+    fork(watchGetProductPass),
+    fork(watchFilteredIncomestreampass),
+    fork(watchGetPeriodPass),
+    fork(watchGetMetricPass)
   ]);
 }
 

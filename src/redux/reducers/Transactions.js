@@ -14,7 +14,6 @@ const getTransactionsReducer = (state = initialState, action = {}) => {
     case GET_TRANSCATIONS:
       return { ...state, errors: "", loading: true };
     case GET_TRANSCATIONS_SUCCESS:
-      console.log("actin", action);
       return { ...state, Transactions: action.payload.data, loading: false };
     case GET_TRANSCATIONS_FAILURE:
       return { ...state, Transactions: [], loading: false };

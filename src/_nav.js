@@ -2,7 +2,7 @@ export default {
   items: [
     {
       name: 'WEBTRIBE',
-      url: '/dashboard',
+      url: '/income-streams',
       icon: 'icon-speedometer',
       badge: {
         variant: 'info',
@@ -13,11 +13,12 @@ export default {
     {
       name: 'VALUE CENTERS',
       icon: 'icon-home',
-      url: '/pages', 
+      url: '/income-streams', 
       class:"nav-title",
     },
     {
       name: 'PRODUCTS',
+      url:'/income-streams',
       class:"nav-title", 
       icon: 'icon-bag',  
     },

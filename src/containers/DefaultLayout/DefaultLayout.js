@@ -65,7 +65,6 @@ class DefaultLayout extends Component {
   }
 
   handleRangeChange(which, payload) {
-    console.log(which, payload);
     this.setState({
       [which]: {
         ...this.state[which],
