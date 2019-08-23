@@ -73,10 +73,12 @@ class Products extends Component {
       getPeriodsAction,
       getMetricsActions
     } = this.props;
-    // setInterval(function(){})
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state });
+    return setInterval(() => {
+      getFilteredIncomeStream({ ...this.state });
+    }, 10000);
   }
 
   openModal() {
@@ -176,7 +178,6 @@ class Products extends Component {
   render() {
     const { incomeStreams, periods, loading, metrics } = this.props;
     const {period} = this.state
-    console.log(period, '>>>>>')
     return (
       <div className="animated fadeIn">
         <Row className="float-right">
