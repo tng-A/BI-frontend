@@ -54,7 +54,9 @@ class Products extends Component {
       IncomeStream: '',
       period_name: '',
       period_type: '',
-      period_year: ''
+      period_year: '',
+      current_transactions_value: 0,
+      current_number_transactions: 0
     };
 
     this.toggle = this.toggle.bind(this);
@@ -170,6 +172,11 @@ class Products extends Component {
       raw_transactions.push(income.number_of_transactions);
       total_value = raw_transactions.reduce((a, b) => a + b, 0);
     });
+    if (this.state.current_number_transactions !== total_value){
+      this.setState({
+        current_number_transactions: total_value
+      })
+    }
     return total_value;
   };
 
@@ -180,32 +187,39 @@ class Products extends Component {
       raw_total.push(income.transactions_value);
       total_amount = raw_total.reduce((a, b) => a + b, 0);
     });
+    if (this.state.current_transactions_value !== total_amount){
+      this.setState({
+        current_transactions_value: total_amount
+      })
+    }
     return total_amount;
   };
 
   render() {
-    const { incomeStreams, periods, loading, metrics } = this.props;
-    const {period} = this.state
+    const { incomeStreams, periods, metrics } = this.props;
+    const {period, current_number_transactions, current_transactions_value} = this.state
+    this.getTransactionsCount(incomeStreams)
+    this.getTransactionValue(incomeStreams)
     return (
       <div className="animated fadeIn">
         <Row>
           <Col lg="3" sm="6" xs="12" >
             <Widget02
-              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
-              mainText="Total Transactions"
-              icon="fa fa-cogs"
-              color="warning"
-            />
+                header={current_number_transactions}
+                mainText="Total Transactions"
+                icon="fa fa-cogs"
+                color="warning"
+                starting={current_number_transactions}
+              />
           </Col>
           <Col lg="3" sm="6" xs="12">
             <Widget02
-              header={
-                loading ? 'Ksh:' + 0 : this.getTransactionValue(incomeStreams)
-              }
-              mainText="Transaction Value(In KSH)"
-              icon="fa fa-money"
-              color="info"
-            />
+                header={current_transactions_value}
+                mainText="Transaction Value(In KSH)"
+                icon="fa fa-money"
+                color="info"
+                starting={current_transactions_value}
+              />
           </Col>
           <Col lg="2" sm="4" xs="8">
             <Card>
