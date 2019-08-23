@@ -9,8 +9,7 @@ import {
   Label,
   Input,
   Col,
-  Button,
-  Row
+  Button
 } from "reactstrap";
 
 class Targetmodal extends Component {
@@ -27,6 +26,15 @@ class Targetmodal extends Component {
       handleSubmit
     } = this.props;
 
+    let periodNames = []
+    let periodTypes = []
+    periods.map(period => {
+      periodNames.push(period.name)
+      periodTypes.push(period.period_type)
+      return 'succes'
+    })
+    periodNames = [...new Set(periodNames)]
+    periodTypes = [...new Set(periodTypes)]
     return (
       <Fragment>
         <Modal
@@ -114,9 +122,9 @@ class Targetmodal extends Component {
                     onChange={FormhandleChange}
                   >
                     <option>Select Period Name ...</option>
-                    {periods.map(period => (
-                      <option defaultValue="select" key={period.name}>
-                        {period.name}
+                    {periodNames.map(name => (
+                      <option defaultValue="select" key={name}>
+                        {name}
                       </option>
                     ))}
                   </Input>
@@ -134,9 +142,9 @@ class Targetmodal extends Component {
                     onChange={FormhandleChange}
                   >
                     <option>Select Period Type ...</option>
-                    {periods.map(period => (
-                      <option key={period.period_type}>
-                        {period.period_type}
+                    {periodTypes.map(type => (
+                      <option key={type}>
+                        {type}
                       </option>
                     ))}
                   </Input>
