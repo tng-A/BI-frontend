@@ -19,8 +19,8 @@ import {
   DropdownToggle
 } from 'reactstrap';
 import TargetAchievement from '../../components/TargetAchievement';
-import Widget02 from "../Widgets/Widget02";
-import Targetmodal from "./../../components/Targetmodal";
+import Widget02 from '../Widgets/Widget02';
+import Targetmodal from './../../components/Targetmodal';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -81,6 +81,13 @@ class Products extends Component {
     }, 10000);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { incomeStreams } = nextProps;
+    const { incomeStreams: incomeStreamLate } = this.props;
+    if (incomeStreams !== incomeStreamLate) {
+      getFilteredIncomeStream({ ...this.state });
+    }
+  }
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -153,6 +160,7 @@ class Products extends Component {
       { ...this.state },
       this.setState({ modal: false })
     );
+    getFilteredIncomeStream({ ...this.state });
   };
 
   getTransactionsCount = incomeStreams => {
@@ -180,15 +188,28 @@ class Products extends Component {
     const {period} = this.state
     return (
       <div className="animated fadeIn">
-        <Row className="float-right">
-          <Col xs="4">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-        <div className="small text-muted">Yearly</div> */}
-            </Col>
+        <Row>
+          <Col lg="3" sm="6" xs="12" >
+            <Widget02
+              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
+            />
+          </Col>
+          <Col lg="3" sm="6" xs="12">
+            <Widget02
+              header={
+                loading ? 'Ksh:' + 0 : this.getTransactionValue(incomeStreams)
+              }
+              mainText="Transaction Value(In KSH)"
+              icon="fa fa-money"
+              color="info"
+            />
+          </Col>
+          <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                className="float-right mr-1"
                 id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
@@ -206,15 +227,10 @@ class Products extends Component {
                 </DropdownMenu>
               </ButtonDropdown>
             </Card>
-          </Col>
-          <Col xs="3">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-        <div className="small text-muted">Yearly</div> */}
             </Col>
+            <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                className="float-right mr-1 text-muted"
                 disabled
                 id={'card2'}
                 // isOpen={this.state.dropdownOpen2}
@@ -236,15 +252,11 @@ class Products extends Component {
                 </DropdownMenu>
               </ButtonDropdown>
             </Card>
-          </Col>
-          <Col xs="3">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-        <div className="small text-muted">Yearly</div> */}
             </Col>
+            
+            <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                className="float-right mr-1"
                 id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
@@ -272,26 +284,6 @@ class Products extends Component {
           </Col>
         </Row>
         <Row />
-        <Row>
-          <Col xs="12" sm="6" lg="4">
-            <Widget02
-              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
-              mainText="Total Transactions"
-              icon="fa fa-cogs"
-              color="warning"
-            />
-          </Col>
-          <Col xs="12" sm="6" lg="4">
-            <Widget02
-              header={
-                loading ? 'Ksh:' + 0 : this.getTransactionValue(incomeStreams)
-              }
-              mainText="Transaction Value(In KSH)"
-              icon="fa fa-money"
-              color="info"
-            />
-          </Col>
-        </Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
             <LineGraph

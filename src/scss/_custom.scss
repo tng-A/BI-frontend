@@ -67,9 +67,12 @@ body {
   
   }
 
-
   color: white;
   border-right: 1px solid #23282c !important;
+}
+
+.d-none {
+  display: table !important;
 }
 .table-outline {
   border: 1px solid #23282c;

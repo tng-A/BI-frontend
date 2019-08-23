@@ -1,4 +1,5 @@
 import { put, takeLatest, call, takeEvery } from "redux-saga/effects";
+import {eventChannel, END} from 'redux-saga';
 import { toast } from "react-toastify";
 import IncomeStreamService from "../../services/incomeStreams";
 import {
@@ -59,6 +60,25 @@ export function* IncomeStreamSagaAsync({ payload }) {
   }
 }
 
+export function countdown(secs) {
+  return eventChannel(emitter => {
+      const iv = setInterval(() => {
+        secs -= 1
+        if (secs > 0) {
+          emitter(secs)
+        } else {
+          // this causes the channel to close
+          emitter(END)
+        }
+      }, 1000);
+      // The subscriber must return an unsubscribe function
+      return () => {
+        clearInterval(iv)
+      }
+    }
+  )
+}
+
 export function* IncomeStreamTargetSagaAsync({ payload }) {
   try {
     const response = yield call(
@@ -87,6 +107,7 @@ export function* WatchIncomeStreamSagaTarget() {
 export function* getFilteredIncomeStreamAsync(action) {
   try {
     const { year, periodType } = action;
+  
     const response = yield call(
       IncomeStreamService.getFilteredIncomeStream,
       periodType,
