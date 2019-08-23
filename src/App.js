@@ -28,7 +28,7 @@ class App extends Component {
               />
             </Switch>
           </React.Suspense>
-          <ToastContainer autoClose={8000} />
+          <ToastContainer autoClose={5000} />
         </HashRouter>
       </Provider>
     );
