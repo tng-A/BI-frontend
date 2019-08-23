@@ -8,7 +8,6 @@ import {
   CreateIncomeStreamTarget
 } from "../../redux/actionCreators/IncomeStreams";
 import { getProducts } from "../../redux/actionCreators/Products";
-import Pie from "../../components/PieChart";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   Card,

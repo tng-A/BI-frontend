@@ -1,5 +1,5 @@
 import React from 'react';
-const Dashboard = React.lazy(() => import('./views/Dashboard'));
+//const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const Product = React.lazy(() => import('./views/Products'));
 const IncomeStreams = React.lazy(() => import('./views/IncomeStreams'));
 const Enterprise = React.lazy(() => import('./views/Enterprise/Enterprise'));
@@ -8,7 +8,7 @@ const County = React.lazy(() => import('./views/County'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'IncomeStreams' },
   { path: '/product', name: 'Product', component: Product },
   { path: '/income-streams', name: 'IncomeStreams', component: IncomeStreams },
   {
@@ -29,7 +29,7 @@ const routes = [
     name: 'County',
     component: County
   },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard', name: 'IncomeStreams', component: IncomeStreams },
   
 ];
 

@@ -118,6 +118,7 @@ class LineGraph extends Component {
         lenOfLabels = stream.graph_data.length;
         stream.graph_data.map(result => {
           testArray.push(result.value);
+          return 'success'
         });
       });
     }
@@ -131,10 +132,15 @@ class LineGraph extends Component {
         stream.graph_data.map(result => {
           if (result.value >= median) {
             bigStreams.push(stream);
+            return 'success'
+
           }
           if (result.value < median) {
             smallStream.push(stream);
+            return 'success'
           }
+          return 'success'
+
         });
       });
     }
@@ -154,6 +160,8 @@ class LineGraph extends Component {
         stream.graph_data.map(result => {
           amounts.push(result.value);
           smallGraphMax.push(result.value);
+          return 'success'
+
         });
         datasetsBig.push({
           label: stream.name,
@@ -185,6 +193,8 @@ class LineGraph extends Component {
         stream.graph_data.map(result => {
           amounts.push(result.value);
           bigGraphMax.push(result.value);
+          return 'success'
+
         });
         datasetSmall.push({
           label: stream.name,
