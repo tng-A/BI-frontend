@@ -3,8 +3,6 @@ import { Table, Progress } from 'reactstrap';
 import './index.css';
 
 export default class TargetAchievement extends Component {
-
-
   render() {
     const { incomeStreams, determineColor } = this.props;
 
@@ -24,30 +22,29 @@ export default class TargetAchievement extends Component {
             </tr>
           </thead>
           <tbody>
-          {incomeStreams.map(stream => {
-            return (
-              <tr>
-                <td>
-                  <strong>{stream.name}</strong>
-                </td>
-                <td>{stream.total_target}</td>
-                <td>{stream.transactions_value}</td>
-                <td>
-                  <div className="clearfix">
-                    <div className="float-left">
-                      <strong>{stream.achievement_percentage} %</strong>
+            {incomeStreams.map(stream => {
+              return (
+                <tr>
+                  <td>
+                    <strong>{stream.name}</strong>
+                  </td>
+                  <td>{stream.total_target}</td>
+                  <td>{stream.transactions_value}</td>
+                  <td>
+                    <div className="clearfix">
+                      <div className="float-left">
+                        <strong>{stream.achievement_percentage} %</strong>
+                      </div>
                     </div>
-                  </div>
-                  <Progress
-                        className="progress-xs mt-2"
-                        color={determineColor}
-                        value={stream.achievement_percentage}
+                    <Progress
+                      className="progress-xs mt-2"
+                      color={determineColor}
+                      value={stream.achievement_percentage}
                     />
-                </td>
-              </tr>
-            );
-          })
-        }
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </div>
