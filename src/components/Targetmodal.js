@@ -26,15 +26,15 @@ class Targetmodal extends Component {
       handleSubmit
     } = this.props;
 
-    let periodNames = []
-    let periodTypes = []
+    let periodNames = [];
+    let periodTypes = [];
     periods.map(period => {
-      periodNames.push(period.name)
-      periodTypes.push(period.period_type)
-      return 'succes'
-    })
-    periodNames = [...new Set(periodNames)]
-    periodTypes = [...new Set(periodTypes)]
+      periodNames.push(period.name);
+      periodTypes.push(period.period_type);
+      return "succes";
+    });
+    periodNames = [...new Set(periodNames)];
+    periodTypes = [...new Set(periodTypes)];
     return (
       <Fragment>
         <Modal
@@ -105,7 +105,9 @@ class Targetmodal extends Component {
                   >
                     <option>Select Income stream ....</option>
                     {incomeStreams.map(income => (
-                      <option key={income.name} value={income.id}>{income.name}</option>
+                      <option key={income.name} value={income.id}>
+                        {income.name}
+                      </option>
                     ))}
                   </Input>
                 </Col>
@@ -143,9 +145,7 @@ class Targetmodal extends Component {
                   >
                     <option>Select Period Type ...</option>
                     {periodTypes.map(type => (
-                      <option key={type}>
-                        {type}
-                      </option>
+                      <option key={type}>{type}</option>
                     ))}
                   </Input>
                 </Col>
@@ -174,7 +174,7 @@ class Targetmodal extends Component {
               Send
             </Button>{" "}
             <Button color="secondary" onClick={openModal}>
-              close
+              Close
             </Button>
           </ModalFooter>
         </Modal>

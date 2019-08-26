@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import LineGraph from '../../components/lineGraph';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import LineGraph from "../../components/lineGraph";
+import { connect } from "react-redux";
 import {
   getFilteredIncomeStream,
   getPeriods,
   getMetrics,
   CreateIncomeStreamTarget
-} from '../../redux/actionCreators/IncomeStreams';
-import { getProducts } from '../../redux/actionCreators/Products';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+} from "../../redux/actionCreators/IncomeStreams";
+import { getProducts } from "../../redux/actionCreators/Products";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   Card,
   Col,
@@ -17,10 +17,10 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle
-} from 'reactstrap';
-import TargetAchievement from '../../components/TargetAchievement';
-import Widget02 from '../Widgets/Widget02';
-import Targetmodal from './../../components/Targetmodal';
+} from "reactstrap";
+import TargetAchievement from "../../components/TargetAchievement";
+import Widget02 from "../Widgets/Widget02";
+import Targetmodal from "./../../components/Targetmodal";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -45,16 +45,16 @@ class Products extends Component {
       dropdownOpen2: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: 'monthly',
-      year: '2019',
+      period: "monthly",
+      year: "2019",
       modal: false,
-      amount: '',
-      metric: '',
-      description: '',
-      IncomeStream: '',
-      period_name: '',
-      period_type: '',
-      period_year: '',
+      amount: "",
+      metric: "",
+      description: "",
+      IncomeStream: "",
+      period_name: "",
+      period_type: "",
+      period_year: "",
       current_transactions_value: 0,
       current_number_transactions: 0
     };
@@ -139,15 +139,15 @@ class Products extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = '';
+    let className = "";
     if (percentage <= 20) {
-      className = 'bg-danger';
+      className = "bg-danger";
     } else if (percentage <= 40) {
-      className = 'bg-warning';
+      className = "bg-warning";
     } else if (percentage <= 50) {
-      className = 'bg-info';
+      className = "bg-info";
     } else if (percentage > 79) {
-      className = 'bg-primary';
+      className = "bg-primary";
     }
     return className;
   }
@@ -172,10 +172,10 @@ class Products extends Component {
       raw_transactions.push(income.number_of_transactions);
       total_value = raw_transactions.reduce((a, b) => a + b, 0);
     });
-    if (this.state.current_number_transactions !== total_value){
+    if (this.state.current_number_transactions !== total_value) {
       this.setState({
         current_number_transactions: total_value
-      })
+      });
     }
     return total_value;
   };
@@ -186,45 +186,51 @@ class Products extends Component {
     incomeStreams.forEach(income => {
       raw_total.push(income.transactions_value);
       total_amount = raw_total.reduce((a, b) => a + b, 0);
+      console.log("object,tad", total_amount);
     });
-    if (this.state.current_transactions_value !== total_amount){
+    if (this.state.current_transactions_value !== total_amount) {
       this.setState({
         current_transactions_value: total_amount
-      })
+      });
     }
     return total_amount;
   };
 
   render() {
     const { incomeStreams, periods, metrics } = this.props;
-    const {period, current_number_transactions, current_transactions_value} = this.state
-    this.getTransactionsCount(incomeStreams)
-    this.getTransactionValue(incomeStreams)
+    const {
+      period,
+      current_number_transactions,
+      current_transactions_value
+    } = this.state;
+    this.getTransactionsCount(incomeStreams);
+    this.getTransactionValue(incomeStreams);
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col lg="3" sm="6" xs="12" >
+          <Col lg="3" sm="6" xs="12">
             <Widget02
-                header={current_number_transactions}
-                mainText="Total Transactions"
-                icon="fa fa-cogs"
-                color="warning"
-                starting={current_number_transactions}
-              />
+              header={current_number_transactions}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
+              starting={current_number_transactions}
+            />
           </Col>
           <Col lg="3" sm="6" xs="12">
             <Widget02
-                header={current_transactions_value}
-                mainText="Transaction Value(In KSH)"
-                icon="fa fa-money"
-                color="info"
-                starting={current_transactions_value}
-              />
+              header={current_transactions_value}
+              prefix="Ksh: "
+              mainText="Transaction Value(In KSH)"
+              icon="fa fa-money"
+              color="info"
+              starting={current_transactions_value}
+            />
           </Col>
           <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                id={'card1'}
+                id={"card1"}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
@@ -241,12 +247,12 @@ class Products extends Component {
                 </DropdownMenu>
               </ButtonDropdown>
             </Card>
-            </Col>
-            <Col lg="2" sm="4" xs="4">
+          </Col>
+          <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
                 disabled
-                id={'card2'}
+                id={"card2"}
                 // isOpen={this.state.dropdownOpen2}
                 // toggle={this.toggle2}
               >
@@ -266,12 +272,12 @@ class Products extends Component {
                 </DropdownMenu>
               </ButtonDropdown>
             </Card>
-            </Col>
-            
-            <Col lg="2" sm="4" xs="4">
+          </Col>
+
+          <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                id={'card3'}
+                id={"card3"}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -301,13 +307,13 @@ class Products extends Component {
         <Row>
           <Col xs="12" sm="12" lg="12">
             <LineGraph
-              id={'card1'}
+              id={"card1"}
               isOpen={this.state.card1}
               toggle={() => {
                 this.setState({ card1: !this.state.card1 });
               }}
               incomeStreams={incomeStreams}
-              title={'IncomeStreams Performance'}
+              title={"IncomeStreams Performance"}
               period={period}
             />
           </Col>
