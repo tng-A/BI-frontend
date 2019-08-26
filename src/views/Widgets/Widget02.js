@@ -38,6 +38,7 @@ class Widget02 extends Component {
       color,
       footer,
       link,
+      prefix,
       children,
       variant,
       starting,
@@ -49,12 +50,12 @@ class Widget02 extends Component {
       variant === "0"
         ? { card: "p-3", icon: "p-3", lead: "mt-2" }
         : variant === "1"
-          ? {
+        ? {
             card: "p-0",
             icon: "p-4",
             lead: "pt-3"
           }
-          : { card: "p-0", icon: "p-4 px-5", lead: "pt-3" };
+        : { card: "p-0", icon: "p-4 px-5", lead: "pt-3" };
 
     const card = { style: "clearfix", color: color, icon: icon, classes: "" };
     card.classes = mapToCssModules(
@@ -65,7 +66,7 @@ class Widget02 extends Component {
     const lead = { style: "h5 mb-0", color: color, classes: "" };
     lead.classes = classNames(lead.style, "text-" + card.color, padding.lead);
 
-    const blockIcon = function (icon) {
+    const blockIcon = function(icon) {
       const classes = classNames(
         icon,
         "bg-" + card.color,
@@ -75,7 +76,7 @@ class Widget02 extends Component {
       return <i className={classes} />;
     };
 
-    const cardFooter = function () {
+    const cardFooter = function() {
       if (footer) {
         return (
           <CardFooter className="px-3 py-2">
@@ -91,14 +92,31 @@ class Widget02 extends Component {
       }
     };
 
+    const prefixDecider = function() {
+      if (mainText === "Total Transactions") {
+        return <CountUp decimals={0} start={starting} end={header} delay={1} />;
+      } else {
+        return (
+          <CountUp
+            decimals={0}
+            start={starting}
+            end={header}
+            delay={1}
+            prefix="Ksh: "
+          />
+        );
+      }
+    };
+
     return (
       <Card>
         <CardBody className={card.classes} {...attributes}>
           {blockIcon(card.icon)}
-          <div className={lead.classes}>
-            <CountUp decimals={0} start={starting} end={header} delay={1} />
-          </div>
-          <div className="text-uppercase font-weight-bold font-xs" style={{ color: "white" }}>
+          <div className={lead.classes}>{prefixDecider()}</div>
+          <div
+            className="text-uppercase font-weight-bold font-xs"
+            style={{ color: "white" }}
+          >
             {mainText}
           </div>
         </CardBody>
