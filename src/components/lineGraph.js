@@ -106,10 +106,10 @@ class LineGraph extends Component {
         }
       }
     };
-    const { incomeStreams, period } = this.props;
+    const { incomeStreams } = this.props;
     let datasetsBig = [];
     let datasetSmall = [];
-    let labels = [];
+    let allLabels = [];
     let testArray = [];
     let lenOfLabels;
 
@@ -118,6 +118,7 @@ class LineGraph extends Component {
         lenOfLabels = stream.graph_data.length;
         stream.graph_data.map(result => {
           testArray.push(result.value);
+          allLabels.push(result.label)
           return 'success'
         });
       });
@@ -219,30 +220,9 @@ class LineGraph extends Component {
         });
       });
     }
-
-
-   let monthlyLabels =  [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ]
-    let quartelyLabels = ['Q1', 'Q2', 'Q3', 'Q4']
-    if (period === 'Quarterly') {
-      labels = [...quartelyLabels].slice(0, lenOfLabels)
-    }else{
-      labels = [...monthlyLabels].slice(0, lenOfLabels)
-    }
-    console.log(period)
-    labels.slice(0, lenOfLabels);
+    
+    const labels = allLabels.slice(0, lenOfLabels)
+    
     const BigMdata = {
       labels: labels,
       datasets: datasetsBig
