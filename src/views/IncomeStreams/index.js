@@ -185,8 +185,7 @@ class Products extends Component {
     let total_amount;
     incomeStreams.forEach(income => {
       raw_total.push(income.transactions_value);
-      total_amount = raw_total.reduce((a, b) => a + b, 0);
-      console.log("object,tad", total_amount);
+      total_amount = Math.round(raw_total.reduce((a, b) => a + b, 0));
     });
     if (this.state.current_transactions_value !== total_amount) {
       this.setState({
@@ -221,7 +220,7 @@ class Products extends Component {
             <Widget02
               header={current_transactions_value}
               prefix="Ksh: "
-              mainText="Transaction Value(In KSH)"
+              mainText="Transaction Value"
               icon="fa fa-money"
               color="info"
               starting={current_transactions_value}
