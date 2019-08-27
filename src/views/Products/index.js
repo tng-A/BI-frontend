@@ -349,7 +349,7 @@ class Products extends Component {
                 this.setState({ card1: !this.state.card1 });
               }}
               incomeStreams={incomeStreams}
-              title={'IncomeStreams Performance'}
+              title={"IncomeStreams Performance"}
               incomeStream={incomeStreams}
             />
           </Col>
