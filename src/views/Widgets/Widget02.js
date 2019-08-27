@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Card, CardBody, CardFooter } from "reactstrap";
-import CountUp from "react-countup";
 import classNames from "classnames";
 import { mapToCssModules } from "reactstrap/lib/utils";
 
@@ -94,17 +93,9 @@ class Widget02 extends Component {
 
     const prefixDecider = function() {
       if (mainText === "Total Transactions") {
-        return <CountUp decimals={0} start={starting} end={header} delay={1} />;
+        return <p>{header}</p>;
       } else {
-        return (
-          <CountUp
-            decimals={0}
-            start={starting}
-            end={header}
-            delay={1}
-            prefix="Ksh: "
-          />
-        );
+        return <p>Ksh:{new Intl.NumberFormat().format(header)}</p>;
       }
     };
 
