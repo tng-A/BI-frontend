@@ -234,9 +234,15 @@ class Products extends Component {
                 toggle={this.toggle}
               >
                 <DropdownToggle caret color="primary">
-                  Period Type
+                  Period Types
                 </DropdownToggle>
                 <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Week</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Month</div>
+                  </DropdownItem>
                   <DropdownItem>
                     <div onClick={this.handleChange}>Monthly</div>
                   </DropdownItem>
