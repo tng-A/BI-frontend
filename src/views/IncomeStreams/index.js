@@ -73,12 +73,15 @@ class Products extends Component {
     const {
       getFilteredIncomeStream,
       getPeriodsAction,
-      getMetricsActions
+      getMetricsActions,
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state });
-    return
+      
+    return setInterval(() => {
+      getFilteredIncomeStream({ ...this.state });
+    }, 30000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,9 +90,6 @@ class Products extends Component {
     if (incomeStreams !== incomeStreamLate) {
       getFilteredIncomeStream({ ...this.state });
     }
-    return setInterval(() => {
-      getFilteredIncomeStream({ ...this.state });
-    }, 10000);
   }
   openModal() {
     this.setState({
