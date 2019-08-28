@@ -21,6 +21,7 @@ import {
 import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
+import TransactionsHelper from '../../utils/transactions';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -90,6 +91,19 @@ class Products extends Component {
     if (incomeStreams !== incomeStreamLate) {
       getFilteredIncomeStream({ ...this.state });
     }
+    const total_value = TransactionsHelper.getTransactionsCount(incomeStreams);
+    const total_amount = TransactionsHelper.getTransactionValue(incomeStreams);
+    if (this.state.current_number_transactions !== total_value) {
+      this.setState({
+        current_number_transactions: total_value
+      });
+    }
+    if (this.state.current_transactions_value !== total_amount) {
+      this.setState({
+        current_transactions_value: total_amount
+      });
+    }
+    
   }
   openModal() {
     this.setState({
@@ -166,36 +180,6 @@ class Products extends Component {
     getFilteredIncomeStream({ ...this.state });
   };
 
-  getTransactionsCount = incomeStreams => {
-    let raw_transactions = [];
-    let total_value;
-    incomeStreams.forEach(income => {
-      raw_transactions.push(income.number_of_transactions);
-      total_value = raw_transactions.reduce((a, b) => a + b, 0);
-    });
-    if (this.state.current_number_transactions !== total_value) {
-      this.setState({
-        current_number_transactions: total_value
-      });
-    }
-    return total_value;
-  };
-
-  getTransactionValue = incomeStreams => {
-    let raw_total = [];
-    let total_amount;
-    incomeStreams.forEach(income => {
-      raw_total.push(income.transactions_value);
-      total_amount = Math.round(raw_total.reduce((a, b) => a + b, 0));
-    });
-    if (this.state.current_transactions_value !== total_amount) {
-      this.setState({
-        current_transactions_value: total_amount
-      });
-    }
-    return total_amount;
-  };
-
   render() {
     const { incomeStreams, periods, metrics } = this.props;
     const {
@@ -203,8 +187,7 @@ class Products extends Component {
       current_number_transactions,
       current_transactions_value
     } = this.state;
-    this.getTransactionsCount(incomeStreams);
-    this.getTransactionValue(incomeStreams);
+    
     return (
       <div className="animated fadeIn">
         <Row>
@@ -259,8 +242,6 @@ class Products extends Component {
               <ButtonDropdown
                 disabled
                 id={"card2"}
-                // isOpen={this.state.dropdownOpen2}
-                // toggle={this.toggle2}
               >
                 <DropdownToggle caret color="primary" disabled>
                   Year
