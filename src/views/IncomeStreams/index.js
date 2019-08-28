@@ -74,17 +74,14 @@ class Products extends Component {
       getFilteredIncomeStream,
       getPeriodsAction,
       getMetricsActions,
-      loading
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state });
-    if (!loading){
-      setInterval(() => {
-        getFilteredIncomeStream({ ...this.state });
-      }, 15000);
-    }
-    return 
+      
+    return setInterval(() => {
+      getFilteredIncomeStream({ ...this.state });
+    }, 30000);
   }
 
   componentWillReceiveProps(nextProps) {
