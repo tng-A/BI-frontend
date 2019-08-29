@@ -266,25 +266,26 @@ class LineGraph {
             </div>
           </CardBody>
         </Card>
-        <Card>
-          <CardBody>
-            <Row>
-              <Col sm="5">
-                <CardTitle className="mb-0">{title}</CardTitle>
-              </Col>
-            </Row>
-            <div
-              className="chart-wrapper"
-              style={{ height: 600 + 'px', marginTop: 10 + 'px' }}
-            >
-              <Line
-                data={smallMdata}
-                options={chart1MainChartOpts}
-                height={300 + 'px'}
-              />
-            </div>
-          </CardBody>
-        </Card>
+        {(smallArray.length > 1 ?<Card>
+        <CardBody>
+          <Row>
+            <Col sm="5">
+              <CardTitle className="mb-0">Income Streams</CardTitle>
+            </Col>
+          </Row>
+          <div
+            className="chart-wrapper"
+            style={{ height: 600 + 'px', marginTop: 10 + 'px' }}
+          >
+            <Line
+              data={smallMdata}
+              options={chart1MainChartOpts}
+              height={300 + 'px'}
+            />
+          </div>
+        </CardBody>
+      </Card> :<div className="display-none"></div> )}
+        
       </div>
     );
   }

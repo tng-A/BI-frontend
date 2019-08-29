@@ -1,14 +1,18 @@
-import React, { Component } from "react";
-import LineGraph from "../../components/lineGraph";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import LineGraph from '../../components/lineGraph';
+import { connect } from 'react-redux';
 import {
-  getFilteredIncomeStream,
+  getFilteredProducts,
+  createProductsTarget
+} from '../../redux/actionCreators/Products';
+import { getProducts } from '../../redux/actionCreators/Products';
+import Loader from 'react-loader-spinner';
+import {
   getPeriods,
-  getMetrics,
-  CreateIncomeStreamTarget
-} from "../../redux/actionCreators/IncomeStreams";
-import { getProducts } from "../../redux/actionCreators/Products";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+  getMetrics
+} from '../../redux/actionCreators/IncomeStreams';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import {
   Card,
   Col,
@@ -17,10 +21,12 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle
-} from "reactstrap";
-import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import Widget02 from "../Widgets/Widget02";
-import Targetmodal from "./../../components/Targetmodal";
+} from 'reactstrap';
+
+import Widget02 from '../Widgets/Widget02';
+import Targetmodal from './../../components/Targetmodal';
+import TransactionsHelper from '../../utils/transactions';
+import ProgressBarCard from '../../components/progressBarCard';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -37,55 +43,6 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-const mainChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-    intersect: true,
-    mode: "index",
-    position: "nearest",
-    callbacks: {
-      labelColor: function(tooltipItem, chart) {
-        return {
-          backgroundColor:
-            chart.data.datasets[tooltipItem.datasetIndex].borderColor
-        };
-      }
-    }
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: true
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          drawOnChartArea: true
-        }
-      }
-    ],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 1000
-        }
-      }
-    ]
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 5,
-      hoverRadius: 4,
-      hoverBorderWidth: 1
-    }
-  }
-};
-
 class Products extends Component {
   constructor(props) {
     super(props);
@@ -94,16 +51,18 @@ class Products extends Component {
       dropdownOpen2: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: "monthly",
-      year: "2019",
+      period: 'monthly',
+      year: '2019',
       modal: false,
-      amount: "",
-      metric: "",
-      description: "",
-      IncomeStream: "",
-      period_name: "",
-      period_type: "",
-      period_year: ""
+      amount: '',
+      metric: '',
+      description: '',
+      IncomeStream: '',
+      period_name: '',
+      period_type: '',
+      period_year: '',
+      current_transactions_value: 0,
+      current_number_transactions: 0
     };
 
     this.toggle = this.toggle.bind(this);
@@ -118,16 +77,40 @@ class Products extends Component {
 
   componentDidMount() {
     const {
-      getFilteredIncomeStream,
+      getFilteredProducts,
       getPeriodsAction,
       getMetricsActions
     } = this.props;
-    // setInterval(function(){})
+    getFilteredProducts({ ...this.state });
     getPeriodsAction();
     getMetricsActions();
-    getFilteredIncomeStream({ ...this.state });
+
+    return setInterval(() => {
+      getFilteredProducts({ ...this.state });
+    }, 30000);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { products } = nextProps;
+    const { products: productsLate } = this.props;
+    if (products !== productsLate) {
+      getFilteredProducts({ ...this.state });
+    }
+    if (products) {
+      const total_value = TransactionsHelper.getTransactionsCount(products);
+      const total_amount = TransactionsHelper.getTransactionValue(products);
+      if (this.state.current_number_transactions !== total_value) {
+        this.setState({
+          current_number_transactions: total_value
+        });
+      }
+      if (this.state.current_transactions_value !== total_amount) {
+        this.setState({
+          current_transactions_value: total_amount
+        });
+      }
+    }
+  }
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -135,7 +118,6 @@ class Products extends Component {
   }
 
   closeModal;
-
   FormhandleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -146,8 +128,8 @@ class Products extends Component {
         period: e.currentTarget.textContent
       },
       () => {
-        const { getFilteredIncomeStream } = this.props;
-        getFilteredIncomeStream({ ...this.state });
+        const { getFilteredProducts } = this.props;
+        getFilteredProducts({ ...this.state });
       }
     );
   }
@@ -177,15 +159,15 @@ class Products extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = "";
+    let className = '';
     if (percentage <= 20) {
-      className = "bg-danger";
+      className = 'bg-danger';
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = 'bg-warning';
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = 'bg-info';
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = 'bg-primary';
     }
     return className;
   }
@@ -195,55 +177,79 @@ class Products extends Component {
   );
 
   handleSubmit = () => {
-    const { CreateIncomeStreamTargetActions } = this.props;
-    CreateIncomeStreamTargetActions(
-      { ...this.state },
-      this.setState({ modal: false })
-    );
+    const { createProductsTarget } = this.props;
+    createProductsTarget({ ...this.state }, this.setState({ modal: false }));
+    getFilteredProducts({ ...this.state });
   };
 
-  getTransactionsCount = incomeStreams => {
-    let raw_transactions = [];
-    let total_value;
-    incomeStreams.forEach(income => {
-      raw_transactions.push(income.number_of_transactions);
-      total_value = raw_transactions.reduce((a, b) => a + b, 0);
-    });
-    return total_value;
-  };
-
-  getTransactionValue = incomeStreams => {
-    let raw_total = [];
-    let total_amount;
-    incomeStreams.forEach(income => {
-      raw_total.push(income.transactions_value);
-      total_amount = raw_total.reduce((a, b) => a + b, 0);
-    });
-    return total_amount;
-  };
+  productsCard(products) {
+    return products.map(product => (
+      <Col xs="12" sm="6" lg="3" key={products.id}>
+        <NavLink to="/income-streams" className="nav-link">
+          <ProgressBarCard
+            metric={product.name}
+            value={product.total_okr}
+            percentage={product.percentage}
+            target={product.total_target}
+            cardClassName={product.color}
+            style={{ backgroundColor: 'red !important' }}
+            determineColor={this.determineCardColor(product.percentage)}
+          />
+        </NavLink>
+      </Col>
+    ));
+  }
 
   render() {
-    const { incomeStreams, periods, loading, metrics } = this.props;
+    const { products, periods, metrics } = this.props;
+    const {
+      current_number_transactions,
+      current_transactions_value
+    } = this.state;
 
-    return (
+    return products.length === 0 ? (
+      <div style={{ marginLeft: 580 }}>
+        <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+      </div>
+    ) : (
       <div className="animated fadeIn">
-        <Row className="float-right">
-          <Col xs="4">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-            <div className="small text-muted">Yearly</div> */}
-            </Col>
+        <Row>
+          <Col lg="3" sm="6" xs="12">
+            <Widget02
+              header={current_number_transactions}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
+              starting={current_number_transactions}
+            />
+          </Col>
+          <Col lg="3" sm="6" xs="12">
+            <Widget02
+              header={current_transactions_value}
+              prefix="Ksh: "
+              mainText="Transaction Value"
+              icon="fa fa-money"
+              color="info"
+              starting={current_transactions_value}
+            />
+          </Col>
+          <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                className="float-right mr-1"
-                id={"card1"}
+                id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
                 <DropdownToggle caret color="primary">
-                  Period Type
+                  Period Types
                 </DropdownToggle>
                 <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Week</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Month</div>
+                  </DropdownItem>
                   <DropdownItem>
                     <div onClick={this.handleChange}>Monthly</div>
                   </DropdownItem>
@@ -254,19 +260,9 @@ class Products extends Component {
               </ButtonDropdown>
             </Card>
           </Col>
-          <Col xs="3">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-            <div className="small text-muted">Yearly</div> */}
-            </Col>
+          <Col lg="2" sm="4" xs="4">
             <Card>
-              <ButtonDropdown
-                className="float-right mr-1 text-muted"
-                disabled
-                id={"card2"}
-                // isOpen={this.state.dropdownOpen2}
-                // toggle={this.toggle2}
-              >
+              <ButtonDropdown disabled id={'card2'}>
                 <DropdownToggle caret color="primary" disabled>
                   Year
                 </DropdownToggle>
@@ -284,15 +280,11 @@ class Products extends Component {
               </ButtonDropdown>
             </Card>
           </Col>
-          <Col xs="3">
-            <Col>
-              {/* <CardTitle className="mb-0">Value Centers Perfomance</CardTitle>
-            <div className="small text-muted">Yearly</div> */}
-            </Col>
+
+          <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                className="float-right mr-1"
-                id={"card3"}
+                id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -307,10 +299,11 @@ class Products extends Component {
                       openModal={this.openModal}
                       value={this.state.target}
                       FormhandleChange={this.FormhandleChange}
-                      incomeStreams={incomeStreams}
+                      incomeStreams={products}
                       periods={periods}
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
+                      title={'Products'}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -319,39 +312,10 @@ class Products extends Component {
           </Col>
         </Row>
         <Row />
-        <Row>
-          <Col xs="12" sm="6" lg="4">
-            <Widget02
-              header={loading ? 0 : this.getTransactionsCount(incomeStreams)}
-              mainText="Total Transactions"
-              icon="fa fa-cogs"
-              color="warning"
-            />
-          </Col>
-          <Col xs="12" sm="6" lg="4">
-            <Widget02
-              header={
-                loading ? "Ksh:" + 0 : this.getTransactionValue(incomeStreams)
-              }
-              mainText="Transaction Value(In KSH)"
-              icon="fa fa-money"
-              color="info"
-            />
-          </Col>
-        </Row>
+        <Row>{this.productsCard(products)}</Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            <LineGraph
-              mainChartOpts={mainChartOpts}
-              id={"card1"}
-              isOpen={this.state.card1}
-              toggle={() => {
-                this.setState({ card1: !this.state.card1 });
-              }}
-              incomeStreams={incomeStreams}
-              title={"IncomeStreams Performance"}
-              incomeStream={incomeStreams}
-            />
+            {LineGraph.plotLineGraphs(products)}
           </Col>
         </Row>
       </div>
@@ -362,7 +326,6 @@ class Products extends Component {
 export const mapStateToProps = state => {
   return {
     products: state.getProducts.products,
-    incomeStreams: state.incomeStream.incomeStreams,
     loading: state.incomeStream.loading,
     periods: state.incomeStream.periods,
     metrics: state.incomeStream.metrics
@@ -371,10 +334,10 @@ export const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getProducts: getProducts,
-  getFilteredIncomeStream: getFilteredIncomeStream,
+  getFilteredProducts: getFilteredProducts,
   getPeriodsAction: getPeriods,
   getMetricsActions: getMetrics,
-  CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
+  createProductsTarget: createProductsTarget
 };
 
 export default connect(

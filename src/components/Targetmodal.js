@@ -23,7 +23,7 @@ class Targetmodal extends Component {
       incomeStreams,
       periods,
       metrics,
-      handleSubmit,
+      handleSubmit, 
       title
     } = this.props;
 
@@ -105,7 +105,7 @@ class Targetmodal extends Component {
                     onChange={FormhandleChange}
                   >
                     <option>{`Select ${title} ....`}</option>
-                    {incomeStreams.map(income => (
+                    {incomeStreams && incomeStreams.map(income => (
                       <option key={income.name} value={income.id}>
                         {income.name}
                       </option>
