@@ -23,7 +23,8 @@ class Targetmodal extends Component {
       incomeStreams,
       periods,
       metrics,
-      handleSubmit
+      handleSubmit,
+      title
     } = this.props;
 
     let periodNames = [];
@@ -94,7 +95,7 @@ class Targetmodal extends Component {
               </FormGroup>
               <FormGroup row>
                 <Label for="IncomeStream" sm={2}>
-                  Income Stream
+                  {title}
                 </Label>
                 <Col sm={10}>
                   <Input
@@ -103,7 +104,7 @@ class Targetmodal extends Component {
                     id="IncomeStream"
                     onChange={FormhandleChange}
                   >
-                    <option>Select Income stream ....</option>
+                    <option>{`Select ${title} ....`}</option>
                     {incomeStreams.map(income => (
                       <option key={income.name} value={income.id}>
                         {income.name}

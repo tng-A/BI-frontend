@@ -1,13 +1,16 @@
 import React, { Component } from "react";
+import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import LineGraph from "../../components/lineGraph";
 import { connect } from "react-redux";
+import Loader from "react-loader-spinner";
 import {
-  getFilteredIncomeStream,
   getPeriods,
-  getMetrics,
-  CreateIncomeStreamTarget
+  getMetrics
 } from "../../redux/actionCreators/IncomeStreams";
-import { getProducts } from "../../redux/actionCreators/Products";
+import {
+  getRevenueStreams,
+  createRevenueStreamsTarget
+} from "../../redux/actionCreators/RevenueStreams";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   Card,
@@ -16,12 +19,15 @@ import {
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle
+  DropdownToggle,
+  NavLink
 } from "reactstrap";
+import "./index.css";
+import ProgressBarCard from "../../components/progressBarCard";
 import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
-import TransactionsHelper from '../../utils/transactions';
+import TransactionsHelper from "../../utils/transactions";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -72,27 +78,23 @@ class Products extends Component {
 
   componentDidMount() {
     const {
-      getFilteredIncomeStream,
+      getRevenueStreamsActions,
       getPeriodsAction,
-      getMetricsActions,
+      getMetricsActions
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getFilteredIncomeStream({ ...this.state });
-      
+    getRevenueStreamsActions({ ...this.state });
+
     return setInterval(() => {
-      getFilteredIncomeStream({ ...this.state });
+      getRevenueStreamsActions({ ...this.state });
     }, 30000);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { incomeStreams } = nextProps;
-    const { incomeStreams: incomeStreamLate } = this.props;
-    if (incomeStreams !== incomeStreamLate) {
-      getFilteredIncomeStream({ ...this.state });
-    }
-    const total_value = TransactionsHelper.getTransactionsCount(incomeStreams);
-    const total_amount = TransactionsHelper.getTransactionValue(incomeStreams);
+  componentWillReceiveProps(nextprops) {
+    const { revenueStreams } = nextprops;
+    let total_amount = TransactionsHelper.getTransactionValue(revenueStreams);
+    let total_value = TransactionsHelper.getTransactionsCount(revenueStreams);
     if (this.state.current_number_transactions !== total_value) {
       this.setState({
         current_number_transactions: total_value
@@ -103,14 +105,12 @@ class Products extends Component {
         current_transactions_value: total_amount
       });
     }
-    
   }
   openModal() {
     this.setState({
       modal: !this.state.modal
     });
   }
-
 
   FormhandleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -122,8 +122,8 @@ class Products extends Component {
         period: e.currentTarget.textContent
       },
       () => {
-        const { getFilteredIncomeStream } = this.props;
-        getFilteredIncomeStream({ ...this.state });
+        const { getRevenueStreamsActions } = this.props;
+        getRevenueStreamsActions({ ...this.state });
       }
     );
   }
@@ -161,7 +161,7 @@ class Products extends Component {
     } else if (percentage <= 50) {
       className = "bg-info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "bg-warning";
     }
     return className;
   }
@@ -171,23 +171,52 @@ class Products extends Component {
   );
 
   handleSubmit = () => {
-    const { CreateIncomeStreamTargetActions } = this.props;
-    CreateIncomeStreamTargetActions(
+    const { createRevenueStreamsTargetActions } = this.props;
+    createRevenueStreamsTargetActions(
       { ...this.state },
       this.setState({ modal: false })
     );
-    getFilteredIncomeStream({ ...this.state });
+    getRevenueStreams({ ...this.state });
   };
 
+  revanueStreamCard(revenueStreams) {
+    return revenueStreams.map(streams => (
+      <Col xs="12" sm="6" lg="3" key={streams.id}>
+        <NavLink to="/" className="nav-link">
+          <ProgressBarCard
+            metric={streams.name}
+            // value={streams.total_okr}
+            percentage={streams.achievement_percentage}
+            target={`Ksh: ${new Intl.NumberFormat().format(
+              streams.total_target
+            )}`}
+            // target={`Ksh: ${}`}
+            cardClassName={streams.color}
+            style={{ backgroundColor: "red !important" }}
+            determineColor={this.determineCardColor(
+              streams.achievement_percentage
+            )}
+          />
+        </NavLink>
+      </Col>
+    ));
+  }
+
   render() {
-    const { incomeStreams, periods, metrics } = this.props;
+    const { revenueStreams, periods, metrics } = this.props;
     const {
       current_number_transactions,
       current_transactions_value
     } = this.state;
-    
-    return (
+    return revenueStreams.length === 0 ? (
+      <div>
+        {/* Logo is an actual React component */}
+        <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+        <Logo />
+      </div>
+    ) : (
       <div className="animated fadeIn">
+        {}
         <Row>
           <Col lg="3" sm="6" xs="12">
             <Widget02
@@ -240,6 +269,8 @@ class Products extends Component {
               <ButtonDropdown
                 disabled
                 id={"card2"}
+                // isOpen={this.state.dropdownOpen2}
+                // toggle={this.toggle2}
               >
                 <DropdownToggle caret color="primary" disabled>
                   Year
@@ -277,11 +308,11 @@ class Products extends Component {
                       openModal={this.openModal}
                       value={this.state.target}
                       FormhandleChange={this.FormhandleChange}
-                      incomeStreams={incomeStreams}
+                      incomeStreams={revenueStreams}
                       periods={periods}
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
-                      title="Income Streams"
+                      title="Revenue Streams"
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -289,13 +320,14 @@ class Products extends Component {
             </Card>
           </Col>
         </Row>
+        <Row>{this.revanueStreamCard(revenueStreams)}</Row>
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(incomeStreams)}
+            {LineGraph.plotLineGraphs(revenueStreams)}
           </Col>
         </Row>
-        <TargetAchievement incomeStreams={incomeStreams} />
+        <TargetAchievement incomeStreams={revenueStreams} />
       </div>
     );
   }
@@ -303,8 +335,7 @@ class Products extends Component {
 
 export const mapStateToProps = state => {
   return {
-    products: state.getProducts.products,
-    incomeStreams: state.incomeStream.incomeStreams,
+    revenueStreams: state.revenueStreamsReducer.RevenueStreams,
     loading: state.incomeStream.loading,
     periods: state.incomeStream.periods,
     metrics: state.incomeStream.metrics
@@ -312,11 +343,10 @@ export const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  getProducts: getProducts,
-  getFilteredIncomeStream: getFilteredIncomeStream,
+  getRevenueStreamsActions: getRevenueStreams,
   getPeriodsAction: getPeriods,
   getMetricsActions: getMetrics,
-  CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
+  createRevenueStreamsTargetActions: createRevenueStreamsTarget
 };
 
 export default connect(
