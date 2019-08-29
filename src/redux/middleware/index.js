@@ -7,8 +7,7 @@ import {
   watchGetMetricPass
 } from "./IncomeStreams";
 import {
-  watchGetValueCenterPass,
-  watchFilteredValueCenterpass
+  watchGetValueCenterPass
 } from "./ValueCenter";
 import { watchGetProductPass } from "./Products";
 
@@ -17,7 +16,6 @@ function* rootSaga() {
     fork(watchIncomeStreamSagaAsync),
     fork(WatchIncomeStreamSagaTarget),
     fork(watchGetValueCenterPass),
-    fork(watchFilteredValueCenterpass),
     fork(watchGetProductPass),
     fork(watchFilteredIncomestreampass),
     fork(watchGetPeriodPass),

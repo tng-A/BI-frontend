@@ -9,7 +9,10 @@ import {
 import { Line } from 'react-chartjs-2';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 class LineGraph extends Component {
+
   render() {
+    const { incomeStreams, valueCenters } = this.props;
+
     const chart1MainChartOpts = {
       tooltips: {
         enabled: false,
@@ -106,15 +109,30 @@ class LineGraph extends Component {
         }
       }
     };
-    const { incomeStreams } = this.props;
+
+
+
+    let lineGraphList = []
+
+
+    if(incomeStreams && incomeStreams.length > 1){
+      lineGraphList = [...incomeStreams]
+    }
+
+    if(valueCenters && valueCenters.length > 1){
+      lineGraphList = [...valueCenters]
+    }
+    
+
+
     let datasetsBig = [];
     let datasetSmall = [];
     let allLabels = [];
     let testArray = [];
     let lenOfLabels;
 
-    if (incomeStreams) {
-      incomeStreams.forEach(stream => {
+    if (lineGraphList) {
+      lineGraphList.forEach(stream => {
         lenOfLabels = stream.graph_data.length;
         stream.graph_data.map(result => {
           testArray.push(result.value);
@@ -128,8 +146,8 @@ class LineGraph extends Component {
     let median = Math.ceil((max_amount + min_amount) / 2);
     let smallStream = [];
     let bigStreams = [];
-    if (incomeStreams) {
-      incomeStreams.forEach(stream => {
+    if (lineGraphList) {
+      lineGraphList.forEach(stream => {
         stream.graph_data.map(result => {
           if (result.value >= median) {
             bigStreams.push(stream);
