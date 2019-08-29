@@ -40,8 +40,8 @@ class productsService {
   }
 
   static getFilteredProducts(payload) {
-    const { year, period } = payload;
-    return axios.get(`${baseUrl}/api/product/1/${period}/${year}/`);
+    const { year, period, productID } = payload;
+    return axios.get(`${baseUrl}/api/product/${productID}/${period}/${year}/`);
   }
 
   static getPeriodsProduct() {

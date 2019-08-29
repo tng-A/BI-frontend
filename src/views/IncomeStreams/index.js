@@ -75,21 +75,23 @@ class Products extends Component {
       getFilteredIncomeStream,
       getPeriodsAction,
       getMetricsActions,
+      match: { params: { incomeStreamID } }
+
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getFilteredIncomeStream({ ...this.state });
+    getFilteredIncomeStream({ ...this.state, incomeStreamID });
       
     return setInterval(() => {
-      getFilteredIncomeStream({ ...this.state });
+      getFilteredIncomeStream({ ...this.state, incomeStreamID });
     }, 30000);
   }
 
   componentWillReceiveProps(nextProps) {
     const { incomeStreams } = nextProps;
-    const { incomeStreams: incomeStreamLate } = this.props;
+    const { incomeStreams: incomeStreamLate ,  match: { params: { incomeStreamID } }} = this.props;
     if (incomeStreams !== incomeStreamLate) {
-      getFilteredIncomeStream({ ...this.state });
+      getFilteredIncomeStream({ ...this.state , incomeStreamID});
     }
     const total_value = TransactionsHelper.getTransactionsCount(incomeStreams);
     const total_amount = TransactionsHelper.getTransactionValue(incomeStreams);
@@ -122,8 +124,8 @@ class Products extends Component {
         period: e.currentTarget.textContent
       },
       () => {
-        const { getFilteredIncomeStream } = this.props;
-        getFilteredIncomeStream({ ...this.state });
+        const { getFilteredIncomeStream,  match: { params: { incomeStreamID } } } = this.props;
+        getFilteredIncomeStream({ ...this.state, incomeStreamID });
       }
     );
   }

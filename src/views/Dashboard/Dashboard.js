@@ -72,7 +72,7 @@ class Dashboard extends Component {
     return (
       ValueCenters.map(center => (
         <Col xs="12" sm="6" lg="3" key={center.id}>
-          <NavLink to="/" className="nav-link">
+          <NavLink to={`/product/${center.id}`} className="nav-link">
             <ProgressBarCard
               metric={center.name}
               value={center.transactions_value}

@@ -41,8 +41,8 @@ class IncomeStreamService {
   }
 
   static getFilteredIncomeStream(payload) {
-    const { year, period } = payload;
-    return axios.get(`${baseUrl}/api/income_stream/1/${period}/${year}/`);
+    const { year, period, incomeStreamID } = payload;
+    return axios.get(`${baseUrl}/api/income_stream/${incomeStreamID}/${period}/${year}/`);
   }
 
   static getPeriodsStream() {

@@ -1,4 +1,4 @@
-import { put, call, takeEvery, takeLatest } from "redux-saga/effects";
+import { put, call, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import {
   getRevenueStreams,
