@@ -183,7 +183,6 @@ class Products extends Component {
   render() {
     const { incomeStreams, periods, metrics } = this.props;
     const {
-      period,
       current_number_transactions,
       current_transactions_value
     } = this.state;
@@ -293,16 +292,7 @@ class Products extends Component {
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            <LineGraph
-              id={"card1"}
-              isOpen={this.state.card1}
-              toggle={() => {
-                this.setState({ card1: !this.state.card1 });
-              }}
-              incomeStreams={incomeStreams}
-              title={"IncomeStreams Performance"}
-              period={period}
-            />
+            {LineGraph.plotLineGraphs(incomeStreams)}
           </Col>
         </Row>
         <TargetAchievement incomeStreams={incomeStreams} />
