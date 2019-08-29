@@ -24,6 +24,7 @@ class IncomeStreamService {
       description,
       IncomeStream
     } = payload;
+    
     const tobeSent = {
       metric,
       amount,
@@ -36,6 +37,7 @@ class IncomeStreamService {
       `${baseUrl}/api/income_stream_target/${IncomeStream}/`,
       tobeSent
     );
+  
   }
 
   static getFilteredIncomeStream(payload) {

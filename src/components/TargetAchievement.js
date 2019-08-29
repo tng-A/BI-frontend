@@ -3,8 +3,16 @@ import { Table, Progress } from 'reactstrap';
 import './index.css';
 
 export default class TargetAchievement extends Component {
+  
   render() {
-    const { incomeStreams, determineColor } = this.props;
+    const { incomeStreams, determineColor, products } = this.props;
+    let tableList = []
+    if(products){
+      tableList = [...products]
+    }
+    if(incomeStreams){
+      tableList = [...incomeStreams]
+    }
 
     return (
       <div className="target-achievement-table">
@@ -22,7 +30,7 @@ export default class TargetAchievement extends Component {
             </tr>
           </thead>
           <tbody>
-            {incomeStreams.map(stream => {
+            {tableList && tableList.map(stream => {
               return (
                 <tr>
                   <td>
