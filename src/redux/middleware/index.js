@@ -6,10 +6,12 @@ import {
   watchGetPeriodPass,
   watchGetMetricPass
 } from "./IncomeStreams";
-import {
-  watchGetValueCenterPass
-} from "./ValueCenter";
+import { watchGetValueCenterPass } from "./ValueCenter";
 import { watchGetProductPass } from "./Products";
+import {
+  getRevenueStreamsWatcher,
+  createRevenueStreamsTargetWatcher
+} from "./RevenueStreams";
 
 function* rootSaga() {
   yield all([
@@ -19,7 +21,9 @@ function* rootSaga() {
     fork(watchGetProductPass),
     fork(watchFilteredIncomestreampass),
     fork(watchGetPeriodPass),
-    fork(watchGetMetricPass)
+    fork(watchGetMetricPass),
+    fork(getRevenueStreamsWatcher),
+    fork(createRevenueStreamsTargetWatcher)
   ]);
 }
 
