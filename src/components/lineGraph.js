@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Card,
   CardBody,
@@ -8,11 +8,8 @@ import {
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-class LineGraph extends Component {
-
-  render() {
-    const { incomeStreams, valueCenters } = this.props;
-
+class LineGraph {
+  static plotLineGraphs(lineGraphList){
     const chart1MainChartOpts = {
       tooltips: {
         enabled: false,
@@ -109,21 +106,6 @@ class LineGraph extends Component {
         }
       }
     };
-
-
-
-    let lineGraphList = []
-
-
-    if(incomeStreams && incomeStreams.length > 1){
-      lineGraphList = [...incomeStreams]
-    }
-
-    if(valueCenters && valueCenters.length > 1){
-      lineGraphList = [...valueCenters]
-    }
-    
-
 
     let datasetsBig = [];
     let datasetSmall = [];
@@ -263,15 +245,13 @@ class LineGraph extends Component {
     chart2MainChartOpts.scales.yAxes[0].ticks.stepSize = Math.ceil(
       smallMax / 5
     );
-
     return (
       <div>
         <Card>
           <CardBody>
             <Row>
               <Col sm="5">
-                <CardTitle className="mb-0">High Perfoming Income Streams</CardTitle>
-                <div className="small text-muted">Yearly</div>
+                <CardTitle className="mb-0"></CardTitle>
               </Col>
             </Row>
             <div
@@ -286,16 +266,13 @@ class LineGraph extends Component {
             </div>
           </CardBody>
         </Card>
-
         <Card>
           <CardBody>
             <Row>
               <Col sm="5">
                 <CardTitle className="mb-0">Income Streams</CardTitle>
-                <div className="small text-muted">Yearly</div>
               </Col>
             </Row>
-
             <div
               className="chart-wrapper"
               style={{ height: 600 + 'px', marginTop: 10 + 'px' }}
@@ -311,6 +288,6 @@ class LineGraph extends Component {
       </div>
     );
   }
-}
+    }
 
 export default LineGraph;
