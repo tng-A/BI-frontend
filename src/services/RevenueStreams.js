@@ -5,8 +5,8 @@ const baseUrl = resolveBaseUrl();
 
 class RevenueStreamsService {
   static getRevenueStreams(payload) {
-    const { period, year } = payload;
-    return axios.get(`${baseUrl}/api/revenue_stream/1/${period}/${year}/`);
+    const { period, year, revenueID } = payload;
+    return axios.get(`${baseUrl}/api/revenue_stream/${revenueID}/${period}/${year}/`);
   }
 
   static postRevanueStreamsTarget(payload) {

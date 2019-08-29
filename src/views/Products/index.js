@@ -79,22 +79,27 @@ class Products extends Component {
     const {
       getFilteredProducts,
       getPeriodsAction,
-      getMetricsActions
+      getMetricsActions,
+      history,
+      match,
+      match: { params: { productID } }
     } = this.props;
-    getFilteredProducts({ ...this.state });
+    console.log(history, match, '?????????')
+   
+    getFilteredProducts({ ...this.state, productID });
     getPeriodsAction();
     getMetricsActions();
 
     return setInterval(() => {
-      getFilteredProducts({ ...this.state });
+      getFilteredProducts({ ...this.state, productID });
     }, 30000);
   }
 
   componentWillReceiveProps(nextProps) {
     const { products } = nextProps;
-    const { products: productsLate } = this.props;
+    const { products: productsLate, match: { params: { productID } } } = this.props;
     if (products !== productsLate) {
-      getFilteredProducts({ ...this.state });
+      getFilteredProducts({ ...this.state, productID});
     }
     if (products) {
       const total_value = TransactionsHelper.getTransactionsCount(products);
@@ -129,7 +134,7 @@ class Products extends Component {
       },
       () => {
         const { getFilteredProducts } = this.props;
-        getFilteredProducts({ ...this.state });
+        getFilteredProducts({ ...this.state,  });
       }
     );
   }
@@ -184,8 +189,8 @@ class Products extends Component {
 
   productsCard(products) {
     return products.map(product => (
-      <Col xs="12" sm="6" lg="3" key={products.id}>
-        <NavLink to="/income-streams" className="nav-link">
+      <Col xs="12" sm="6" lg="3" key={product.id}>
+        <NavLink to={`/revenue/${product.id}`} className="nav-link">
           <ProgressBarCard
             metric={product.name}
             value={product.total_okr}
@@ -201,7 +206,8 @@ class Products extends Component {
   }
 
   render() {
-    const { products, periods, metrics } = this.props;
+    const { products, periods, metrics, history } = this.props;
+    console.log(history)
     const {
       current_number_transactions,
       current_transactions_value
