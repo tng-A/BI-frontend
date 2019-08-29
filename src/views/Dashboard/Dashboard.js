@@ -18,79 +18,10 @@ import {
   Row,
 } from 'reactstrap';
 import ProgressBarCard from '../../components/progressBarCard';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-
-
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-var elements = 27;
-var data1 = [];
-var data2 = [];
-var data3 = [];
-
-for (var i = 0; i <= elements; i++) {
-  data1.push(random(50, 200));
-  data2.push(random(80, 100));
-  data3.push(65);
-}
-
-const mainChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-    intersect: true,
-    mode: 'index',
-    position: 'nearest',
-    callbacks: {
-      labelColor: function(tooltipItem, chart) {
-        return {
-          backgroundColor:
-            chart.data.datasets[tooltipItem.datasetIndex].borderColor
-        };
-      }
-    }
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: true
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          drawOnChartArea: true
-        }
-      }
-    ],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 1000
-        }
-      }
-    ]
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 5,
-      hoverRadius: 4,
-      hoverBorderWidth: 1
-    }
-  }
-};
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
       dropdownOpen: false,
@@ -109,17 +40,8 @@ class Dashboard extends Component {
 
   componentWillReceiveProps(nextprops) {
     const { ValueCenters } = nextprops;
-    let total_amount = 0;
-    let total_value = 0;
-    ValueCenters.forEach(valueCentre => {
-      valueCentre.product_data.forEach(product =>{
-        product.revenue_stream_data.forEach(revenue_stream => {
-          const income_streams = revenue_stream.income_stream_transaction_data
-          total_value += TransactionsHelper.getTransactionsCount(income_streams)
-          total_amount += TransactionsHelper.getTransactionValue(income_streams)
-        })
-      })
-    })
+    let total_amount = TransactionsHelper.getTransactionValue(ValueCenters)
+    let total_value = TransactionsHelper.getTransactionsCount(ValueCenters);
     if (this.state.current_number_transactions !== total_value) {
       this.setState({
         current_number_transactions: total_value
@@ -131,23 +53,6 @@ class Dashboard extends Component {
       });
     }
 
-  }
-
-  handleTypeToggle() {
-    const { getFilteredValueCenter } = this.props;
-    getFilteredValueCenter();
-  }
-
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
-  }
-
-  onRadioBtnClick(radioSelected) {
-    this.setState({
-      radioSelected: radioSelected
-    });
   }
 
   determineCardColor(percentage) {
@@ -163,11 +68,6 @@ class Dashboard extends Component {
     }
     return className;
   }
-
-  loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
-  );
-
   valueCentreCard (ValueCenters) {
     return (
       ValueCenters.map(center => (
@@ -175,12 +75,12 @@ class Dashboard extends Component {
           <NavLink to="/" className="nav-link">
             <ProgressBarCard
               metric={center.name}
-              value={center.total_okr}
-              percentage={center.percentage}
+              value={center.transactions_value}
+              percentage={center.achievement_percentage}
               target={center.total_target}
               cardClassName={center.color}
               style={{ backgroundColor: 'red !important' }}
-              determineColor={this.determineCardColor(center.percentage)}
+              determineColor={this.determineCardColor(center.achievement_percentage)}
             />
           </NavLink>
         </Col>
@@ -277,16 +177,7 @@ class Dashboard extends Component {
             </Row>
             <Row>
               <Col xs="12" sm="12" lg="12">
-                <LineGraph
-                  mainChartOpts={mainChartOpts}
-                  id={'card1'}
-                  isOpen={this.state.card1}
-                  toggle={() => {
-                    this.setState({ card1: !this.state.card1 });
-                  }}
-                  ValueCenters={ValueCenters}
-                  typeToggle={this.handleTypeToggle}
-                />
+                {LineGraph.plotLineGraphs(ValueCenters, 'ValueCenter(s)')}
               </Col>
             </Row>
         </div>
