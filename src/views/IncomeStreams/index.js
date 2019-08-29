@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import LineGraph from "../../components/lineGraph";
+import Loader from "react-loader-spinner";
+import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import { connect } from "react-redux";
 import {
   getFilteredIncomeStream,
@@ -21,7 +23,7 @@ import {
 import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
-import TransactionsHelper from '../../utils/transactions';
+import TransactionsHelper from "../../utils/transactions";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -75,13 +77,14 @@ class Products extends Component {
       getFilteredIncomeStream,
       getPeriodsAction,
       getMetricsActions,
-      match: { params: { incomeStreamID } }
-
+      match: {
+        params: { incomeStreamID }
+      }
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state, incomeStreamID });
-      
+
     return setInterval(() => {
       getFilteredIncomeStream({ ...this.state, incomeStreamID });
     }, 30000);
@@ -89,9 +92,14 @@ class Products extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { incomeStreams } = nextProps;
-    const { incomeStreams: incomeStreamLate ,  match: { params: { incomeStreamID } }} = this.props;
+    const {
+      incomeStreams: incomeStreamLate,
+      match: {
+        params: { incomeStreamID }
+      }
+    } = this.props;
     if (incomeStreams !== incomeStreamLate) {
-      getFilteredIncomeStream({ ...this.state , incomeStreamID});
+      getFilteredIncomeStream({ ...this.state, incomeStreamID });
     }
     const total_value = TransactionsHelper.getTransactionsCount(incomeStreams);
     const total_amount = TransactionsHelper.getTransactionValue(incomeStreams);
@@ -105,14 +113,12 @@ class Products extends Component {
         current_transactions_value: total_amount
       });
     }
-    
   }
   openModal() {
     this.setState({
       modal: !this.state.modal
     });
   }
-
 
   FormhandleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -124,7 +130,12 @@ class Products extends Component {
         period: e.currentTarget.textContent
       },
       () => {
-        const { getFilteredIncomeStream,  match: { params: { incomeStreamID } } } = this.props;
+        const {
+          getFilteredIncomeStream,
+          match: {
+            params: { incomeStreamID }
+          }
+        } = this.props;
         getFilteredIncomeStream({ ...this.state, incomeStreamID });
       }
     );
@@ -187,8 +198,14 @@ class Products extends Component {
       current_number_transactions,
       current_transactions_value
     } = this.state;
-    
-    return (
+
+    return incomeStreams.length === 0 ? (
+      <div>
+        {/* Logo is an actual React component */}
+        <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+        <Logo />
+      </div>
+    ) : (
       <div className="animated fadeIn">
         <Row>
           <Col lg="3" sm="6" xs="12">
@@ -239,10 +256,7 @@ class Products extends Component {
           </Col>
           <Col lg="2" sm="4" xs="4">
             <Card>
-              <ButtonDropdown
-                disabled
-                id={"card2"}
-              >
+              <ButtonDropdown disabled id={"card2"}>
                 <DropdownToggle caret color="primary" disabled>
                   Year
                 </DropdownToggle>
