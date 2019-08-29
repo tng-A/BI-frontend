@@ -19,9 +19,9 @@ import {
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle,
+  DropdownToggle
 } from "reactstrap";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import "./index.css";
 import ProgressBarCard from "../../components/progressBarCard";
 import TargetAchievement from "../../components/TargetAchievement";
@@ -80,12 +80,14 @@ class Products extends Component {
     const {
       getRevenueStreamsActions,
       getPeriodsAction,
-      getMetricsActions, 
-      match: { params: { revenueID } }
+      getMetricsActions,
+      match: {
+        params: { revenueID }
+      }
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getRevenueStreamsActions({ ...this.state,  revenueID});
+    getRevenueStreamsActions({ ...this.state, revenueID });
 
     return setInterval(() => {
       getRevenueStreamsActions({ ...this.state, revenueID });
@@ -123,7 +125,12 @@ class Products extends Component {
         period: e.currentTarget.textContent
       },
       () => {
-        const { getRevenueStreamsActions, match: { params: { revenueID } } } = this.props;
+        const {
+          getRevenueStreamsActions,
+          match: {
+            params: { revenueID }
+          }
+        } = this.props;
         getRevenueStreamsActions({ ...this.state, revenueID });
       }
     );
@@ -182,7 +189,6 @@ class Products extends Component {
 
   revanueStreamCard(revenueStreams) {
     return revenueStreams.map(streams => (
-      
       <Col xs="12" sm="6" lg="3" key={streams.id}>
         <NavLink to={`/income-streams/${streams.id}`} className="nav-link">
           <ProgressBarCard
