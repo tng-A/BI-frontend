@@ -9,7 +9,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 class LineGraph {
-  static plotLineGraphs(lineGraphList){
+  static plotLineGraphs(lineGraphList, title){
     const chart1MainChartOpts = {
       tooltips: {
         enabled: false,
@@ -251,7 +251,7 @@ class LineGraph {
           <CardBody>
             <Row>
               <Col sm="5">
-                <CardTitle className="mb-0"></CardTitle>
+                <CardTitle className="mb-0">High Performing {title}</CardTitle>
               </Col>
             </Row>
             <div
@@ -270,7 +270,7 @@ class LineGraph {
           <CardBody>
             <Row>
               <Col sm="5">
-                <CardTitle className="mb-0">Income Streams</CardTitle>
+                <CardTitle className="mb-0">{title}</CardTitle>
               </Col>
             </Row>
             <div

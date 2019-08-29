@@ -75,12 +75,12 @@ class Dashboard extends Component {
           <NavLink to="/" className="nav-link">
             <ProgressBarCard
               metric={center.name}
-              value={center.total_okr}
-              percentage={center.percentage}
+              value={center.transactions_value}
+              percentage={center.achievement_percentage}
               target={center.total_target}
               cardClassName={center.color}
               style={{ backgroundColor: 'red !important' }}
-              determineColor={this.determineCardColor(center.percentage)}
+              determineColor={this.determineCardColor(center.achievement_percentage)}
             />
           </NavLink>
         </Col>
@@ -177,7 +177,7 @@ class Dashboard extends Component {
             </Row>
             <Row>
               <Col xs="12" sm="12" lg="12">
-                {LineGraph.plotLineGraphs(ValueCenters)}
+                {LineGraph.plotLineGraphs(ValueCenters, 'ValueCenter(s)')}
               </Col>
             </Row>
         </div>
