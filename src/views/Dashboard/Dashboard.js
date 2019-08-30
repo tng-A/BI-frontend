@@ -40,19 +40,17 @@ class Dashboard extends Component {
       year: "2019",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      modal: false,
-      amount: "",
-      metric: "",
-      description: "",
-      IncomeStream: "",
-      period_name: "",
-      period_type: "",
-      period_year: ""
+      initial_load: false
+
     };
+    this.toggle = this.toggle.bind(this);
+    this.toggle2 = this.toggle2.bind(this);
     this.toggle3 = this.toggle3.bind(this);
+    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.FormhandleChange = this.FormhandleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -67,7 +65,13 @@ class Dashboard extends Component {
   }
 
   componentWillReceiveProps(nextprops) {
+    
     const { ValueCenters } = nextprops;
+    if (ValueCenters){
+      this.setState({
+        initial_load: !this.state.initial_load
+      })
+    }
     let total_amount = TransactionsHelper.getTransactionValue(ValueCenters);
     let total_value = TransactionsHelper.getTransactionsCount(ValueCenters);
     if (this.state.current_number_transactions !== total_value) {
@@ -88,27 +92,47 @@ class Dashboard extends Component {
     });
   }
 
+  closeModal;
+
+  FormhandleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleChange(e) {
+    this.setState(
+      {
+        period: e.currentTarget.textContent
+      },
+      () => {
+        const { getValueCentersAction } = this.props;
+        getValueCentersAction({ ...this.state });
+      }
+    );
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  toggle2() {
+    this.setState({
+      dropdownOpen2: !this.state.dropdownOpen2
+    });
+  }
+
   toggle3() {
     this.setState({
       dropdownOpen3: !this.state.dropdownOpen3
     });
   }
 
-  FormhandleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+  onRadioBtnClick(radioSelected) {
+    this.setState({
+      radioSelected: radioSelected
+    });
   }
-
-  handleSubmit = () => {
-    const {
-      createValueCenterTargetsActions,
-      getValueCentersAction
-    } = this.props;
-    createValueCenterTargetsActions(
-      { ...this.state },
-      this.setState({ modal: false })
-    );
-    getValueCentersAction({ ...this.state });
-  };
 
   determineCardColor(percentage) {
     let className = "";
@@ -147,9 +171,10 @@ class Dashboard extends Component {
     const { ValueCenters, periods, metrics } = this.props;
     const {
       current_number_transactions,
-      current_transactions_value
+      current_transactions_value,
+      initial_load
     } = this.state;
-    return ValueCenters.length === 0 ? (
+    return  !initial_load? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />

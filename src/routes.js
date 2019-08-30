@@ -6,8 +6,8 @@ const RevenueStream = React.lazy(() => import("./views/RevenueStreams"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: "/", exact: true, name: "IncomeStreams" },
-  { path: "/product/:productID", name: "Product", component: Product },
+  { path: "/", exact: true, name: "ValueCentres" },
+  { path: "/product/:productID", name: "Products", component: Product },
   { path: "/income-streams/:incomeStreamID", name: "IncomeStreams", component: IncomeStreams },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/revenue/:revenueID", name: "RevenueStreams", component: RevenueStream }
