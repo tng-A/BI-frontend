@@ -21,4 +21,14 @@
   .target-achievement-table {
     color: white !important;
   }
+
+  .icon-arrow-left{
+    color: #f8cb00;
+    
+    }
+    
+    .back-button{
+      margin-bottom: 20%;
+      background-color: #3a4149 !important;
+    }
   
