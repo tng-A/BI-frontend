@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
-import logo from "../../../src/assets/svg/tenor.gif"
 import LineGraph from "../../components/lineGraph";
 import { connect } from "react-redux";
 import Loader from "react-loader-spinner";
@@ -25,7 +24,6 @@ import {
 import { NavLink } from "react-router-dom";
 import "./index.css";
 import ProgressBarCard from "../../components/progressBarCard";
-import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
@@ -45,7 +43,7 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-class Products extends Component {
+class RevenueStream extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,7 +62,8 @@ class Products extends Component {
       period_type: "",
       period_year: "",
       current_transactions_value: 0,
-      current_number_transactions: 0
+      current_number_transactions: 0,
+      initial_load: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -90,13 +89,25 @@ class Products extends Component {
     getMetricsActions();
     getRevenueStreamsActions({ ...this.state, revenueID });
 
-    return setInterval(() => {
-      getRevenueStreamsActions({ ...this.state, revenueID });
-    }, 30000);
+    return
   }
 
   componentWillReceiveProps(nextprops) {
+    const {
+      getRevenueStreamsActions,
+      match: {
+        params: { revenueID }
+      }
+    } = this.props;
     const { revenueStreams } = nextprops;
+    if (revenueStreams) {
+      this.setState({
+        initial_load: !this.state.initial_load
+      })
+      setInterval(() => {
+        getRevenueStreamsActions({ ...this.state, revenueID });
+      }, 30000);
+    }
     let total_amount = TransactionsHelper.getTransactionValue(revenueStreams);
     let total_value = TransactionsHelper.getTransactionsCount(revenueStreams);
     if (this.state.current_number_transactions !== total_value) {
@@ -215,9 +226,10 @@ class Products extends Component {
     const { revenueStreams, periods, metrics } = this.props;
     const {
       current_number_transactions,
-      current_transactions_value
+      current_transactions_value,
+      initial_load
     } = this.state;
-    return revenueStreams.length === 0 ? (
+    return initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -333,10 +345,9 @@ class Products extends Component {
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(revenueStreams)}
+            {LineGraph.plotLineGraphs(revenueStreams, 'Revenue Stream(s)')}
           </Col>
         </Row>
-        <TargetAchievement incomeStreams={revenueStreams} />
       </div>
     );
   }
@@ -361,4 +372,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Products);
+)(RevenueStream);

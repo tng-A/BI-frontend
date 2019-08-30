@@ -63,7 +63,8 @@ class Products extends Component {
       period_type: "",
       period_year: "",
       current_transactions_value: 0,
-      current_number_transactions: 0
+      current_number_transactions: 0,
+      initial_load: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -81,24 +82,17 @@ class Products extends Component {
       getFilteredProducts,
       getPeriodsAction,
       getMetricsActions,
-      history,
-      match,
       match: {
         params: { productID }
       }
     } = this.props;
-    console.log(history, match, "?????????");
-
     getFilteredProducts({ ...this.state, productID });
     getPeriodsAction();
     getMetricsActions();
-
-    return setInterval(() => {
-      getFilteredProducts({ ...this.state, productID });
-    }, 30000);
   }
 
   componentWillReceiveProps(nextProps) {
+    
     const { products } = nextProps;
     const {
       products: productsLate,
@@ -110,6 +104,9 @@ class Products extends Component {
       getFilteredProducts({ ...this.state, productID });
     }
     if (products) {
+      this.setState({
+        initial_load: !this.state.initial_load
+      })
       const total_value = TransactionsHelper.getTransactionsCount(products);
       const total_amount = TransactionsHelper.getTransactionValue(products);
       if (this.state.current_number_transactions !== total_value) {
@@ -123,6 +120,9 @@ class Products extends Component {
         });
       }
     }
+    return setInterval(() => {
+      getFilteredProducts({ ...this.state, productID });
+    }, 30000);
   }
   openModal() {
     this.setState({
@@ -214,14 +214,14 @@ class Products extends Component {
   }
 
   render() {
-    const { products, periods, metrics, history } = this.props;
-    console.log(history);
+    const { products, periods, metrics } = this.props;
     const {
       current_number_transactions,
-      current_transactions_value
+      current_transactions_value,
+      initial_load
     } = this.state;
 
-    return products.length === 0 ? (
+    return initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -331,7 +331,7 @@ class Products extends Component {
         <Row>{this.productsCard(products)}</Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(products)}
+            {LineGraph.plotLineGraphs(products, 'Product(s)')}
           </Col>
         </Row>
       </div>

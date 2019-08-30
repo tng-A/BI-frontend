@@ -40,7 +40,7 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-class Products extends Component {
+class IncomeStream extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,14 +84,13 @@ class Products extends Component {
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state, incomeStreamID });
-
     return setInterval(() => {
       getFilteredIncomeStream({ ...this.state, incomeStreamID });
-    }, 30000);
+    }, 35000);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { incomeStreams } = nextProps;
+    const { incomeStreams } = nextProps;    
     const {
       incomeStreams: incomeStreamLate,
       match: {
@@ -338,4 +337,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Products);
+)(IncomeStream);
