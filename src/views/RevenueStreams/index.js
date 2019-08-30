@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
+import logo from "../../../src/assets/svg/tenor.gif"
 import LineGraph from "../../components/lineGraph";
 import { connect } from "react-redux";
 import Loader from "react-loader-spinner";

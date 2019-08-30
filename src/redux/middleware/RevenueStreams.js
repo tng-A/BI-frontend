@@ -39,6 +39,9 @@ export function* createRevenueStreamsTargetAsync({ payload }) {
     });
   } catch (error) {
     yield put(createRevenueStreamsTargetFailure(error));
+    toast.error("Error When creating target !", {
+      position: toast.POSITION.TOP_RIGHT
+    });
   }
 }
 

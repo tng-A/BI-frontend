@@ -2,7 +2,14 @@ import React, { Component } from "react";
 import LineGraph from "../../components/lineGraph";
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import { connect } from "react-redux";
-import { getValueCenter } from "../../redux/actionCreators/ValueCenter";
+import {
+  getValueCenter,
+  createValueCenterTargets
+} from "../../redux/actionCreators/ValueCenter";
+import {
+  getPeriods,
+  getMetrics
+} from "../../redux/actionCreators/IncomeStreams";
 import { NavLink } from "react-router-dom";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -18,6 +25,7 @@ import {
   Col,
   Row
 } from "reactstrap";
+import Targetmodal from "./../../components/Targetmodal";
 import ProgressBarCard from "../../components/progressBarCard";
 
 class Dashboard extends Component {
@@ -26,16 +34,35 @@ class Dashboard extends Component {
 
     this.state = {
       dropdownOpen: false,
+      dropdownOpen3: false,
       radioSelected: 2,
       period: "monthly",
       year: "2019",
       current_transactions_value: 0,
-      current_number_transactions: 0
+      current_number_transactions: 0,
+      modal: false,
+      amount: "",
+      metric: "",
+      description: "",
+      IncomeStream: "",
+      period_name: "",
+      period_type: "",
+      period_year: ""
     };
+    this.toggle3 = this.toggle3.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.FormhandleChange = this.FormhandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    const { getValueCentersAction } = this.props;
+    const {
+      getValueCentersAction,
+      getPeriodsAction,
+      getMetricsActions
+    } = this.props;
+    getPeriodsAction();
+    getMetricsActions();
     getValueCentersAction({ ...this.state });
   }
 
@@ -54,6 +81,34 @@ class Dashboard extends Component {
       });
     }
   }
+
+  openModal() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  toggle3() {
+    this.setState({
+      dropdownOpen3: !this.state.dropdownOpen3
+    });
+  }
+
+  FormhandleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleSubmit = () => {
+    const {
+      createValueCenterTargetsActions,
+      getValueCentersAction
+    } = this.props;
+    createValueCenterTargetsActions(
+      { ...this.state },
+      this.setState({ modal: false })
+    );
+    getValueCentersAction({ ...this.state });
+  };
 
   determineCardColor(percentage) {
     let className = "";
@@ -89,7 +144,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { ValueCenters } = this.props;
+    const { ValueCenters, periods, metrics } = this.props;
     const {
       current_number_transactions,
       current_transactions_value
@@ -169,6 +224,35 @@ class Dashboard extends Component {
               </ButtonDropdown>
             </Card>
           </Col>
+          <Col lg="2" sm="4" xs="4">
+            <Card>
+              <ButtonDropdown
+                id={"card3"}
+                isOpen={this.state.dropdownOpen3}
+                toggle={this.toggle3}
+              >
+                <DropdownToggle caret color="primary">
+                  Target
+                </DropdownToggle>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.openModal}>Set Target</div>
+                    <Targetmodal
+                      modal={this.state.modal}
+                      openModal={this.openModal}
+                      value={this.state.target}
+                      FormhandleChange={this.FormhandleChange}
+                      incomeStreams={ValueCenters}
+                      periods={periods}
+                      metrics={metrics}
+                      handleSubmit={this.handleSubmit}
+                      title="Value Centers"
+                    />
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
         </Row>
         <Row>{this.valueCentreCard(ValueCenters)}</Row>
         <Row>
@@ -183,12 +267,17 @@ class Dashboard extends Component {
 
 export const mapStateToProps = state => {
   return {
-    ValueCenters: state.getValueCentersReducer.valueCenters
+    ValueCenters: state.getValueCentersReducer.valueCenters,
+    periods: state.incomeStream.periods,
+    metrics: state.incomeStream.metrics
   };
 };
 
 const mapDispatchToProps = {
-  getValueCentersAction: getValueCenter
+  getValueCentersAction: getValueCenter,
+  createValueCenterTargetsActions: createValueCenterTargets,
+  getPeriodsAction: getPeriods,
+  getMetricsActions: getMetrics
 };
 
 export default connect(

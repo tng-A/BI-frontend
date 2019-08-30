@@ -4,13 +4,17 @@ import {
   GET_VALUE_CENTERS_FAILURE,
   GET_FILTERED_VALUE_CENTER,
   GET_FILTERED_VALUE_CENTER_SUCCESS,
-  GET_FILTERED_VALUE_CENTER_FAILURE
+  GET_FILTERED_VALUE_CENTER_FAILURE,
+  CREATE_VALUE_CENTER_TARGETS,
+  CREATE_VALUE_CENTER_TARGETS_SUCCESS,
+  CREATE_VALUE_CENTER_TARGETS_FAILURE
 } from "../../ActionTypes/ValueCenter";
 
 export const initialState = {
   valueCenters: [],
   filteredValueCenters: [],
-  loading: false
+  loading: false,
+  valueCentersTraget: {}
 };
 
 const getValueCentersReducer = (state = initialState, action = {}) => {
@@ -31,7 +35,16 @@ const getValueCentersReducer = (state = initialState, action = {}) => {
       };
     case GET_FILTERED_VALUE_CENTER_FAILURE:
       return { ...state, filteredValueCenters: [], loading: false };
-
+    case CREATE_VALUE_CENTER_TARGETS:
+      return { ...state, loading: true };
+    case CREATE_VALUE_CENTER_TARGETS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        valueCentersTraget: action.payload.data
+      };
+    case CREATE_VALUE_CENTER_TARGETS_FAILURE:
+      return { ...state, loading: false, errors: action.errors };
     default:
       return state;
   }
