@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import LineGraph from "../../components/lineGraph";
 import Loader from "react-loader-spinner";
+import { withRouter } from 'react-router-dom';
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import { connect } from "react-redux";
 import {
@@ -18,12 +19,15 @@ import {
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle
+  DropdownToggle,
 } from "reactstrap";
 import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
+import BackButton from "../../components/backButton";
+import './index.css'
+
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -41,7 +45,7 @@ for (var i = 0; i <= elements; i++) {
 }
 
 class IncomeStream extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       dropdownOpen: false,
@@ -90,7 +94,7 @@ class IncomeStream extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { incomeStreams } = nextProps;    
+    const { incomeStreams } = nextProps;
     const {
       incomeStreams: incomeStreamLate,
       match: {
@@ -113,6 +117,7 @@ class IncomeStream extends Component {
       });
     }
   }
+
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -205,114 +210,119 @@ class IncomeStream extends Component {
         <Logo />
       </div>
     ) : (
-      <div className="animated fadeIn">
-        <Row>
-          <Col lg="3" sm="6" xs="12">
-            <Widget02
-              header={current_number_transactions}
-              mainText="Total Transactions"
-              icon="fa fa-cogs"
-              color="warning"
-              starting={current_number_transactions}
-            />
-          </Col>
-          <Col lg="3" sm="6" xs="12">
-            <Widget02
-              header={current_transactions_value}
-              prefix="Ksh: "
-              mainText="Transaction Value"
-              icon="fa fa-money"
-              color="info"
-              starting={current_transactions_value}
-            />
-          </Col>
-          <Col lg="2" sm="4" xs="8">
-            <Card>
-              <ButtonDropdown
-                id={"card1"}
-                isOpen={this.state.dropdownOpen}
-                toggle={this.toggle}
-              >
-                <DropdownToggle caret color="primary">
-                  Period Types
+        <div className="animated fadeIn">
+          <Row>
+            <Col lg="1" sm="1" xs="1">
+              <BackButton history={ this.props.history }/>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="3" sm="6" xs="12">
+              <Widget02
+                header={current_number_transactions}
+                mainText="Total Transactions"
+                icon="fa fa-cogs"
+                color="warning"
+                starting={current_number_transactions}
+              />
+            </Col>
+            <Col lg="3" sm="6" xs="12">
+              <Widget02
+                header={current_transactions_value}
+                prefix="Ksh: "
+                mainText="Transaction Value"
+                icon="fa fa-money"
+                color="info"
+                starting={current_transactions_value}
+              />
+            </Col>
+            <Col lg="2" sm="4" xs="8">
+              <Card>
+                <ButtonDropdown
+                  id={"card1"}
+                  isOpen={this.state.dropdownOpen}
+                  toggle={this.toggle}
+                >
+                  <DropdownToggle caret color="primary">
+                    Period Types
                 </DropdownToggle>
-                <DropdownMenu right tag="a">
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Past_Week</div>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Past_Month</div>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Monthly</div>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Quarterly</div>
-                  </DropdownItem>
-                </DropdownMenu>
-              </ButtonDropdown>
-            </Card>
-          </Col>
-          <Col lg="2" sm="4" xs="4">
-            <Card>
-              <ButtonDropdown disabled id={"card2"}>
-                <DropdownToggle caret color="primary" disabled>
-                  Year
+                  <DropdownMenu right tag="a">
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Past_Week</div>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Past_Month</div>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Monthly</div>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Quarterly</div>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </Card>
+            </Col>
+            <Col lg="2" sm="4" xs="4">
+              <Card>
+                <ButtonDropdown disabled id={"card2"}>
+                  <DropdownToggle caret color="primary" disabled>
+                    Year
                 </DropdownToggle>
-                <DropdownMenu right tag="a">
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Monthly</div>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Quarterly</div>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <div onClick={this.handleChange}>Semi-annually</div>
-                  </DropdownItem>
-                </DropdownMenu>
-              </ButtonDropdown>
-            </Card>
-          </Col>
+                  <DropdownMenu right tag="a">
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Monthly</div>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Quarterly</div>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <div onClick={this.handleChange}>Semi-annually</div>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </Card>
+            </Col>
 
-          <Col lg="2" sm="4" xs="4">
-            <Card>
-              <ButtonDropdown
-                id={"card3"}
-                isOpen={this.state.dropdownOpen3}
-                toggle={this.toggle3}
-              >
-                <DropdownToggle caret color="primary">
-                  Target
+            <Col lg="2" sm="4" xs="4">
+              <Card>
+                <ButtonDropdown
+                  id={"card3"}
+                  isOpen={this.state.dropdownOpen3}
+                  toggle={this.toggle3}
+                >
+                  <DropdownToggle caret color="primary">
+                    Target
                 </DropdownToggle>
-                <DropdownMenu right tag="a">
-                  <DropdownItem>
-                    <div onClick={this.openModal}>Set Target</div>
-                    <Targetmodal
-                      modal={this.state.modal}
-                      openModal={this.openModal}
-                      value={this.state.target}
-                      FormhandleChange={this.FormhandleChange}
-                      incomeStreams={incomeStreams}
-                      periods={periods}
-                      metrics={metrics}
-                      handleSubmit={this.handleSubmit}
-                      title="Income Streams"
-                    />
-                  </DropdownItem>
-                </DropdownMenu>
-              </ButtonDropdown>
-            </Card>
-          </Col>
-        </Row>
-        <Row />
-        <Row>
-          <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(incomeStreams)}
-          </Col>
-        </Row>
-        <TargetAchievement incomeStreams={incomeStreams} />
-      </div>
-    );
+                  <DropdownMenu right tag="a">
+                    <DropdownItem>
+                      <div onClick={this.openModal}>Set Target</div>
+                      <Targetmodal
+                        modal={this.state.modal}
+                        openModal={this.openModal}
+                        value={this.state.target}
+                        FormhandleChange={this.FormhandleChange}
+                        incomeStreams={incomeStreams}
+                        periods={periods}
+                        metrics={metrics}
+                        handleSubmit={this.handleSubmit}
+                        title="Income Streams"
+                      />
+                    </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </Card>
+            </Col>
+          </Row>
+          <Row />
+          <Row>
+            <Col xs="12" sm="12" lg="12">
+              {LineGraph.plotLineGraphs(incomeStreams)}
+            </Col>
+          </Row>
+          <TargetAchievement incomeStreams={incomeStreams} />
+        </div>
+      );
   }
 }
 
@@ -334,7 +344,7 @@ const mapDispatchToProps = {
   CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(IncomeStream);
+)(IncomeStream));

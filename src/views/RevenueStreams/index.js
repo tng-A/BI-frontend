@@ -27,6 +27,8 @@ import ProgressBarCard from "../../components/progressBarCard";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
+import BackButton from "../../components/backButton";
+
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -237,7 +239,11 @@ class RevenueStream extends Component {
       </div>
     ) : (
       <div className="animated fadeIn">
-        {}
+        <Row>
+          <Col lg="1" sm="1" xs="1">
+            <BackButton history={ this.props.history }/>
+          </Col>
+        </Row>
         <Row>
           <Col lg="3" sm="6" xs="12">
             <Widget02

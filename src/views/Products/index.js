@@ -23,7 +23,7 @@ import {
   DropdownMenu,
   DropdownToggle
 } from "reactstrap";
-
+import BackButton from "../../components/backButton";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
@@ -185,10 +185,6 @@ class Products extends Component {
     return className;
   }
 
-  loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
-  );
-
   handleSubmit = () => {
     const { createProductsTarget } = this.props;
     createProductsTarget({ ...this.state }, this.setState({ modal: false }));
@@ -229,6 +225,11 @@ class Products extends Component {
       </div>
     ) : (
       <div className="animated fadeIn">
+        <Row>
+          <Col lg="1" sm="1" xs="1">
+            <BackButton history={ this.props.history }/>
+          </Col>
+        </Row>
         <Row>
           <Col lg="3" sm="6" xs="12">
             <Widget02
