@@ -199,7 +199,9 @@ class Products extends Component {
             metric={product.name}
             value={product.total_okr}
             percentage={product.percentage}
-            target={product.total_target}
+            target={`Ksh: ${new Intl.NumberFormat().format(
+              product.total_target
+            )}`}
             cardClassName={product.color}
             style={{ backgroundColor: "red !important" }}
             determineColor={this.determineCardColor(product.percentage)}
