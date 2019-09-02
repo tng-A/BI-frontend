@@ -1,5 +1,4 @@
 export const resolveBaseUrl = () => {
-  //   const env = process.env.NODE_ENV;
-  const baseUrl = "https://biserver-staging.herokuapp.com";
+  const baseUrl = process.env.REACT_APP_BI_BACKEND_URL;
   return baseUrl;
 };
