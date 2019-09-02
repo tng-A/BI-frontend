@@ -19,7 +19,8 @@ const initialState = {
   periods: [],
   metrics: [],
   errors: {},
-  productTarget: {}
+  productTarget: {},
+  status: []
 };
 
 const productsReducer = (state = initialState, action = {}) => {
@@ -33,7 +34,7 @@ const productsReducer = (state = initialState, action = {}) => {
     case GET_FILTERED_PRODUCT:
       return { ...state, loading: true };
     case GET_FILTERED_PRODUCT_SUCCESS:
-      return { ...state, products: action.product, loading: false };
+      return { ...state, products: action.product, loading: false, status:action.product  };
     case GET_FILTERED_PRODUCT_FAILURE:
       return { ...state, products: [], loading: false, errors: action.payload };
     case CREATE_PRODUCT_TARGET:

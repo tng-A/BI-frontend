@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import LineGraph from "../../components/lineGraph";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import LineGraph from '../../components/lineGraph';
+import { connect } from 'react-redux';
 import {
   getFilteredProducts,
   createProductsTarget
-} from "../../redux/actionCreators/Products";
-import { getProducts } from "../../redux/actionCreators/Products";
-import Loader from "react-loader-spinner";
-import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
+} from '../../redux/actionCreators/Products';
+import { getProducts } from '../../redux/actionCreators/Products';
+import Loader from 'react-loader-spinner';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
 import {
   getPeriods,
   getMetrics
-} from "../../redux/actionCreators/IncomeStreams";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+} from '../../redux/actionCreators/IncomeStreams';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import {
   Card,
   Col,
@@ -22,12 +22,12 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle
-} from "reactstrap";
+} from 'reactstrap';
 
-import Widget02 from "../Widgets/Widget02";
-import Targetmodal from "./../../components/Targetmodal";
-import TransactionsHelper from "../../utils/transactions";
-import ProgressBarCard from "../../components/progressBarCard";
+import Widget02 from '../Widgets/Widget02';
+import Targetmodal from './../../components/Targetmodal';
+import TransactionsHelper from '../../utils/transactions';
+import ProgressBarCard from '../../components/progressBarCard';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -52,16 +52,16 @@ class Products extends Component {
       dropdownOpen2: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: "monthly",
-      year: "2019",
+      period: 'monthly',
+      year: '2019',
       modal: false,
-      amount: "",
-      metric: "",
-      description: "",
-      IncomeStream: "",
-      period_name: "",
-      period_type: "",
-      period_year: "",
+      amount: '',
+      metric: '',
+      description: '',
+      IncomeStream: '',
+      period_name: '',
+      period_type: '',
+      period_year: '',
       current_transactions_value: 0,
       current_number_transactions: 0
     };
@@ -81,13 +81,11 @@ class Products extends Component {
       getFilteredProducts,
       getPeriodsAction,
       getMetricsActions,
-      history,
-      match,
       match: {
         params: { productID }
       }
     } = this.props;
-    console.log(history, match, "?????????");
+
 
     getFilteredProducts({ ...this.state, productID });
     getPeriodsAction();
@@ -99,13 +97,17 @@ class Products extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { products } = nextProps;
+    const {
+      products,
+    } = nextProps;
     const {
       products: productsLate,
       match: {
         params: { productID }
       }
     } = this.props;
+
+
     if (products !== productsLate) {
       getFilteredProducts({ ...this.state, productID });
     }
@@ -172,15 +174,15 @@ class Products extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = "";
+    let className = '';
     if (percentage <= 20) {
-      className = "bg-danger";
+      className = 'bg-danger';
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = 'bg-warning';
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = 'bg-info';
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = 'bg-primary';
     }
     return className;
   }
@@ -205,13 +207,21 @@ class Products extends Component {
             percentage={product.percentage}
             target={product.total_target}
             cardClassName={product.color}
-            style={{ backgroundColor: "red !important" }}
+            style={{ backgroundColor: 'red !important' }}
             determineColor={this.determineCardColor(product.percentage)}
           />
         </NavLink>
       </Col>
     ));
   }
+
+  renderNoItems = products => {
+    const {loading} = this.props
+    if (products.length < 1 && !loading) {
+      console.log('Im being called')
+      return(<div>No content</div>)
+    }
+  };
 
   render() {
     const { products, periods, metrics, history } = this.props;
@@ -221,16 +231,19 @@ class Products extends Component {
       current_transactions_value
     } = this.state;
 
-    return products.length === 0 ? (
+    return (products.length === 0 ? 
       <div>
         {/* Logo is an actual React component */}
+        {this.renderNoItems(products)}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
         <Logo />
+        
       </div>
-    ) : (
+    :
       <div className="animated fadeIn">
         <Row>
           <Col lg="3" sm="6" xs="12">
+          
             <Widget02
               header={current_number_transactions}
               mainText="Total Transactions"
@@ -252,7 +265,7 @@ class Products extends Component {
           <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                id={"card1"}
+                id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
@@ -278,7 +291,7 @@ class Products extends Component {
           </Col>
           <Col lg="2" sm="4" xs="4">
             <Card>
-              <ButtonDropdown disabled id={"card2"}>
+              <ButtonDropdown disabled id={'card2'}>
                 <DropdownToggle caret color="primary" disabled>
                   Year
                 </DropdownToggle>
@@ -300,7 +313,7 @@ class Products extends Component {
           <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                id={"card3"}
+                id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -319,7 +332,7 @@ class Products extends Component {
                       periods={periods}
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
-                      title={"Products"}
+                      title={'Products'}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -335,14 +348,14 @@ class Products extends Component {
           </Col>
         </Row>
       </div>
-    );
-  }
+    )
+}
 }
 
 export const mapStateToProps = state => {
   return {
     products: state.getProducts.products,
-    loading: state.incomeStream.loading,
+    loading: state.getProducts.loading,
     periods: state.incomeStream.periods,
     metrics: state.incomeStream.metrics
   };
