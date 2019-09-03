@@ -200,7 +200,7 @@ class Products extends Component {
             value={product.total_okr}
             percentage={product.percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
-              product.total_target
+              product.transactions_value
             )}`}
             cardClassName={product.color}
             style={{ backgroundColor: "red !important" }}
