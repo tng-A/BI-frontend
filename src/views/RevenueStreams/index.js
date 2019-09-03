@@ -90,7 +90,6 @@ class RevenueStream extends Component {
     getPeriodsAction();
     getMetricsActions();
     getRevenueStreamsActions({ ...this.state, revenueID });
-
     return
   }
 
