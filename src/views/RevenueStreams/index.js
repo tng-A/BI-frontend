@@ -209,7 +209,7 @@ class RevenueStream extends Component {
             // value={streams.total_okr}
             percentage={streams.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
-              streams.total_target
+              streams.transactions_value
             )}`}
             // target={`Ksh: ${}`}
             cardClassName={streams.color}

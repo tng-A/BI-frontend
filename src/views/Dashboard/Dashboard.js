@@ -156,7 +156,7 @@ class Dashboard extends Component {
             value={center.transactions_value}
             percentage={center.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
-              center.total_target
+              center.transactions_value
             )}`}
             cardClassName={center.color}
             style={{ backgroundColor: "red !important" }}
