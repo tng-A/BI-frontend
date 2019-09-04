@@ -120,9 +120,6 @@ class Products extends Component {
         });
       }
     }
-    return setInterval(() => {
-      getFilteredProducts({ ...this.state, productID });
-    }, 30000);
   }
   openModal() {
     this.setState({

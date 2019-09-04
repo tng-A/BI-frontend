@@ -88,9 +88,6 @@ class IncomeStream extends Component {
     getPeriodsAction();
     getMetricsActions();
     getFilteredIncomeStream({ ...this.state, incomeStreamID });
-    // return setInterval(() => {
-    //   getFilteredIncomeStream({ ...this.state, incomeStreamID });
-    // }, 35000);
   }
 
   componentWillReceiveProps(nextProps) {
