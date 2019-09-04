@@ -94,20 +94,11 @@ class RevenueStream extends Component {
   }
 
   componentWillReceiveProps(nextprops) {
-    const {
-      getRevenueStreamsActions,
-      match: {
-        params: { revenueID }
-      }
-    } = this.props;
     const { revenueStreams } = nextprops;
     if (revenueStreams) {
       this.setState({
         initial_load: !this.state.initial_load
       })
-      setInterval(() => {
-        getRevenueStreamsActions({ ...this.state, revenueID });
-      }, 30000);
     }
     let total_amount = TransactionsHelper.getTransactionValue(revenueStreams);
     let total_value = TransactionsHelper.getTransactionsCount(revenueStreams);
