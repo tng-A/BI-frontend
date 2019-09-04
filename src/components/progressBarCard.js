@@ -15,7 +15,7 @@ class ProgressBarCard extends Component {
       <Card
         style={{
           backgroundColor: `${cardClassName}`,
-          color: "black",
+          color: "white",
           fontWeight: "bold"
         }}
       >

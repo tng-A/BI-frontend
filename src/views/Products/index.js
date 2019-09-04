@@ -195,7 +195,7 @@ class Products extends Component {
           <ProgressBarCard
             metric={product.name}
             value={product.total_okr}
-            percentage={product.percentage}
+            percentage={product.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               product.transactions_value
             )}`}
