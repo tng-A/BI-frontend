@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import LineGraph from "../../components/lineGraph";
-import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import LineGraph from '../../components/lineGraph';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
+import { connect } from 'react-redux';
 import {
   getValueCenter,
   createValueCenterTargets
-} from "../../redux/actionCreators/ValueCenter";
+} from '../../redux/actionCreators/ValueCenter';
 import {
   getPeriods,
   getMetrics
-} from "../../redux/actionCreators/IncomeStreams";
-import { NavLink } from "react-router-dom";
-import Loader from "react-loader-spinner";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import "./index.css";
-import Widget02 from "../Widgets/Widget02";
-import TransactionsHelper from "../../utils/transactions";
+} from '../../redux/actionCreators/IncomeStreams';
+import { NavLink } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import './index.css';
+import Widget02 from '../Widgets/Widget02';
+import TransactionsHelper from '../../utils/transactions';
 import {
   ButtonDropdown,
   DropdownItem,
@@ -24,9 +24,9 @@ import {
   Card,
   Col,
   Row
-} from "reactstrap";
-import Targetmodal from "./../../components/Targetmodal";
-import ProgressBarCard from "../../components/progressBarCard";
+} from 'reactstrap';
+import Targetmodal from './../../components/Targetmodal';
+import ProgressBarCard from '../../components/progressBarCard';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -36,12 +36,11 @@ class Dashboard extends Component {
       dropdownOpen: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: "monthly",
-      year: "2019",
+      period: 'monthly',
+      year: '2019',
       current_transactions_value: 0,
       current_number_transactions: 0,
       initial_load: false
-
     };
     this.toggle = this.toggle.bind(this);
     this.toggle2 = this.toggle2.bind(this);
@@ -50,7 +49,7 @@ class Dashboard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.FormhandleChange = this.FormhandleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -59,18 +58,17 @@ class Dashboard extends Component {
       getPeriodsAction,
       getMetricsActions
     } = this.props;
+    getValueCentersAction({ ...this.state });
     getPeriodsAction();
     getMetricsActions();
-    getValueCentersAction({ ...this.state });
   }
 
   componentWillReceiveProps(nextprops) {
-    
     const { ValueCenters } = nextprops;
-    if (ValueCenters){
+    if (ValueCenters) {
       this.setState({
         initial_load: !this.state.initial_load
-      })
+      });
     }
     let total_amount = TransactionsHelper.getTransactionValue(ValueCenters);
     let total_value = TransactionsHelper.getTransactionsCount(ValueCenters);
@@ -105,10 +103,20 @@ class Dashboard extends Component {
       },
       () => {
         const { getValueCentersAction } = this.props;
-        getValueCentersAction({ ...this.state });
+        const { period, year } = this.state;
+        getValueCentersAction({ period, year });
       }
     );
   }
+
+  handleSubmit = () => {
+    const { createValueCenterTargets, getValueCentersAction } = this.props;
+    createValueCenterTargets(
+      { ...this.state },
+      this.setState({ modal: false })
+    );
+    getValueCentersAction(...this.state);
+  };
 
   toggle() {
     this.setState({
@@ -135,15 +143,15 @@ class Dashboard extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = "";
+    let className = '';
     if (percentage <= 20) {
-      className = "bg-danger";
+      className = 'bg-danger';
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = 'bg-warning';
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = 'bg-info';
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = 'bg-primary';
     }
     return className;
   }
@@ -159,7 +167,7 @@ class Dashboard extends Component {
               center.transactions_value
             )}`}
             cardClassName={center.color}
-            style={{ backgroundColor: "red !important" }}
+            style={{ backgroundColor: 'red !important' }}
             determineColor={this.determineCardColor(
               center.achievement_percentage
             )}
@@ -176,7 +184,7 @@ class Dashboard extends Component {
       current_transactions_value,
       initial_load
     } = this.state;
-    return  !initial_load? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -207,7 +215,7 @@ class Dashboard extends Component {
           <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                id={"card1"}
+                id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
@@ -233,7 +241,7 @@ class Dashboard extends Component {
           </Col>
           <Col lg="2" sm="4" xs="4">
             <Card>
-              <ButtonDropdown disabled id={"card2"}>
+              <ButtonDropdown disabled id={'card2'}>
                 <DropdownToggle caret color="primary" disabled>
                   Year
                 </DropdownToggle>
@@ -254,7 +262,7 @@ class Dashboard extends Component {
           <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                id={"card3"}
+                id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -284,7 +292,7 @@ class Dashboard extends Component {
         <Row>{this.valueCentreCard(ValueCenters)}</Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(ValueCenters, "ValueCenter(s)")}
+            {LineGraph.plotLineGraphs(ValueCenters, 'ValueCenter(s)')}
           </Col>
         </Row>
       </div>
@@ -302,7 +310,7 @@ export const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getValueCentersAction: getValueCenter,
-  createValueCenterTargetsActions: createValueCenterTargets,
+  createValueCenterTargets: createValueCenterTargets,
   getPeriodsAction: getPeriods,
   getMetricsActions: getMetrics
 };
