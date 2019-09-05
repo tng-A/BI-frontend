@@ -29,7 +29,6 @@ import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import BackButton from "../../components/backButton";
 
-
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -89,17 +88,23 @@ class RevenueStream extends Component {
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getRevenueStreamsActions({ ...this.state, revenueID });
-    return
+
+    this.timer = setInterval(async () => {
+      await getRevenueStreamsActions(
+        { ...this.state, revenueID },
+        this.setState({
+          initial_load: true
+        })
+      );
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentWillReceiveProps(nextprops) {
     const { revenueStreams } = nextprops;
-    if (revenueStreams) {
-      this.setState({
-        initial_load: !this.state.initial_load
-      })
-    }
     let total_amount = TransactionsHelper.getTransactionValue(revenueStreams);
     let total_value = TransactionsHelper.getTransactionsCount(revenueStreams);
     if (this.state.current_number_transactions !== total_value) {
@@ -221,7 +226,7 @@ class RevenueStream extends Component {
       current_transactions_value,
       initial_load
     } = this.state;
-    return initial_load ? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -231,7 +236,7 @@ class RevenueStream extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col lg="1" sm="1" xs="1">
-            <BackButton history={ this.props.history }/>
+            <BackButton history={this.props.history} />
           </Col>
         </Row>
         <Row>
@@ -341,7 +346,7 @@ class RevenueStream extends Component {
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(revenueStreams, 'Revenue Stream(s)')}
+            {LineGraph.plotLineGraphs(revenueStreams, "Revenue Stream(s)")}
           </Col>
         </Row>
       </div>
