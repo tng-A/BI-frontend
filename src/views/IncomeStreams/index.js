@@ -26,6 +26,8 @@ import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import BackButton from "../../components/backButton";
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
 import "./index.css";
 
 function random(min, max) {
@@ -63,7 +65,8 @@ class IncomeStream extends Component {
       period_year: "",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false, 
+      periodNames:[]
     };
 
     this.toggle = this.toggle.bind(this);
@@ -127,6 +130,21 @@ class IncomeStream extends Component {
     }
   }
 
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -180,14 +198,17 @@ class IncomeStream extends Component {
 
   determineCardColor(percentage) {
     let className = "";
-    if (percentage <= 20) {
-      className = "bg-danger";
+    if(percentage === 0){
+      className = "danger";
+    }
+    else if (percentage <= 20) {
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "primary";
     }
     return className;
   }
@@ -210,7 +231,8 @@ class IncomeStream extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
 
     return !initial_load ? (
@@ -317,6 +339,8 @@ class IncomeStream extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Income Streams"
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -330,7 +354,7 @@ class IncomeStream extends Component {
             {LineGraph.plotLineGraphs(incomeStreams)}
           </Col>
         </Row>
-        <TargetAchievement incomeStreams={incomeStreams} />
+        <TargetAchievement incomeStreams={incomeStreams} determineCardColor={this.determineCardColor} />
       </div>
     );
   }

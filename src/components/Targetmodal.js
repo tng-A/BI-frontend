@@ -21,21 +21,24 @@ class Targetmodal extends Component {
       value,
       FormhandleChange,
       incomeStreams,
-      periods,
       metrics,
       handleSubmit, 
-      title
+      title, 
+      onchangePeriod, 
+      periodNames
     } = this.props;
 
-    let periodNames = [];
-    let periodTypes = [];
-    periods.map(period => {
-      periodNames.push(period.name);
-      periodTypes.push(period.period_type);
-      return "succes";
-    });
-    periodNames = [...new Set(periodNames)];
-    periodTypes = [...new Set(periodTypes)];
+   
+   
+    let newMetrics = []
+
+    metrics.map(metric => {
+      newMetrics.push(metric.name.toLowerCase())
+    })
+   
+    const periodTypes = ["quarterly", "monthly"];
+    newMetrics = [...new Set(newMetrics)];
+    
     return (
       <Fragment>
         <Modal
@@ -52,7 +55,7 @@ class Targetmodal extends Component {
                 </Label>
                 <Col sm={10}>
                   <Input
-                    type="text"
+                    type="number"
                     name="amount"
                     id="target"
                     placeholder="Enter your Target"
@@ -87,8 +90,8 @@ class Targetmodal extends Component {
                     onChange={FormhandleChange}
                   >
                     <option>Select Metric ....</option>
-                    {metrics.map(metric => (
-                      <option key={metric.name}>{metric.name}</option>
+                    {newMetrics.map(metric => (
+                      <option key={metric}>{metric}</option>
                     ))}
                   </Input>
                 </Col>
@@ -115,6 +118,24 @@ class Targetmodal extends Component {
               </FormGroup>
               <FormGroup row>
                 <Label for="period" sm={2}>
+                  Period Type
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="select"
+                    name="period_type"
+                    id="PeriodType"
+                    onChange={e => onchangePeriod(e)}
+                  >
+                    <option>Select Period Type ...</option>
+                    {periodTypes.map(type => (
+                      <option key={type}>{type}</option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="period" sm={2}>
                   Period Name
                 </Label>
                 <Col sm={10}>
@@ -125,28 +146,10 @@ class Targetmodal extends Component {
                     onChange={FormhandleChange}
                   >
                     <option>Select Period Name ...</option>
-                    {periodNames.map(name => (
+                    {periodNames && periodNames.map(name => (
                       <option defaultValue="select" key={name}>
                         {name}
                       </option>
-                    ))}
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label for="period" sm={2}>
-                  Period Type
-                </Label>
-                <Col sm={10}>
-                  <Input
-                    type="select"
-                    name="period_type"
-                    id="PeriodType"
-                    onChange={FormhandleChange}
-                  >
-                    <option>Select Period Type ...</option>
-                    {periodTypes.map(type => (
-                      <option key={type}>{type}</option>
                     ))}
                   </Input>
                 </Col>
