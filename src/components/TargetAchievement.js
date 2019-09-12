@@ -5,7 +5,7 @@ import './index.css';
 export default class TargetAchievement extends Component {
   
   render() {
-    const { incomeStreams, determineColor, products } = this.props;
+    const { incomeStreams,  products,determineCardColor } = this.props;
     let tableList = []
     if(products){
       tableList = [...products]
@@ -46,7 +46,7 @@ export default class TargetAchievement extends Component {
                     </div>
                     <Progress
                       className="progress-xs mt-2"
-                      color={determineColor}
+                      color={`${determineCardColor(stream.achievement_percentage)}`}
                       value={stream.achievement_percentage}
                     />
                   </td>

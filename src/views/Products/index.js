@@ -28,6 +28,8 @@ import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import ProgressBarCard from "../../components/progressBarCard";
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -64,7 +66,8 @@ class Products extends Component {
       period_year: "",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false, 
+      periodNames:[]
     };
 
     this.toggle = this.toggle.bind(this);
@@ -86,13 +89,24 @@ class Products extends Component {
         params: { productID }
       }
     } = this.props;
-    getFilteredProducts({ ...this.state, productID });
     getPeriodsAction();
     getMetricsActions();
+
+    this.timer = setInterval(async () => {
+      await getFilteredProducts(
+        { ...this.state, productID },
+        this.setState({
+          initial_load: true
+        })
+      );
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentWillReceiveProps(nextProps) {
-    
     const { products } = nextProps;
     const {
       products: productsLate,
@@ -104,9 +118,6 @@ class Products extends Component {
       getFilteredProducts({ ...this.state, productID });
     }
     if (products) {
-      this.setState({
-        initial_load: !this.state.initial_load
-      })
       const total_value = TransactionsHelper.getTransactionsCount(products);
       const total_amount = TransactionsHelper.getTransactionValue(products);
       if (this.state.current_number_transactions !== total_value) {
@@ -121,6 +132,22 @@ class Products extends Component {
       }
     }
   }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -185,7 +212,12 @@ class Products extends Component {
   handleSubmit = () => {
     const { createProductsTarget } = this.props;
     createProductsTarget({ ...this.state }, this.setState({ modal: false }));
-    getFilteredProducts({ ...this.state });
+    getFilteredProducts(
+      { ...this.state },
+      this.setState({
+        initial_load: true
+      })
+    );
   };
 
   productsCard(products) {
@@ -195,7 +227,7 @@ class Products extends Component {
           <ProgressBarCard
             metric={product.name}
             value={product.total_okr}
-            percentage={product.percentage}
+            percentage={product.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               product.transactions_value
             )}`}
@@ -213,10 +245,11 @@ class Products extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
 
-    return initial_load ? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -226,7 +259,7 @@ class Products extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col lg="1" sm="1" xs="1">
-            <BackButton history={ this.props.history }/>
+            <BackButton history={this.props.history} />
           </Col>
         </Row>
         <Row>
@@ -320,6 +353,8 @@ class Products extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title={"Products"}
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -331,7 +366,7 @@ class Products extends Component {
         <Row>{this.productsCard(products)}</Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(products, 'Product(s)')}
+            {LineGraph.plotLineGraphs(products, "Product(s)")}
           </Col>
         </Row>
       </div>

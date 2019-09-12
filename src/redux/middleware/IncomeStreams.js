@@ -59,7 +59,6 @@ export function* IncomeStreamSagaAsync({ payload }) {
   }
 }
 
-
 export function* IncomeStreamTargetSagaAsync({ payload }) {
   try {
     const response = yield call(
@@ -88,7 +87,7 @@ export function* WatchIncomeStreamSagaTarget() {
 export function* getFilteredIncomeStreamAsync(action) {
   try {
     const { year, periodType } = action;
-  
+
     const response = yield call(
       IncomeStreamService.getFilteredIncomeStream,
       periodType,

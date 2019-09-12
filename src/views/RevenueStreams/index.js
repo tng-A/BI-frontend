@@ -28,7 +28,8 @@ import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import BackButton from "../../components/backButton";
-
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -65,7 +66,8 @@ class RevenueStream extends Component {
       period_year: "",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false, 
+      periodNames:[]
     };
 
     this.toggle = this.toggle.bind(this);
@@ -89,17 +91,23 @@ class RevenueStream extends Component {
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getRevenueStreamsActions({ ...this.state, revenueID });
-    return
+
+    this.timer = setInterval(async () => {
+      await getRevenueStreamsActions(
+        { ...this.state, revenueID },
+        this.setState({
+          initial_load: true
+        })
+      );
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentWillReceiveProps(nextprops) {
     const { revenueStreams } = nextprops;
-    if (revenueStreams) {
-      this.setState({
-        initial_load: !this.state.initial_load
-      })
-    }
     let total_amount = TransactionsHelper.getTransactionValue(revenueStreams);
     let total_value = TransactionsHelper.getTransactionsCount(revenueStreams);
     if (this.state.current_number_transactions !== total_value) {
@@ -113,6 +121,22 @@ class RevenueStream extends Component {
       });
     }
   }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -219,9 +243,10 @@ class RevenueStream extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
-    return initial_load ? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -231,7 +256,7 @@ class RevenueStream extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col lg="1" sm="1" xs="1">
-            <BackButton history={ this.props.history }/>
+            <BackButton history={this.props.history} />
           </Col>
         </Row>
         <Row>
@@ -330,6 +355,8 @@ class RevenueStream extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Revenue Streams"
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -341,7 +368,7 @@ class RevenueStream extends Component {
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(revenueStreams, 'Revenue Stream(s)')}
+            {LineGraph.plotLineGraphs(revenueStreams, "Revenue Stream(s)")}
           </Col>
         </Row>
       </div>

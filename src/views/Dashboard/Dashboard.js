@@ -27,6 +27,9 @@ import {
 } from "reactstrap";
 import Targetmodal from "./../../components/Targetmodal";
 import ProgressBarCard from "../../components/progressBarCard";
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -40,9 +43,11 @@ class Dashboard extends Component {
       year: "2019",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
-
+      initial_load: false, 
+      periodNames:[]
     };
+
+
     this.toggle = this.toggle.bind(this);
     this.toggle2 = this.toggle2.bind(this);
     this.toggle3 = this.toggle3.bind(this);
@@ -50,7 +55,7 @@ class Dashboard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.FormhandleChange = this.FormhandleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -61,17 +66,39 @@ class Dashboard extends Component {
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getValueCentersAction({ ...this.state });
+    this.timer = setInterval(async () => {
+      await getValueCentersAction(
+        { ...this.state },
+        this.setState({
+          initial_load: true
+        })
+      );
+    }, 10000);
   }
 
-  componentWillReceiveProps(nextprops) {
-    
-    const { ValueCenters } = nextprops;
-    if (ValueCenters){
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
       this.setState({
-        initial_load: !this.state.initial_load
-      })
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
     }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
+ 
+
+  componentWillReceiveProps(nextprops) {
+    const { ValueCenters } = nextprops;
     let total_amount = TransactionsHelper.getTransactionValue(ValueCenters);
     let total_value = TransactionsHelper.getTransactionsCount(ValueCenters);
     if (this.state.current_number_transactions !== total_value) {
@@ -105,10 +132,25 @@ class Dashboard extends Component {
       },
       () => {
         const { getValueCentersAction } = this.props;
-        getValueCentersAction({ ...this.state });
+        const { period, year } = this.state;
+        getValueCentersAction({ period, year });
       }
     );
   }
+
+  handleSubmit = () => {
+    const { createValueCenterTargets, getValueCentersAction } = this.props;
+    createValueCenterTargets(
+      { ...this.state },
+      this.setState({ modal: false })
+    );
+    getValueCentersAction(
+      { ...this.state },
+      this.setState({
+        initial_load: true
+      })
+    );
+  };
 
   toggle() {
     this.setState({
@@ -174,9 +216,10 @@ class Dashboard extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
-    return  !initial_load? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -274,6 +317,8 @@ class Dashboard extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Value Centers"
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames", "period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -302,7 +347,7 @@ export const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getValueCentersAction: getValueCenter,
-  createValueCenterTargetsActions: createValueCenterTargets,
+  createValueCenterTargets: createValueCenterTargets,
   getPeriodsAction: getPeriods,
   getMetricsActions: getMetrics
 };

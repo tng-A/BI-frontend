@@ -10,7 +10,6 @@ class valueCenterService {
   }
 
   static createValueCenterTargets(payload) {
-    console.log("!!!!!######", payload);
     const {
       metric,
       amount,

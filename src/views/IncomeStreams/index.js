@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import LineGraph from "../../components/lineGraph";
 import Loader from "react-loader-spinner";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import { connect } from "react-redux";
 import {
@@ -19,15 +19,16 @@ import {
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle,
+  DropdownToggle
 } from "reactstrap";
 import TargetAchievement from "../../components/TargetAchievement";
 import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import BackButton from "../../components/backButton";
-import './index.css'
-
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
+import "./index.css";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -45,7 +46,7 @@ for (var i = 0; i <= elements; i++) {
 }
 
 class IncomeStream extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       dropdownOpen: false,
@@ -63,7 +64,9 @@ class IncomeStream extends Component {
       period_type: "",
       period_year: "",
       current_transactions_value: 0,
-      current_number_transactions: 0
+      current_number_transactions: 0,
+      initial_load: false, 
+      periodNames:[]
     };
 
     this.toggle = this.toggle.bind(this);
@@ -87,7 +90,19 @@ class IncomeStream extends Component {
     } = this.props;
     getPeriodsAction();
     getMetricsActions();
-    getFilteredIncomeStream({ ...this.state, incomeStreamID });
+
+    this.timer = setInterval(async () => {
+      await getFilteredIncomeStream(
+        { ...this.state, incomeStreamID },
+        this.setState({
+          initial_load: true
+        })
+      );
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -112,6 +127,21 @@ class IncomeStream extends Component {
       this.setState({
         current_transactions_value: total_amount
       });
+    }
+  }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
     }
   }
 
@@ -168,14 +198,17 @@ class IncomeStream extends Component {
 
   determineCardColor(percentage) {
     let className = "";
-    if (percentage <= 20) {
-      className = "bg-danger";
+    if(percentage === 0){
+      className = "danger";
+    }
+    else if (percentage <= 20) {
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "primary";
     }
     return className;
   }
@@ -197,129 +230,133 @@ class IncomeStream extends Component {
     const { incomeStreams, periods, metrics } = this.props;
     const {
       current_number_transactions,
-      current_transactions_value
+      current_transactions_value,
+      initial_load, 
+      periodNames
     } = this.state;
 
-    return incomeStreams.length === 0 ? (
+    return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
         <Logo />
       </div>
     ) : (
-        <div className="animated fadeIn">
-          <Row>
-            <Col lg="1" sm="1" xs="1">
-              <BackButton history={ this.props.history }/>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="3" sm="6" xs="12">
-              <Widget02
-                header={current_number_transactions}
-                mainText="Total Transactions"
-                icon="fa fa-cogs"
-                color="warning"
-                starting={current_number_transactions}
-              />
-            </Col>
-            <Col lg="3" sm="6" xs="12">
-              <Widget02
-                header={current_transactions_value}
-                prefix="Ksh: "
-                mainText="Transaction Value"
-                icon="fa fa-money"
-                color="info"
-                starting={current_transactions_value}
-              />
-            </Col>
-            <Col lg="2" sm="4" xs="8">
-              <Card>
-                <ButtonDropdown
-                  id={"card1"}
-                  isOpen={this.state.dropdownOpen}
-                  toggle={this.toggle}
-                >
-                  <DropdownToggle caret color="primary">
-                    Period Types
+      <div className="animated fadeIn">
+        <Row>
+          <Col lg="1" sm="1" xs="1">
+            <BackButton history={this.props.history} />
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="3" sm="6" xs="12">
+            <Widget02
+              header={current_number_transactions}
+              mainText="Total Transactions"
+              icon="fa fa-cogs"
+              color="warning"
+              starting={current_number_transactions}
+            />
+          </Col>
+          <Col lg="3" sm="6" xs="12">
+            <Widget02
+              header={current_transactions_value}
+              prefix="Ksh: "
+              mainText="Transaction Value"
+              icon="fa fa-money"
+              color="info"
+              starting={current_transactions_value}
+            />
+          </Col>
+          <Col lg="2" sm="4" xs="8">
+            <Card>
+              <ButtonDropdown
+                id={"card1"}
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggle}
+              >
+                <DropdownToggle caret color="primary">
+                  Period Types
                 </DropdownToggle>
-                  <DropdownMenu right tag="a">
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Past_Week</div>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Past_Month</div>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Monthly</div>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Quarterly</div>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </ButtonDropdown>
-              </Card>
-            </Col>
-            <Col lg="2" sm="4" xs="4">
-              <Card>
-                <ButtonDropdown disabled id={"card2"}>
-                  <DropdownToggle caret color="primary" disabled>
-                    Year
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Week</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Past_Month</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+          <Col lg="2" sm="4" xs="4">
+            <Card>
+              <ButtonDropdown disabled id={"card2"}>
+                <DropdownToggle caret color="primary" disabled>
+                  Year
                 </DropdownToggle>
-                  <DropdownMenu right tag="a">
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Monthly</div>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Quarterly</div>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <div onClick={this.handleChange}>Semi-annually</div>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </ButtonDropdown>
-              </Card>
-            </Col>
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Monthly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Quarterly</div>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <div onClick={this.handleChange}>Semi-annually</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
 
-            <Col lg="2" sm="4" xs="4">
-              <Card>
-                <ButtonDropdown
-                  id={"card3"}
-                  isOpen={this.state.dropdownOpen3}
-                  toggle={this.toggle3}
-                >
-                  <DropdownToggle caret color="primary">
-                    Target
+          <Col lg="2" sm="4" xs="4">
+            <Card>
+              <ButtonDropdown
+                id={"card3"}
+                isOpen={this.state.dropdownOpen3}
+                toggle={this.toggle3}
+              >
+                <DropdownToggle caret color="primary">
+                  Target
                 </DropdownToggle>
-                  <DropdownMenu right tag="a">
-                    <DropdownItem>
-                      <div onClick={this.openModal}>Set Target</div>
-                      <Targetmodal
-                        modal={this.state.modal}
-                        openModal={this.openModal}
-                        value={this.state.target}
-                        FormhandleChange={this.FormhandleChange}
-                        incomeStreams={incomeStreams}
-                        periods={periods}
-                        metrics={metrics}
-                        handleSubmit={this.handleSubmit}
-                        title="Income Streams"
-                      />
-                    </DropdownItem>
-                  </DropdownMenu>
-                </ButtonDropdown>
-              </Card>
-            </Col>
-          </Row>
-          <Row />
-          <Row>
-            <Col xs="12" sm="12" lg="12">
-              {LineGraph.plotLineGraphs(incomeStreams)}
-            </Col>
-          </Row>
-          <TargetAchievement incomeStreams={incomeStreams} />
-        </div>
-      );
+                <DropdownMenu right tag="a">
+                  <DropdownItem>
+                    <div onClick={this.openModal}>Set Target</div>
+                    <Targetmodal
+                      modal={this.state.modal}
+                      openModal={this.openModal}
+                      value={this.state.target}
+                      FormhandleChange={this.FormhandleChange}
+                      incomeStreams={incomeStreams}
+                      periods={periods}
+                      metrics={metrics}
+                      handleSubmit={this.handleSubmit}
+                      title="Income Streams"
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
+                    />
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </Card>
+          </Col>
+        </Row>
+        <Row />
+        <Row>
+          <Col xs="12" sm="12" lg="12">
+            {LineGraph.plotLineGraphs(incomeStreams)}
+          </Col>
+        </Row>
+        <TargetAchievement incomeStreams={incomeStreams} determineCardColor={this.determineCardColor} />
+      </div>
+    );
   }
 }
 
@@ -341,7 +378,9 @@ const mapDispatchToProps = {
   CreateIncomeStreamTargetActions: CreateIncomeStreamTarget
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IncomeStream));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(IncomeStream)
+);
