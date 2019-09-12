@@ -28,6 +28,8 @@ import Widget02 from "../Widgets/Widget02";
 import Targetmodal from "./../../components/Targetmodal";
 import TransactionsHelper from "../../utils/transactions";
 import ProgressBarCard from "../../components/progressBarCard";
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -64,7 +66,8 @@ class Products extends Component {
       period_year: "",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false, 
+      periodNames:[]
     };
 
     this.toggle = this.toggle.bind(this);
@@ -129,6 +132,22 @@ class Products extends Component {
       }
     }
   }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
   openModal() {
     this.setState({
       modal: !this.state.modal
@@ -226,7 +245,8 @@ class Products extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
 
     return !initial_load ? (
@@ -333,6 +353,8 @@ class Products extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title={"Products"}
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>

@@ -27,7 +27,9 @@ import {
 } from "reactstrap";
 import Targetmodal from "./../../components/Targetmodal";
 import ProgressBarCard from "../../components/progressBarCard";
-import { async } from "q";
+import FormHelper from "../../utils/formHelpers"; 
+import { months, quarters } from "../../utils/constants";
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -41,8 +43,11 @@ class Dashboard extends Component {
       year: "2019",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false, 
+      periodNames:[]
     };
+
+
     this.toggle = this.toggle.bind(this);
     this.toggle2 = this.toggle2.bind(this);
     this.toggle3 = this.toggle3.bind(this);
@@ -68,12 +73,29 @@ class Dashboard extends Component {
           initial_load: true
         })
       );
-    },10000);
+    }, 10000);
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
   }
+
+  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
+    if (type === "monthly") {
+      this.setState({
+        [stateName]:periodMonths, 
+        [periodState]:type
+    })
+    }
+    if (type === "quarterly") {
+      this.setState({
+        [stateName]:periodQuarters, 
+        [periodState]:type
+    })
+    }
+  }
+
+ 
 
   componentWillReceiveProps(nextprops) {
     const { ValueCenters } = nextprops;
@@ -194,7 +216,8 @@ class Dashboard extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load, 
+      periodNames
     } = this.state;
     return !initial_load ? (
       <div>
@@ -294,6 +317,8 @@ class Dashboard extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Value Centers"
+                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames", "period_type", this.setTheState, months, quarters))}
+                      periodNames={periodNames}
                     />
                   </DropdownItem>
                 </DropdownMenu>
