@@ -190,14 +190,17 @@ class RevenueStream extends Component {
 
   determineCardColor(percentage) {
     let className = "";
-    if (percentage <= 20) {
-      className = "bg-danger";
+    if(percentage === 0){
+      className = "danger";
+    }
+    else if (percentage <= 20) {
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-warning";
+      className = "primary";
     }
     return className;
   }
@@ -221,7 +224,7 @@ class RevenueStream extends Component {
         <NavLink to={`/income-streams/${streams.id}`} className="nav-link">
           <ProgressBarCard
             metric={streams.name}
-            // value={streams.total_okr}
+            value={streams.transactions_value}
             percentage={streams.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               streams.transactions_value
