@@ -25,7 +25,7 @@ class ProgressBarCard extends Component {
         </CardBody>
         <div className="chart-wrapper mx-3" style={{ height: "70px" }}>
           <strong style={{ color: "white" }}>
-            {value} ({percentage}%)
+            {value} {percentage}%
           </strong>
           <Progress
             className="progress-xs mt-2"

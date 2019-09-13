@@ -224,7 +224,6 @@ class RevenueStream extends Component {
         <NavLink to={`/income-streams/${streams.id}`} className="nav-link">
           <ProgressBarCard
             metric={streams.name}
-            value={streams.transactions_value}
             percentage={streams.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               streams.transactions_value
