@@ -178,14 +178,17 @@ class Dashboard extends Component {
 
   determineCardColor(percentage) {
     let className = "";
-    if (percentage <= 20) {
-      className = "bg-danger";
+    if(percentage === 0){
+      className = "danger";
+    }
+    else if (percentage <= 20) {
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "primary";
     }
     return className;
   }
