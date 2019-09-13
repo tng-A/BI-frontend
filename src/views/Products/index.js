@@ -229,7 +229,6 @@ class Products extends Component {
         <NavLink to={`/revenue/${product.id}`} className="nav-link">
           <ProgressBarCard
             metric={product.name}
-            value={product.transactions_value}
             percentage={product.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               product.transactions_value
