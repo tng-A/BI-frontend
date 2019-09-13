@@ -197,14 +197,17 @@ class Products extends Component {
 
   determineCardColor(percentage) {
     let className = "";
-    if (percentage <= 20) {
-      className = "bg-danger";
+    if(percentage === 0){
+      className = "danger";
+    }
+    else if (percentage <= 20) {
+      className = "danger";
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = "warning";
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = "info";
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = "primary";
     }
     return className;
   }
@@ -221,19 +224,19 @@ class Products extends Component {
   };
 
   productsCard(products) {
-    return products.map(product => (
+    return products.map(product =>  (
       <Col xs="12" sm="6" lg="3" key={product.id}>
         <NavLink to={`/revenue/${product.id}`} className="nav-link">
           <ProgressBarCard
             metric={product.name}
-            value={product.total_okr}
+            value={product.transactions_value}
             percentage={product.achievement_percentage}
             target={`Ksh: ${new Intl.NumberFormat().format(
               product.transactions_value
             )}`}
             cardClassName={product.color}
             style={{ backgroundColor: "red !important" }}
-            determineColor={this.determineCardColor(product.percentage)}
+            determineColor={this.determineCardColor(product.achievement_percentage)}
           />
         </NavLink>
       </Col>
