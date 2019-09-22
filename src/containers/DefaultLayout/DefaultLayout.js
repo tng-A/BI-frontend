@@ -1,12 +1,14 @@
-import React, { Component, Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import * as router from "react-router-dom";
-import { addDays, format } from "date-fns";
-// import Targetmodal from "./../../components/Targetmodal";
+import React, { Component, Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import * as router from 'react-router-dom';
+import { addDays, format } from 'date-fns';
+import { getValueCenter } from '../../redux/actionCreators/ValueCenter';
+import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
 
-import {
-  Container
-} from "reactstrap";
+
+import { Container } from 'reactstrap';
 
 import {
   AppFooter,
@@ -18,14 +20,14 @@ import {
   AppSidebarMinimizer,
   AppBreadcrumb2 as AppBreadcrumb,
   AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
+} from '@coreui/react';
 // sidebar nav config
-import navigation from "../../_nav";
+import NavbarGenerator from '../../_nav';
 // routes config
-import routes from "../../routes";
+import routes from '../../routes';
 
-const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
-const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
+const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
+const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
   constructor() {
@@ -35,13 +37,23 @@ class DefaultLayout extends Component {
         selection: {
           startDate: new Date(),
           endDate: addDays(new Date(), 7),
-          key: "selection"
+          key: 'selection'
         }
       },
       modal: false,
+      period: 'monthly',
+      year: '2019'
     };
     this.openModal = this.openModal.bind(this);
     this.formatDateDisplay = this.formatDateDisplay.bind(this);
+    // this.generateNavbarobject = this.generateNavbarobject.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('get me the routes info');
+    const { getValueCentersAction } = this.props;
+    getValueCentersAction({ ...this.state });
+    localStorage.setItem('role', ['FINANCE'])
   }
 
   openModal() {
@@ -56,12 +68,12 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault();
-    this.props.history.push("/login");
+    this.props.history.push('/login');
   }
 
   formatDateDisplay(date, defaultText) {
     if (!date) return defaultText;
-    return format(date, "MM/DD/YYYY");
+    return format(date, 'MM/DD/YYYY');
   }
 
   handleRangeChange(which, payload) {
@@ -73,9 +85,23 @@ class DefaultLayout extends Component {
     });
   }
 
+
   render() {
-    return (
+    const { ValueCenters } = this.props;
+    const role = Array(localStorage.getItem('role'))
+    console.log(role, '...')
+    return ValueCenters.length === 0 ? (
+      <div>
+        {/* Logo is an actual React component */}
+        <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+        <Logo />
+      </div>
+    ) : (
       <div className="app">
+        {console.log(
+          NavbarGenerator.generateNavbarobject(ValueCenters, role),
+          'Check on me >>>>>>>>>'
+        )}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />
@@ -87,7 +113,7 @@ class DefaultLayout extends Component {
             <AppSidebarForm />
             <Suspense>
               <AppSidebarNav
-                navConfig={navigation}
+                navConfig={NavbarGenerator.generateNavbarobject(ValueCenters, role)}
                 {...this.props}
                 router={router}
               />
@@ -159,4 +185,17 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+export const mapStateToProps = state => {
+  return {
+    ValueCenters: state.getValueCentersReducer.valueCenters
+  };
+};
+
+const mapDispatchToProps = {
+  getValueCentersAction: getValueCenter
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DefaultLayout);
