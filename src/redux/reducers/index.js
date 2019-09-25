@@ -5,6 +5,7 @@ import getTransactionsReducer from "./Transactions";
 import getProducts from "./Products";
 import revenueStreamsReducer from "./RevenueStreamsReducer";
 import navBar from "./navbar"
+import authentication from './authentication'; 
 
 const rootReducer = combineReducers({
   incomeStream,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   getTransactionsReducer,
   getProducts,
   revenueStreamsReducer, 
-  navBar
+  navBar, 
+  authentication
 });
 
 export default rootReducer;

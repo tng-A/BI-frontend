@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../../redux/actionCreators/authentication';
 import {
   Button,
   Card,
@@ -8,6 +10,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -16,7 +19,94 @@ import {
 } from 'reactstrap';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      emailError: false,
+      passwordError: false,
+      passwordMessage: '',
+      EmailMessage: '',
+      passwordError: ''
+    };
+
+    this.formhandleChange = this.formhandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log('check my email');
+    const {
+      login,
+      loginResponse: { token }
+    } = this.props;
+    localStorage.setItem('token', token);
+    const { loginFormData } = this.state;
+    login({ ...loginFormData });
+  }
+
+  formhandleChange(event) {
+    event.preventDefault();
+    let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+    let regextTest = regex.test(event.target.value);
+    if (event.target.name === 'email') {
+      if (regextTest) {
+        const companySuite = event.target.value.split('@')[1];
+        if (!['jambopay.com', 'webtribe.com'].includes(companySuite)) {
+          this.setState({
+            emailError: true,
+            emailMessage: 'Kindly use your Organizations Email '
+          });
+        } else {
+          this.setState({
+            emailError: false,
+            email: event.target.value
+          });
+        }
+      } else {
+        this.setState({
+          emailError: true,
+          emailMessage: 'Kindly provide a valid email adress'
+        });
+      }
+      this.setState({ email: event.target.value });
+    }
+
+    if (event.target.name === 'password') {
+      const regex = /[a-zA-Z]+[(@!#\$%\^\&*\)\(+=._-]{1,}/;
+      const regextTest = regex.test(event.target.value);
+      const password = event.target.value;
+      console.log(regextTest, 'keep changing');
+      if (password.length < 8) {
+        this.setState({
+          passwordError: true,
+          passwordMessage: 'Password should have atleast 8 Characters'
+        });
+      } else if (!regextTest) {
+        this.setState({
+          passwordError: true,
+          passwordMessage:
+            'Password should have atleast a number and a special character'
+        });
+      } else if (regextTest) {
+        this.setState({
+          passwordError: false
+        });
+      } else {
+        this.setState({ email: event.target.value });
+      }
+    }
+  }
+
   render() {
+    const {
+      emailError,
+      emailMessage,
+      passwordError,
+      passwordMessage
+    } = this.state;
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -35,11 +125,16 @@ class Login extends Component {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
+                          invalid={emailError}
                           type="text"
-                          placeholder="Username"
-                          autoComplete="username"
+                          placeholder="email"
+                          autoComplete="email"
+                          name="email"
+                          onChange={this.formhandleChange}
                         />
+                        <FormFeedback>{emailMessage}</FormFeedback>
                       </InputGroup>
+
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
@@ -47,14 +142,22 @@ class Login extends Component {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
+                          invalid={passwordError}
                           type="password"
                           placeholder="Password"
                           autoComplete="current-password"
+                          name="password"
+                          onChange={this.formhandleChange}
                         />
+                        <FormFeedback>{passwordMessage}</FormFeedback>
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">
+                          <Button
+                            color="primary"
+                            className="px-4"
+                            onClick={this.handleSubmit}
+                          >
                             Login
                           </Button>
                         </Col>
@@ -74,13 +177,9 @@ class Login extends Component {
                   <CardBody className="text-center">
                     <div>
                       <h2>Sign up</h2>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore magna aliqua.
-                      </p>
                       <Link to="/register">
                         <Button
+                          onClick={this.handleSubmit}
                           color="primary"
                           className="mt-3"
                           active
@@ -101,4 +200,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export const mapStateToProps = state => {
+  return {
+    loginResponse: state.authentication.loginData,
+    loading: state.authentication.loading
+  };
+};
+
+const matchDispatchToProps = {
+  login: login
+};
+
+export default connect(
+  mapStateToProps,
+  matchDispatchToProps
+)(Login);

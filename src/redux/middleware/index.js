@@ -22,6 +22,8 @@ import {
 
 import { watchGetNavbarData } from './navabar';
 
+import { watchLogin, watchRegister } from './authentication';
+
 function* rootSaga() {
   yield all([
     fork(watchIncomeStreamSagaAsync),
@@ -36,7 +38,9 @@ function* rootSaga() {
     fork(watchGetFilteredProduct),
     fork(WatchProductsTarget),
     fork(createValueCenterTargetsWatcher),
-    fork(watchGetNavbarData)
+    fork(watchGetNavbarData),
+    fork(watchLogin),
+    fork(watchRegister)
   ]);
 }
 

@@ -1,8 +1,8 @@
 import Products from './views/Products';
 
 class NavbarGenerator {
-  
   static isLinkVisible = (linkItem, userRole) => {
+
     const { onlyVisibleTo } = linkItem;
     let hasPermission;
     if (onlyVisibleTo) {
@@ -15,6 +15,7 @@ class NavbarGenerator {
   };
 
   static generateDropdownContents = (items, userRole) => {
+    
     const dropDownItems = items.map((dropdownItem, index) => {
       // show if item.onlyVisibleTo || if item.onlyVisibleTo and it includes the current users role
       const showItem = this.isLinkVisible(dropdownItem, userRole);
@@ -71,7 +72,7 @@ class NavbarGenerator {
         centerIds = center.id;
         valueCenterschildren.unshift({
           name: centerNames,
-          url: `product/${centerIds}`,
+          url: `/product/${centerIds}`,
           onlyVisibleTo: ['ADMIN']
         });
         const valueCenterItem = items.find(
@@ -93,7 +94,7 @@ class NavbarGenerator {
           productIds = product.id;
           productsChildren.unshift({
             name: productNames,
-            url: `revenue/${productIds}`,
+            url: `/revenue/${productIds}`,
             onlyVisibleTo: ['ADMIN']
           });
           const productItem = items.find(item => item.name === 'Products');
@@ -110,7 +111,7 @@ class NavbarGenerator {
             revenueIds = stream.id;
             revenueChildren.unshift({
               name: revenueNames,
-              url: `income-streams/${revenueIds}`,
+              url: `/income-streams/${revenueIds}`,
               onlyVisibleTo: ['ADMIN']
             });
             const revenueItem = items.find(
