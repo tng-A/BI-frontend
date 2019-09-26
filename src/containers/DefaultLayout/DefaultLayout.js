@@ -3,12 +3,12 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 import { getValueCenter } from '../../redux/actionCreators/ValueCenter';
+import {getNavBarData} from '../../redux/actionCreators/navbar';
 import { connect } from 'react-redux';
 import Loader from 'react-loader-spinner';
 import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
-
-
 import { Container } from 'reactstrap';
+
 
 import {
   AppFooter,
@@ -42,7 +42,8 @@ class DefaultLayout extends Component {
       },
       modal: false,
       period: 'monthly',
-      year: '2019'
+      year: '2019',
+      companyId: "1"
     };
     this.openModal = this.openModal.bind(this);
     this.formatDateDisplay = this.formatDateDisplay.bind(this);
@@ -50,10 +51,9 @@ class DefaultLayout extends Component {
   }
 
   componentDidMount() {
-    console.log('get me the routes info');
-    const { getValueCentersAction } = this.props;
-    getValueCentersAction({ ...this.state });
-    localStorage.setItem('role', ['FINANCE'])
+    const { getNavBarDataAction } = this.props;
+    getNavBarDataAction({ ...this.state })
+    localStorage.setItem('role', ['ADMIN'])
   }
 
   openModal() {
@@ -85,12 +85,10 @@ class DefaultLayout extends Component {
     });
   }
 
-
   render() {
-    const { ValueCenters } = this.props;
+    const { navbar } = this.props;
     const role = Array(localStorage.getItem('role'))
-    console.log(role, '...')
-    return ValueCenters.length === 0 ? (
+    return navbar.length === 0 ? (
       <div>
         {/* Logo is an actual React component */}
         <Loader type="Puff" color="#00BFFF" height="50" width="50" />
@@ -99,8 +97,7 @@ class DefaultLayout extends Component {
     ) : (
       <div className="app">
         {console.log(
-          NavbarGenerator.generateNavbarobject(ValueCenters, role),
-          'Check on me >>>>>>>>>'
+          NavbarGenerator.generateNavbarobject(navbar, role),
         )}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
@@ -113,7 +110,7 @@ class DefaultLayout extends Component {
             <AppSidebarForm />
             <Suspense>
               <AppSidebarNav
-                navConfig={NavbarGenerator.generateNavbarobject(ValueCenters, role)}
+                navConfig={NavbarGenerator.generateNavbarobject(navbar, role)}
                 {...this.props}
                 router={router}
               />
@@ -187,12 +184,13 @@ class DefaultLayout extends Component {
 
 export const mapStateToProps = state => {
   return {
-    ValueCenters: state.getValueCentersReducer.valueCenters
+    navbar: state.navBar.navbarData
   };
 };
 
 const mapDispatchToProps = {
-  getValueCentersAction: getValueCenter
+  getValueCentersAction: getValueCenter, 
+  getNavBarDataAction: getNavBarData
 };
 
 export default connect(
