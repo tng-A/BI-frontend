@@ -1,4 +1,3 @@
-import Products from './views/Products';
 
 class NavbarGenerator {
   static isLinkVisible = (linkItem, userRole) => {
@@ -39,7 +38,6 @@ class NavbarGenerator {
         name: 'Value Centers',
         icon: 'icon-puzzle',
         children: [
-          ,
           { name: 'Andela CLUB', url: 'product/1', onlyVisibleTo: ['FINANCE'] }
         ]
       },

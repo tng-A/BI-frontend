@@ -1,4 +1,4 @@
-import { put, takeLatest, call, takeEvery } from 'redux-saga/effects';
+import { put, call, takeEvery } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import AuthenticationService from '../../services/authentication';
 import {
@@ -24,8 +24,9 @@ export function* loginAsync({payload}){
           });
 
     }catch(error){
+        console.log(error, '>>>>>>>>>>>>>>')
         yield put(loginFailure(error));
-        toast.error(`Error  ${error.message}`, {
+        toast.error(`${error.response.data.non_field_errors[0]}`, {
             position: toast.POSITION.TOP_RIGHT
           });
     }
@@ -44,9 +45,10 @@ export function* registerAsync({payload}){
           });
 
     }catch(error){
+        console.log(error, '}}}}}}}}}}')
         yield put(registrationFailure(error));
-        toast.error(`Error  ${error.message}`, {
-            position: toast.POSITION.TOP_RIGHT
-          });
+        // toast.error(`${error.response.data.company}`, {
+        //     position: toast.POSITION.TOP_RIGHT
+        //   });
     }
 }

@@ -1,12 +1,10 @@
-import axios from 'axios';
-import { resolveBaseUrl } from '.';
-
-const baseUrl = resolveBaseUrl();
+import {server} from './axiosConfig';
 
 class navBarSevice {
+  
   static getNavbarData(payload) {
       const {companyId} = payload
-    return axios.get(`${baseUrl}/api/nav/${companyId}`);
+    return server.get(`/api/nav/${companyId}`);
   }
 }
 

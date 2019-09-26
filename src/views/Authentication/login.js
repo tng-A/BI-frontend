@@ -28,23 +28,27 @@ class Login extends Component {
       passwordError: false,
       passwordMessage: '',
       EmailMessage: '',
-      passwordError: ''
+      companyName: ''
     };
 
     this.formhandleChange = this.formhandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  
+
   handleSubmit(e) {
     e.preventDefault();
     console.log('check my email');
     const {
       login,
-      loginResponse: { token }
+      history
     } = this.props;
-    localStorage.setItem('token', token);
-    const { loginFormData } = this.state;
-    login({ ...loginFormData });
+    login({ ...this.state });
+   
+    setTimeout(() => {
+      history.push('/dashboard');
+    }, 8000);
   }
 
   formhandleChange(event) {
@@ -94,9 +98,8 @@ class Login extends Component {
         this.setState({
           passwordError: false
         });
-      } else {
-        this.setState({ email: event.target.value });
       }
+      this.setState({ password: event.target.value });
     }
   }
 
@@ -107,6 +110,12 @@ class Login extends Component {
       passwordError,
       passwordMessage
     } = this.state;
+    const { loginResponse } = this.props;
+    const {token} = loginResponse
+    if(token !== undefined){
+        localStorage.setItem('token', token)
+    }
+    console.log(loginResponse, '>>>>>>>>>>>');
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -179,7 +188,6 @@ class Login extends Component {
                       <h2>Sign up</h2>
                       <Link to="/register">
                         <Button
-                          onClick={this.handleSubmit}
                           color="primary"
                           className="mt-3"
                           active

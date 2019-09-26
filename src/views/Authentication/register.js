@@ -8,6 +8,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -21,15 +22,34 @@ class Register extends Component {
     this.state = {
       email: '',
       password: '',
+      username: '',
+      companyName: '',
+      usernamError: false,
+      usernameErrorMessage: '',
       emailError: false,
       passwordError: false,
       passwordMessage: '',
-      EmailMessage: '',
-      passwordError: ''
+      emailMessage: '',
+      confirmPassword: '',
+      confirmPasswordError: false,
+      confirmPasswordErrorMessage: '',
+      companyNameError: false,
+      companyNameErrorMessage: ''
     };
 
     this.formhandleChange = this.formhandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleResponseErrors = this.handleResponseErrors.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { errorResponseData } = this.props;
+    const { errorResponseData: errorNext } = nextProps;
+    console.log(errorNext, 'what is here');
+   
+    if (errorNext !== errorResponseData) {
+        this.handleResponseErrors(errorNext);
+      }
   }
 
   handleSubmit(e) {
@@ -37,10 +57,49 @@ class Register extends Component {
     console.log('check my email');
     const {
       registration,
-      registrationResponse: { token }
+      registrationResponse,
+      errorResponseData,
+      history
     } = this.props;
-    localStorage.setItem('token', token);
+    console.log(registrationResponse, errorResponseData, 'JJJJJJJJJ');
     registration({ ...this.state });
+    setTimeout(() => {
+      history.push('/dashboard');
+    }, 8000);
+  }
+
+  handleResponseErrors(responsdata) {
+    console.log('PPPPPPPP', responsdata);
+    const { company, username, password, email } = responsdata;
+    console.log(company, 'UUUUUU')
+    if (company && company.length > 0) {
+     
+      this.setState({
+        companyNameError: true,
+        companyNameErrorMessage: company[0]
+      });
+    }
+
+    if (username && username.length > 0){
+      this.setState({
+        usernamError: true,
+        usernameErrorMessage: username[0]
+      });
+    }
+    if (password && password.length > 0){
+      this.setState({
+        passwordError: true,
+      passwordMessage: password[0]
+      });
+    }
+    if (email && email.length > 0){
+      this.setState({
+        emailError: true,
+        emailMessage: email[0]
+      });
+    }
+
+
   }
 
   formhandleChange(event) {
@@ -71,7 +130,7 @@ class Register extends Component {
     }
 
     if (event.target.name === 'password') {
-      const regex = /[a-zA-Z]+[(@!#\$%\^\&*\)\(+=._-]{1,}/;
+      const regex = /(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])/;
       const regextTest = regex.test(event.target.value);
       const password = event.target.value;
       console.log(regextTest, 'keep changing');
@@ -90,13 +149,61 @@ class Register extends Component {
         this.setState({
           passwordError: false
         });
-      } else {
-        this.setState({ email: event.target.value });
       }
+      this.setState({ password: event.target.value });
+    }
+
+    if (event.target.name === 'confirmPassword') {
+      const { password } = this.state;
+      if (event.target.value !== password) {
+        this.setState({
+          confirmPasswordError: true,
+          confirmPasswordErrorMessage: 'Passwords do not match'
+        });
+      } else {
+        this.setState({
+          confirmPasswordError: false
+        });
+      }
+    }
+    if (event.target.name === 'username') {
+      if (event.target.name.length < 3) {
+        this.setState({
+          usernamError: true,
+          usernameErrorMessage:
+            'Username length should be atleast three characters long'
+        });
+      } else {
+        this.setState({
+          usernameEror: false
+        });
+      }
+      this.setState({ username: event.target.value });
+    }
+    if (event.target.name === 'companyName') {
+      this.setState({ companyName: event.target.value });
     }
   }
 
   render() {
+    const {
+      emailError,
+      emailMessage,
+      usernamError,
+      usernameErrorMessage,
+      passwordError,
+      passwordMessage,
+      confirmPasswordError,
+      confirmPasswordErrorMessage,
+      companyNameError,
+      companyNameErrorMessage
+    } = this.state;
+    const { registrationResponse } = this.props;
+    const { token } = registrationResponse;
+    if (token !== undefined) {
+      localStorage.setItem('token', token);
+    }
+
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -114,24 +221,28 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
+                        invalid={usernamError}
                         name="username"
                         type="text"
                         placeholder="Username"
                         autoComplete="username"
                         onChange={this.formhandleChange}
                       />
+                      <FormFeedback>{usernameErrorMessage}</FormFeedback>
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
                       <Input
+                        invalid={emailError}
                         name="email"
                         type="text"
                         placeholder="Email"
                         autoComplete="email"
                         onChange={this.formhandleChange}
                       />
+                      <FormFeedback>{emailMessage}</FormFeedback>
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -140,12 +251,14 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
+                        invalid={passwordError}
                         name="password"
                         type="password"
                         placeholder="Password"
                         autoComplete="new-password"
                         onChange={this.formhandleChange}
                       />
+                      <FormFeedback>{passwordMessage}</FormFeedback>
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -154,12 +267,32 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
+                        invalid={confirmPasswordError}
                         name="confirmPassword"
                         type="password"
-                        placeholder="Repeat password"
+                        placeholder="Confirm password"
                         autoComplete="new-password"
+                        onChange={this.formhandleChange}
                       />
+                      <FormFeedback>{confirmPasswordErrorMessage}</FormFeedback>
                     </InputGroup>
+                    <InputGroup className="mb-4">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        invalid={companyNameError}
+                        name="companyName"
+                        type="text"
+                        placeholder="Company Name"
+                        autoComplete="Company Name"
+                        onChange={this.formhandleChange}
+                      />
+                      <FormFeedback>{companyNameErrorMessage}</FormFeedback>
+                    </InputGroup>
+
                     <Button color="success" onClick={this.handleSubmit} block>
                       Create Account
                     </Button>
@@ -176,7 +309,8 @@ class Register extends Component {
 export const mapStateToProps = state => {
   return {
     registrationResponse: state.authentication.registrationData,
-    loading: state.authentication.loading
+    loading: state.authentication.loading,
+    errorResponseData: state.authentication.errorResponseData
   };
 };
 

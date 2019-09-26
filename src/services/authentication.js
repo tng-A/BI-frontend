@@ -8,20 +8,26 @@ class AuthenticationService {
     static loginEndpoint(payload){
      const {
          email, password
-     } = payload   
+     } = payload  
+      const expected = {
+          email, 
+          password
+      }
      return axios.post(
-        `${baseUrl}/api/login`,
-        payload
+        `${baseUrl}/api/login/`,
+       expected
       );
      }
 
      static registerEndpoint(payload){
+         console.log('i got')
         const {
             email, username, password, companyName
         } = payload
+        const expected = {email, username, password, company:companyName}
         return axios.post(
-           `${baseUrl}/api/register`,
-           payload
+           `${baseUrl}/api/register/`,
+           expected
          );
         }
 }
