@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from '../src/redux/store/store';
-import { HashRouter, Route, Switch } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import store from "../src/redux/store/store";
+import { HashRouter, Route, Switch } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 // import { renderRoutes } from 'react-router-config';
 import './App.scss';
 

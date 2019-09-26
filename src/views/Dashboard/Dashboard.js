@@ -1,4 +1,6 @@
+/* eslint-disable no-loop-func */
 import React, { Component } from "react";
+import Slider from "react-slick";
 import LineGraph from "../../components/lineGraph";
 import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
 import { connect } from "react-redux";
@@ -23,9 +25,13 @@ import {
   DropdownToggle,
   Card,
   Col,
-  Row
+  Row,
+  Button,
+  Container
 } from "reactstrap";
 import Targetmodal from "./../../components/Targetmodal";
+import CarouselCards from "../../components/carousel/cards";
+import CarouselLineGraph from "../../components/carousel/graphs"
 import ProgressBarCard from "../../components/progressBarCard";
 
 class Dashboard extends Component {
@@ -40,7 +46,8 @@ class Dashboard extends Component {
       year: "2019",
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false,
+      sliderState: ""
     };
     this.toggle = this.toggle.bind(this);
     this.toggle2 = this.toggle2.bind(this);
@@ -50,6 +57,9 @@ class Dashboard extends Component {
     this.openModal = this.openModal.bind(this);
     this.FormhandleChange = this.FormhandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
+    this.switchSliderState = this.switchSliderState.bind(this);
   }
 
   componentDidMount() {
@@ -67,7 +77,9 @@ class Dashboard extends Component {
           initial_load: true
         })
       );
-    },10000);
+    }, 10000);
+
+    this.switchSliderState();
   }
 
   componentWillUnmount() {
@@ -88,6 +100,13 @@ class Dashboard extends Component {
         current_transactions_value: total_amount
       });
     }
+  }
+
+  next() {
+    this.slider.slickNext();
+  }
+  previous() {
+    this.slider.slickPrev();
   }
 
   openModal() {
@@ -153,6 +172,27 @@ class Dashboard extends Component {
     });
   }
 
+  switchSliderState() {
+    const componentsList = ["progressBarCard", "lineGraph", "TransactionsCard"];
+    const setIndexState = (index, callback) => {
+      this.setState({
+        sliderState: componentsList[index]
+      });
+      callback();
+    };
+    let index = 0;
+    setInterval(() => {
+      console.log(index, "index+++++++");
+      setIndexState(index, () => {
+        if (index >= componentsList.length - 1) {
+          index = 0;
+        } else {
+          index++;
+        }
+      });
+    }, 10000);
+  }
+
   determineCardColor(percentage) {
     let className = "";
     if (percentage <= 20) {
@@ -166,6 +206,7 @@ class Dashboard extends Component {
     }
     return className;
   }
+
   valueCentreCard(ValueCenters) {
     return ValueCenters.map(center => (
       <Col xs="12" sm="6" lg="3" key={center.id}>
@@ -187,13 +228,71 @@ class Dashboard extends Component {
     ));
   }
 
+  valueCentreCardSlider(ValueCenters) {
+    return ValueCenters.map(center => (
+      <div>
+        <NavLink to={`/product/${center.id}`} className="nav-link">
+          <ProgressBarCard
+            metric={center.name}
+            percentage={center.achievement_percentage}
+            target={`Ksh: ${new Intl.NumberFormat().format(
+              center.transactions_value
+            )}`}
+            cardClassName={center.color}
+            style={{ backgroundColor: "red !important" }}
+            determineColor={this.determineCardColor(
+              center.achievement_percentage
+            )}
+          />
+        </NavLink>
+      </div>
+    ));
+  }
+
+  LineGraphCard(ValueCenters) {
+    const higlights = true;
+    return (
+      <div>
+        {LineGraph.plotLineGraphs(ValueCenters, higlights, "ValueCenter(s)")}
+      </div>
+    );
+  }
+
+  determinSliderContent(ValueCenters) {
+    const { sliderState } = this.state;
+    switch (sliderState) {
+      case "progressBarCard":
+        return this.valueCentreCardSlider(ValueCenters);
+      case "lineGraph":
+        return this.LineGraphCard(ValueCenters);
+      default:
+        return this.valueCentreCardSlider(ValueCenters);
+    }
+  }
+
   render() {
     const { ValueCenters, periods, metrics } = this.props;
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load
+      initial_load,
+      sliderState
     } = this.state;
+    console.log(sliderState, "Im You redeeemer");
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 800,
+      autoplay: true,
+      pauseOnHover: true,
+      adaptiveHeight: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
+      centerMode: true,
+      className: "center"
+      // fade: true,
+    };
+    const higlights = false;
     return !initial_load ? (
       <div>
         {/* Logo is an actual React component */}
@@ -202,6 +301,49 @@ class Dashboard extends Component {
       </div>
     ) : (
       <div className="animated fadeIn">
+        <Row>
+          <Col xs="12" sm="12" lg="12">
+            <Slider ref={c => (this.slider = c)} {...settings}>
+              {/* {this.determinSliderContent(ValueCenters, higlights)} */}
+              {/* {ValueCenters &&
+                ValueCenters.map(center => (
+                  <div>
+                    <CarouselCards
+                      percentage={center.achievement_percentage}
+                      determineColor={this.determineCardColor(
+                        center.achievement_percentage
+                      )}
+                      name={center.name}
+                    />
+                  </div>
+                ))} */}
+                {ValueCenters && ValueCenters.map((center) => (
+                  <div>
+                  {CarouselLineGraph.plotLineGraphs(ValueCenters, center.name, "ValueCenter(s)")}
+                  </div>
+                ))}
+            </Slider>
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "30px",
+                padding: "20px",
+                margin: "auto"
+              }}
+            >
+              <Button
+                color="primary"
+                onClick={this.previous}
+                style={{ margin: "10px" }}
+              >
+                Previous
+              </Button>{" "}
+              <Button color="success" onClick={this.next}>
+                Next
+              </Button>
+            </div>
+          </Col>
+        </Row>
         <Row>
           <Col lg="3" sm="6" xs="12">
             <Widget02

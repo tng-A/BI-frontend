@@ -1,23 +1,18 @@
-import React from 'react';
-import {
-  Card,
-  CardBody,
-  Col,
-  CardTitle,
-  Row
-} from 'reactstrap';
-import { Line } from 'react-chartjs-2';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import "./index.css"
-class LineGraph {
-  static plotLineGraphs(lineGraphList, title, higlights){
+import React from "react";
+import { Card, CardBody, Col, CardTitle, Row, CardImg } from "reactstrap";
+import { Line } from "react-chartjs-2";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import BackgroundImage from "../../assets/img/brand/JamboPayImg.png";
+import "./index.css";
+class CarouselLineGraph {
+  static plotLineGraphs(lineGraphList, title) {
     const chart1MainChartOpts = {
       tooltips: {
         enabled: false,
         custom: CustomTooltips,
         intersect: true,
-        mode: 'index',
-        position: 'nearest',
+        mode: "index",
+        position: "nearest",
         callbacks: {
           labelColor: function(tooltipItem, chart) {
             return {
@@ -64,8 +59,8 @@ class LineGraph {
         enabled: false,
         custom: CustomTooltips,
         intersect: true,
-        mode: 'index',
-        position: 'nearest',
+        mode: "index",
+        position: "nearest",
         callbacks: {
           labelColor: function(tooltipItem, chart) {
             return {
@@ -119,8 +114,8 @@ class LineGraph {
         lenOfLabels = stream.graph_data.length;
         stream.graph_data.map(result => {
           testArray.push(result.value);
-          allLabels.push(result.label)
-          return 'success'
+          allLabels.push(result.label);
+          return "success";
         });
       });
     }
@@ -134,15 +129,13 @@ class LineGraph {
         stream.graph_data.map(result => {
           if (result.value >= median) {
             bigStreams.push(stream);
-            return 'success'
-
+            return "success";
           }
           if (result.value < median) {
             smallStream.push(stream);
-            return 'success'
+            return "success";
           }
-          return 'success'
-
+          return "success";
         });
       });
     }
@@ -162,8 +155,7 @@ class LineGraph {
         stream.graph_data.map(result => {
           amounts.push(result.value);
           smallGraphMax.push(result.value);
-          return 'success'
-
+          return "success";
         });
         datasetsBig.push({
           label: stream.name,
@@ -171,16 +163,16 @@ class LineGraph {
           lineTension: 0.3,
           backgroundColor: stream.color,
           borderColor: stream.color,
-          borderCapStyle: 'butt',
+          borderCapStyle: "butt",
           borderDash: [],
           borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: '#fff',
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(75,192,192,1)",
+          pointBackgroundColor: "#fff",
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
@@ -195,8 +187,7 @@ class LineGraph {
         stream.graph_data.map(result => {
           amounts.push(result.value);
           bigGraphMax.push(result.value);
-          return 'success'
-
+          return "success";
         });
         datasetSmall.push({
           label: stream.name,
@@ -204,16 +195,16 @@ class LineGraph {
           lineTension: 0.3,
           backgroundColor: stream.color,
           borderColor: stream.color,
-          borderCapStyle: 'butt',
+          borderCapStyle: "butt",
           borderDash: [],
           borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: '#fff',
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(75,192,192,1)",
+          pointBackgroundColor: "#fff",
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
@@ -221,9 +212,9 @@ class LineGraph {
         });
       });
     }
-    
-    const labels = allLabels.slice(0, lenOfLabels)
-    
+
+    const labels = allLabels.slice(0, lenOfLabels);
+
     const BigMdata = {
       labels: labels,
       datasets: datasetsBig
@@ -247,49 +238,35 @@ class LineGraph {
       smallMax / 5
     );
     return (
-      <div className= {higlights ? 'higlights': ''}>
-        <Card className = { higlights ? 'card-higlights' : ''}>
-          <CardBody>
-            <Row>
-              <Col sm="5">
-                <CardTitle className="mb-0">High Performing {title}</CardTitle>
-              </Col>
-            </Row>
-            <div
-              className="chart-wrapper"
-              style={{ height: 600 + 'px', marginTop: 10 + 'px' }}
-            >
-              <Line
-                data={BigMdata}
-                options={chart2MainChartOpts}
-                height={300 + 'px'}
-              />
-            </div>
-          </CardBody>
-        </Card>
-        {(smallArray.length > 1 ?<Card>
+      <Card
+        id="cardContainer"
+        style={{ height: "400px", width: "500px", margin: "5px" }}
+      >
+        <CardImg
+          src={BackgroundImage}
+          alt="Card image cap"
+          style={{ height: "20px", width: "50px", marginLeft: "10px" }}
+        />
         <CardBody>
           <Row>
             <Col sm="5">
-              <CardTitle className="mb-0">Income Streams</CardTitle>
+              <CardTitle className="mb-0">High Performing {title}</CardTitle>
             </Col>
           </Row>
           <div
             className="chart-wrapper"
-            style={{ height: higlights ? 150 + 'px' :600 + 'px'  , marginTop: 10 + 'px' }}
+            style={{ height: 300 + "px", marginTop: 10 + "px" }}
           >
             <Line
               data={smallMdata}
-              options={chart1MainChartOpts}
-              height={300}
+              options={chart2MainChartOpts}
+              height={300 + "px"}
             />
           </div>
         </CardBody>
-      </Card> :<div className="display-none"></div> )}
-        
-      </div>
+      </Card>
     );
   }
-    }
+}
 
-export default LineGraph;
+export default CarouselLineGraph;

@@ -13,7 +13,7 @@ const setToken = () => {
 export const server = axios.create({
   baseURL: resolveBaseUrl(),
   headers: {
-      'Content-Type': 'application/json', 
+      'Content-Type':'application/json', 
       ...setToken()
   }
 });
