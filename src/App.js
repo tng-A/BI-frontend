@@ -12,6 +12,7 @@ const loading = () => (
 );
 const Login = React.lazy(() => import('./views/Authentication/login'));
 const Register = React.lazy(() => import('./views/Authentication/register'));
+const AdminContact = React.lazy(()=> import('./views/Authentication/adminContactPage'))
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
@@ -34,6 +35,12 @@ class App extends Component {
                 path="/register"
                 name="Register Page"
                 render={props => <Register {...props} />}
+              />
+              <Route
+                exact
+                path="/cotanct_admin"
+                name="Admin Contact"
+                render={props => <AdminContact {...props} />}
               />
               <Route
                 path="/"

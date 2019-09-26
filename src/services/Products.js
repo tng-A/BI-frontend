@@ -1,15 +1,13 @@
-import axios from "axios";
-import { resolveBaseUrl } from ".";
+import {server} from './axiosConfig';
 
-const baseUrl = resolveBaseUrl();
 
 class productsService {
   static getProducts(productId) {
-    return axios.get(`${baseUrl}/api/products/1`);
+    return server.get(`/api/products/1`);
   }
   static postProducts(valueCenterId, productsData) {
-    return axios.post(
-      `${baseUrl}/api//${[valueCenterId]}`,
+    return server.post(
+      `/api//${[valueCenterId]}`,
       productsData
     );
   }
@@ -33,22 +31,22 @@ class productsService {
       description
     };
    
-    return axios.post(
-      `${baseUrl}/api/product_target/${IncomeStream}/`,
+    return server.post(
+      `/api/product_target/${IncomeStream}/`,
       tobeSent
     );
   }
 
   static getFilteredProducts(payload) {
     const { year, period, productID } = payload;
-    return axios.get(`${baseUrl}/api/product/${productID}/${period}/${year}/`);
+    return server.get(`/api/product/${productID}/${period}/${year}/`);
   }
 
   static getPeriodsProduct() {
-    return axios.get(`${baseUrl}/api/period/`);
+    return server.get(`/api/period/`);
   }
   static getMetricsProduct() {
-    return axios.get(`${baseUrl}/api/metric/`);
+    return server.get(`/api/metric/`);
   }
 }
 

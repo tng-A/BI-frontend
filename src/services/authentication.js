@@ -20,7 +20,6 @@ class AuthenticationService {
      }
 
      static registerEndpoint(payload){
-         console.log('i got')
         const {
             email, username, password, companyName
         } = payload

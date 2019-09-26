@@ -24,7 +24,6 @@ export function* loginAsync({payload}){
           });
 
     }catch(error){
-        console.log(error, '>>>>>>>>>>>>>>')
         yield put(loginFailure(error));
         toast.error(`${error.response.data.non_field_errors[0]}`, {
             position: toast.POSITION.TOP_RIGHT
@@ -45,10 +44,6 @@ export function* registerAsync({payload}){
           });
 
     }catch(error){
-        console.log(error, '}}}}}}}}}}')
         yield put(registrationFailure(error));
-        // toast.error(`${error.response.data.company}`, {
-        //     position: toast.POSITION.TOP_RIGHT
-        //   });
     }
 }

@@ -27,6 +27,7 @@ import {
 } from "reactstrap";
 import Targetmodal from "./../../components/Targetmodal";
 import ProgressBarCard from "../../components/progressBarCard";
+import AuthUtils from '../../utils/authFuncs'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -58,8 +59,12 @@ class Dashboard extends Component {
       getPeriodsAction,
       getMetricsActions
     } = this.props;
-    getPeriodsAction();
-    getMetricsActions();
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { company_id: companyId } = tokenInformation;
+    const payload = { companyId: companyId };
+    getPeriodsAction(payload);
+    getMetricsActions(payload);
     this.timer = setInterval(async () => {
       await getValueCentersAction(
         { ...this.state },

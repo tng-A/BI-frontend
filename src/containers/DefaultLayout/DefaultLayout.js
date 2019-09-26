@@ -3,12 +3,12 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 import { getValueCenter } from '../../redux/actionCreators/ValueCenter';
-import {getNavBarData} from '../../redux/actionCreators/navbar';
+import { getNavBarData } from '../../redux/actionCreators/navbar';
 import { connect } from 'react-redux';
 import Loader from 'react-loader-spinner';
 import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
 import { Container } from 'reactstrap';
-
+import AuthUtils from '../../utils/authFuncs';
 
 import {
   AppFooter,
@@ -42,18 +42,27 @@ class DefaultLayout extends Component {
       },
       modal: false,
       period: 'monthly',
-      year: '2019',
-      companyId: "1"
+      year: '2019'
     };
     this.openModal = this.openModal.bind(this);
     this.formatDateDisplay = this.formatDateDisplay.bind(this);
-    // this.generateNavbarobject = this.generateNavbarobject.bind(this);
   }
 
   componentDidMount() {
     const { getNavBarDataAction } = this.props;
-    getNavBarDataAction({ ...this.state })
-    localStorage.setItem('role', ['ADMIN'])
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { company_id: companyId } = tokenInformation;
+    const payload = { companyId: companyId };
+    getNavBarDataAction({ ...payload });
+    if (token) {
+      if (AuthUtils.checkExpiry(token)) {
+        AuthUtils.logout();
+        setTimeout(() => {
+          this.props.history.push('/login');
+        }, 3000);
+      }
+    }
   }
 
   openModal() {
@@ -68,7 +77,10 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault();
-    this.props.history.push('/login');
+    AuthUtils.logout();
+    setTimeout(() => {
+      this.props.history.push('/login');
+    }, 3000);
   }
 
   formatDateDisplay(date, defaultText) {
@@ -86,8 +98,13 @@ class DefaultLayout extends Component {
   }
 
   render() {
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { roles } = tokenInformation;
     const { navbar } = this.props;
-    const role = Array(localStorage.getItem('role'))
+    const stringRole = JSON.stringify(roles);
+    const roleString = stringRole.slice(2, stringRole.length - 2);
+    const role = [roleString];
     return navbar.length === 0 ? (
       <div>
         {/* Logo is an actual React component */}
@@ -96,9 +113,7 @@ class DefaultLayout extends Component {
       </div>
     ) : (
       <div className="app">
-        {console.log(
-          NavbarGenerator.generateNavbarobject(navbar, role),
-        )}
+        {console.log(NavbarGenerator.generateNavbarobject(navbar, role))}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />
@@ -189,7 +204,7 @@ export const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  getValueCentersAction: getValueCenter, 
+  getValueCentersAction: getValueCenter,
   getNavBarDataAction: getNavBarData
 };
 
