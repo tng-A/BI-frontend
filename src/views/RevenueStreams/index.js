@@ -29,6 +29,7 @@ import Targetmodal from './../../components/Targetmodal';
 import TransactionsHelper from '../../utils/transactions';
 import BackButton from '../../components/backButton';
 import FormHelper from '../../utils/formHelpers';
+import AuthUtils from '../../utils/authFuncs';
 import { months, quarters } from '../../utils/constants';
 
 function random(min, max) {
@@ -89,8 +90,12 @@ class RevenueStream extends Component {
         params: { revenueID }
       }
     } = this.props;
-    getPeriodsAction();
-    getMetricsActions();
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { company_id: companyId } = tokenInformation;
+    const payload = { companyId: companyId };
+    getPeriodsAction(payload);
+    getMetricsActions(payload);
 
     this.timer = setInterval(async () => {
       await getRevenueStreamsActions(

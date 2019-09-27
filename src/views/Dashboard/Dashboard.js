@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import LineGraph from "../../components/lineGraph";
-import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import LineGraph from '../../components/lineGraph';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
+import { connect } from 'react-redux';
 import {
   getValueCenter,
   createValueCenterTargets
-} from "../../redux/actionCreators/ValueCenter";
+} from '../../redux/actionCreators/ValueCenter';
 import {
   getPeriods,
   getMetrics
-} from "../../redux/actionCreators/IncomeStreams";
-import { NavLink } from "react-router-dom";
-import Loader from "react-loader-spinner";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import "./index.css";
-import Widget02 from "../Widgets/Widget02";
-import TransactionsHelper from "../../utils/transactions";
+} from '../../redux/actionCreators/IncomeStreams';
+import { NavLink } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import './index.css';
+import Widget02 from '../Widgets/Widget02';
+import TransactionsHelper from '../../utils/transactions';
 import {
   ButtonDropdown,
   DropdownItem,
@@ -24,10 +24,12 @@ import {
   Card,
   Col,
   Row
-} from "reactstrap";
-import Targetmodal from "./../../components/Targetmodal";
-import ProgressBarCard from "../../components/progressBarCard";
-import AuthUtils from '../../utils/authFuncs'
+} from 'reactstrap';
+import Targetmodal from './../../components/Targetmodal';
+import ProgressBarCard from '../../components/progressBarCard';
+import AuthUtils from '../../utils/authFuncs';
+import FormHelper from '../../utils/formHelpers';
+import { months, quarters } from "../../utils/constants";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -37,11 +39,14 @@ class Dashboard extends Component {
       dropdownOpen: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: "monthly",
-      year: "2019",
+      period: 'monthly',
+      year: '2019',
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false
+      initial_load: false,
+      periodNames:[], 
+      period_name: "",
+      period_type: "",
     };
     this.toggle = this.toggle.bind(this);
     this.toggle2 = this.toggle2.bind(this);
@@ -72,7 +77,7 @@ class Dashboard extends Component {
           initial_load: true
         })
       );
-    },10000);
+    }, 10000);
   }
 
   componentWillUnmount() {
@@ -94,6 +99,27 @@ class Dashboard extends Component {
       });
     }
   }
+
+  setTheState = (
+    type,
+    stateName,
+    periodState,
+    periodMonths,
+    periodQuarters
+  ) => {
+    if (type === 'monthly') {
+      this.setState({
+        [stateName]: periodMonths,
+        [periodState]: type
+      });
+    }
+    if (type === 'quarterly') {
+      this.setState({
+        [stateName]: periodQuarters,
+        [periodState]: type
+      });
+    }
+  };
 
   openModal() {
     this.setState({
@@ -159,15 +185,15 @@ class Dashboard extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = "";
+    let className = '';
     if (percentage <= 20) {
-      className = "bg-danger";
+      className = 'bg-danger';
     } else if (percentage <= 40) {
-      className = "bg-warning";
+      className = 'bg-warning';
     } else if (percentage <= 50) {
-      className = "bg-info";
+      className = 'bg-info';
     } else if (percentage > 79) {
-      className = "bg-primary";
+      className = 'bg-primary';
     }
     return className;
   }
@@ -182,7 +208,7 @@ class Dashboard extends Component {
               center.transactions_value
             )}`}
             cardClassName={center.color}
-            style={{ backgroundColor: "red !important" }}
+            style={{ backgroundColor: 'red !important' }}
             determineColor={this.determineCardColor(
               center.achievement_percentage
             )}
@@ -230,7 +256,7 @@ class Dashboard extends Component {
           <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                id={"card1"}
+                id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
@@ -256,7 +282,7 @@ class Dashboard extends Component {
           </Col>
           <Col lg="2" sm="4" xs="4">
             <Card>
-              <ButtonDropdown disabled id={"card2"}>
+              <ButtonDropdown disabled id={'card2'}>
                 <DropdownToggle caret color="primary" disabled>
                   Year
                 </DropdownToggle>
@@ -277,7 +303,7 @@ class Dashboard extends Component {
           <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                id={"card3"}
+                id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -297,6 +323,16 @@ class Dashboard extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Value Centers"
+                      onchangePeriod={e =>
+                        FormHelper.onchangePeriod(
+                          e,
+                          'periodNames',
+                          'period_type',
+                          this.setTheState,
+                          months,
+                          quarters
+                        )
+                      }
                     />
                   </DropdownItem>
                 </DropdownMenu>
@@ -307,7 +343,7 @@ class Dashboard extends Component {
         <Row>{this.valueCentreCard(ValueCenters)}</Row>
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(ValueCenters, "ValueCenter(s)")}
+            {LineGraph.plotLineGraphs(ValueCenters, 'ValueCenter(s)')}
           </Col>
         </Row>
       </div>
