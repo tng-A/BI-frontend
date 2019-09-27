@@ -40,66 +40,62 @@ class Register extends Component {
     this.formhandleChange = this.formhandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleResponseErrors = this.handleResponseErrors.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { errorResponseData } = this.props;
-    const { errorResponseData: errorNext } = nextProps;
-    console.log(errorNext, 'what is here');
-   
+    const { errorResponseData, history } = this.props;
+    const { errorResponseData: errorNext, status: statusNext } = nextProps;
+
+    if (statusNext === 201) {
+      this.redirect(history);
+    }
+
     if (errorNext !== errorResponseData) {
-        this.handleResponseErrors(errorNext);
-      }
+      this.handleResponseErrors(errorNext);
+    }
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('check my email');
-    const {
-      registration,
-      registrationResponse,
-      errorResponseData,
-      history
-    } = this.props;
-    console.log(registrationResponse, errorResponseData, 'JJJJJJJJJ');
+    const { registration, history, registrationResponse, status } = this.props;
     registration({ ...this.state });
+  }
+
+  redirect(history) {
     setTimeout(() => {
-      history.push('/dashboard');
+      history.push('/cotanct_admin');
     }, 8000);
   }
 
   handleResponseErrors(responsdata) {
-    console.log('PPPPPPPP', responsdata);
     const { company, username, password, email } = responsdata;
-    console.log(company, 'UUUUUU')
+
     if (company && company.length > 0) {
-     
       this.setState({
         companyNameError: true,
         companyNameErrorMessage: company[0]
       });
     }
 
-    if (username && username.length > 0){
+    if (username && username.length > 0) {
       this.setState({
         usernamError: true,
         usernameErrorMessage: username[0]
       });
     }
-    if (password && password.length > 0){
+    if (password && password.length > 0) {
       this.setState({
         passwordError: true,
-      passwordMessage: password[0]
+        passwordMessage: password[0]
       });
     }
-    if (email && email.length > 0){
+    if (email && email.length > 0) {
       this.setState({
         emailError: true,
         emailMessage: email[0]
       });
     }
-
-
   }
 
   formhandleChange(event) {
@@ -133,7 +129,6 @@ class Register extends Component {
       const regex = /(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])/;
       const regextTest = regex.test(event.target.value);
       const password = event.target.value;
-      console.log(regextTest, 'keep changing');
       if (password.length < 8) {
         this.setState({
           passwordError: true,
@@ -310,7 +305,8 @@ export const mapStateToProps = state => {
   return {
     registrationResponse: state.authentication.registrationData,
     loading: state.authentication.loading,
-    errorResponseData: state.authentication.errorResponseData
+    errorResponseData: state.authentication.errorResponseData,
+    status: state.authentication.status
   };
 };
 

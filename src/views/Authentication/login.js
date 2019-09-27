@@ -33,22 +33,26 @@ class Login extends Component {
 
     this.formhandleChange = this.formhandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
-  
+  componentWillReceiveProps(nextprops) {
+    const { status, history } = nextprops;
+    if (status === 200) {
+      this.redirect(history);
+    }
+  }
+
+  redirect(history) {
+    setTimeout(() => {
+      history.push('/dashboard');
+    }, 3000);
+  }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('check my email');
-    const {
-      login,
-      history
-    } = this.props;
+    const { login } = this.props;
     login({ ...this.state });
-   
-    setTimeout(() => {
-      history.push('/dashboard');
-    }, 8000);
   }
 
   formhandleChange(event) {
@@ -82,7 +86,6 @@ class Login extends Component {
       const regex = /[a-zA-Z]+[(@!#\$%\^\&*\)\(+=._-]{1,}/;
       const regextTest = regex.test(event.target.value);
       const password = event.target.value;
-      console.log(regextTest, 'keep changing');
       if (password.length < 8) {
         this.setState({
           passwordError: true,
@@ -111,11 +114,10 @@ class Login extends Component {
       passwordMessage
     } = this.state;
     const { loginResponse } = this.props;
-    const {token} = loginResponse
-    if(token !== undefined){
-        localStorage.setItem('token', token)
+    const { token } = loginResponse;
+    if (token !== undefined) {
+      localStorage.setItem('token', token);
     }
-    console.log(loginResponse, '>>>>>>>>>>>');
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -211,7 +213,8 @@ class Login extends Component {
 export const mapStateToProps = state => {
   return {
     loginResponse: state.authentication.loginData,
-    loading: state.authentication.loading
+    loading: state.authentication.loading,
+    status: state.authentication.status
   };
 };
 

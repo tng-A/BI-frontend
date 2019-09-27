@@ -14,7 +14,6 @@ class NavbarGenerator {
   };
 
   static generateDropdownContents = (items, userRole) => {
-    
     const dropDownItems = items.map((dropdownItem, index) => {
       // show if item.onlyVisibleTo || if item.onlyVisibleTo and it includes the current users role
       const showItem = this.isLinkVisible(dropdownItem, userRole);
@@ -38,7 +37,6 @@ class NavbarGenerator {
         name: 'Value Centers',
         icon: 'icon-puzzle',
         children: [
-          { name: 'Andela CLUB', url: 'product/1', onlyVisibleTo: ['FINANCE'] }
         ]
       },
       {
@@ -71,7 +69,7 @@ class NavbarGenerator {
         valueCenterschildren.unshift({
           name: centerNames,
           url: `/product/${centerIds}`,
-          onlyVisibleTo: ['ADMIN']
+          onlyVisibleTo: center.visible_to
         });
         const valueCenterItem = items.find(
           item => item.name === 'Value Centers'
@@ -93,7 +91,7 @@ class NavbarGenerator {
           productsChildren.unshift({
             name: productNames,
             url: `/revenue/${productIds}`,
-            onlyVisibleTo: ['ADMIN']
+            onlyVisibleTo: product.visible_to
           });
           const productItem = items.find(item => item.name === 'Products');
           const productDropdownItems = this.generateDropdownContents(
@@ -110,7 +108,7 @@ class NavbarGenerator {
             revenueChildren.unshift({
               name: revenueNames,
               url: `/income-streams/${revenueIds}`,
-              onlyVisibleTo: ['ADMIN']
+              onlyVisibleTo: stream.visible_to
             });
             const revenueItem = items.find(
               item => item.name === 'Revenue Streams'

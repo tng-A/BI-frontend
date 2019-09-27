@@ -12,7 +12,8 @@ const initialState = {
   registrationData: {},
   loading: false,
   errors: '',
-  errorResponseData:{}
+  errorResponseData: {},
+  status: ''
 };
 const authentication = (state = initialState, action) => {
   switch (action.type) {
@@ -22,21 +23,26 @@ const authentication = (state = initialState, action) => {
       return {
         ...state,
         registrationData: action.payload.data,
-        loading: false
+        loading: false, 
+        status: action.payload.status
       };
     case REGISTER_FAILURE:
-      console.log(action.error)
-      return { ...state, errors: action.error, loading: false, errorResponseData: action.error.response.data };
+      return {
+        ...state,
+        errors: action.error,
+        loading: false,
+        errorResponseData: action.error.response.data
+      };
     case LOGIN:
       return { ...state, loading: true };
     case LOGIN_SUCCESS:
       return {
         ...state,
         loginData: action.payload.data,
-        loading: false
+        loading: false, 
+        status: action.payload.status
       };
     case LOGIN_FAILURE:
-    console.log(action.error, 'LLLLLL')
       return { ...state, errors: action.error, loading: false };
     default:
       return state;

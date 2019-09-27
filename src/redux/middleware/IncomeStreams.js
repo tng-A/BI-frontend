@@ -19,9 +19,10 @@ import {
   getMetricsFailure
 } from "../actionCreators/IncomeStreams";
 
-export function* getMetricAsync() {
+export function* getMetricAsync({payload}) {
   try {
-    const response = yield call(IncomeStreamService.getMetricsStream);
+  
+    const response = yield call(IncomeStreamService.getMetricsStream, payload);
     yield put(getMetricsSuccess({ ...response }));
   } catch (error) {
     yield put(getMetricsFailure(error));
@@ -32,9 +33,10 @@ export function* watchGetMetricPass() {
   yield takeEvery(getMetrics().type, getMetricAsync);
 }
 
-export function* getPeriodsAsync() {
+export function* getPeriodsAsync({ payload }) {
+  
   try {
-    const response = yield call(IncomeStreamService.getPeriodsStream);
+    const response = yield call(IncomeStreamService.getPeriodsStream, payload);
     yield put(getPeriodsSuccess({ ...response }));
   } catch (error) {
     yield put(getPeriodFailure(error));

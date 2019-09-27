@@ -1,15 +1,15 @@
-import axios from "axios";
+import {server} from './axiosConfig';
 import { resolveBaseUrl } from ".";
 
 const baseUrl = resolveBaseUrl();
 
 class IncomeStreamService {
   static getIncomeStream(productId) {
-    return axios.get(`${baseUrl}/api/income_stream/1`);
+    return server.get(`/api/income_stream/1`);
   }
   static postIncomeStream(productId, IncomeStreamData) {
-    return axios.post(
-      `${baseUrl}/api/income_stream/${[productId]}`,
+    return server.post(
+      `/api/income_stream/${[productId]}`,
       IncomeStreamData
     );
   }
@@ -33,8 +33,8 @@ class IncomeStreamService {
       period_year,
       description
     };
-    return axios.post(
-      `${baseUrl}/api/income_stream_target/${IncomeStream}/`,
+    return server.post(
+      `/api/income_stream_target/${IncomeStream}/`,
       tobeSent
     );
   
@@ -42,14 +42,16 @@ class IncomeStreamService {
 
   static getFilteredIncomeStream(payload) {
     const { year, period, incomeStreamID } = payload;
-    return axios.get(`${baseUrl}/api/income_stream/${incomeStreamID}/${period}/${year}/`);
+    return server.get(`/api/income_stream/${incomeStreamID}/${period}/${year}/`);
   }
 
-  static getPeriodsStream() {
-    return axios.get(`${baseUrl}/api/period/`);
+  static getPeriodsStream(payload) {
+    const {companyId} = payload
+    return server.get(`/api/period/${companyId}`);
   }
-  static getMetricsStream() {
-    return axios.get(`${baseUrl}/api/metric/`);
+  static getMetricsStream(payload) {
+    const {companyId} = payload
+    return server.get(`/api/metric/${companyId}`);
   }
 }
 
