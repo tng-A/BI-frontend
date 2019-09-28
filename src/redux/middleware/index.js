@@ -1,24 +1,28 @@
-import { all, fork } from "redux-saga/effects";
+import { all, fork } from 'redux-saga/effects';
 import {
   watchIncomeStreamSagaAsync,
   WatchIncomeStreamSagaTarget,
   watchFilteredIncomestreampass,
   watchGetPeriodPass,
   watchGetMetricPass
-} from "./IncomeStreams";
+} from './IncomeStreams';
 import {
   watchGetValueCenterPass,
   createValueCenterTargetsWatcher
-} from "./ValueCenter";
+} from './ValueCenter';
 import {
   getRevenueStreamsWatcher,
   createRevenueStreamsTargetWatcher
-} from "./RevenueStreams";
+} from './RevenueStreams';
 import {
   watchGetProductPass,
   watchGetFilteredProduct,
   WatchProductsTarget
-} from "./Products";
+} from './Products';
+
+import { watchGetNavbarData } from './navabar';
+
+import { watchLogin, watchRegister } from './authentication';
 
 function* rootSaga() {
   yield all([
@@ -33,7 +37,10 @@ function* rootSaga() {
     fork(createRevenueStreamsTargetWatcher),
     fork(watchGetFilteredProduct),
     fork(WatchProductsTarget),
-    fork(createValueCenterTargetsWatcher)
+    fork(createValueCenterTargetsWatcher),
+    fork(watchGetNavbarData),
+    fork(watchLogin),
+    fork(watchRegister)
   ]);
 }
 

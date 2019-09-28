@@ -1,12 +1,14 @@
-import React, { Component, Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import * as router from "react-router-dom";
-import { addDays, format } from "date-fns";
-// import Targetmodal from "./../../components/Targetmodal";
-
-import {
-  Container
-} from "reactstrap";
+import React, { Component, Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import * as router from 'react-router-dom';
+import { addDays, format } from 'date-fns';
+import { getValueCenter } from '../../redux/actionCreators/ValueCenter';
+import { getNavBarData } from '../../redux/actionCreators/navbar';
+import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
+import { Container } from 'reactstrap';
+import AuthUtils from '../../utils/authFuncs';
 
 import {
   AppFooter,
@@ -18,14 +20,14 @@ import {
   AppSidebarMinimizer,
   AppBreadcrumb2 as AppBreadcrumb,
   AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
+} from '@coreui/react';
 // sidebar nav config
-import navigation from "../../_nav";
+import NavbarGenerator from '../../_nav';
 // routes config
-import routes from "../../routes";
+import routes from '../../routes';
 
-const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
-const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
+const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
+const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
   constructor() {
@@ -35,13 +37,32 @@ class DefaultLayout extends Component {
         selection: {
           startDate: new Date(),
           endDate: addDays(new Date(), 7),
-          key: "selection"
+          key: 'selection'
         }
       },
       modal: false,
+      period: 'monthly',
+      year: '2019'
     };
     this.openModal = this.openModal.bind(this);
     this.formatDateDisplay = this.formatDateDisplay.bind(this);
+  }
+
+  componentDidMount() {
+    const { getNavBarDataAction } = this.props;
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { company_id: companyId } = tokenInformation;
+    const payload = { companyId: companyId };
+    getNavBarDataAction({ ...payload });
+    if (token) {
+      if (AuthUtils.checkExpiry(token)) {
+        AuthUtils.logout();
+        setTimeout(() => {
+          this.props.history.push('/login');
+        }, 3000);
+      }
+    }
   }
 
   openModal() {
@@ -56,12 +77,15 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault();
-    this.props.history.push("/login");
+    AuthUtils.logout();
+    setTimeout(() => {
+      this.props.history.push('/login');
+    }, 3000);
   }
 
   formatDateDisplay(date, defaultText) {
     if (!date) return defaultText;
-    return format(date, "MM/DD/YYYY");
+    return format(date, 'MM/DD/YYYY');
   }
 
   handleRangeChange(which, payload) {
@@ -74,8 +98,22 @@ class DefaultLayout extends Component {
   }
 
   render() {
-    return (
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { roles } = tokenInformation;
+    const { navbar } = this.props;
+    const stringRole = JSON.stringify(roles);
+    const roleString = stringRole.slice(2, stringRole.length - 2);
+    const role = [roleString];
+    return navbar.length === 0 ? (
+      <div>
+        {/* Logo is an actual React component */}
+        <Loader type="Puff" color="#00BFFF" height="50" width="50" />
+        <Logo />
+      </div>
+    ) : (
       <div className="app">
+        {console.log(NavbarGenerator.generateNavbarobject(navbar, role))}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />
@@ -87,7 +125,7 @@ class DefaultLayout extends Component {
             <AppSidebarForm />
             <Suspense>
               <AppSidebarNav
-                navConfig={navigation}
+                navConfig={NavbarGenerator.generateNavbarobject(navbar, role)}
                 {...this.props}
                 router={router}
               />
@@ -159,4 +197,18 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+export const mapStateToProps = state => {
+  return {
+    navbar: state.navBar.navbarData
+  };
+};
+
+const mapDispatchToProps = {
+  getValueCentersAction: getValueCenter,
+  getNavBarDataAction: getNavBarData
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DefaultLayout);

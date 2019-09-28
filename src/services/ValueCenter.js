@@ -1,12 +1,11 @@
-import axios from "axios";
-import { resolveBaseUrl } from ".";
+import {server} from './axiosConfig';
 
-const baseUrl = resolveBaseUrl();
 
 class valueCenterService {
   static getValueCentres(payload) {
     const { period, year } = payload;
-    return axios.get(`${baseUrl}/api/value_centre/1/${period}/${year}`);
+    
+    return server.get(`/api/value_centre/1/${period}/${year}`);
   }
 
   static createValueCenterTargets(payload) {
@@ -27,7 +26,7 @@ class valueCenterService {
       period_year,
       description
     };
-    return axios.post(`${baseUrl}/api/value_centre_target/${IncomeStream}/`,TargetData);
+    return server.post(`/api/value_centre_target/${IncomeStream}/`,TargetData);
   }
 }
 

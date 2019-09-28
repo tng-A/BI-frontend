@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { ReactComponent as Logo } from "../../../src/assets/svg/BiTool.svg";
-import LineGraph from "../../components/lineGraph";
-import { connect } from "react-redux";
-import Loader from "react-loader-spinner";
+import React, { Component } from 'react';
+import { ReactComponent as Logo } from '../../../src/assets/svg/BiTool.svg';
+import LineGraph from '../../components/lineGraph';
+import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 import {
   getPeriods,
   getMetrics
-} from "../../redux/actionCreators/IncomeStreams";
+} from '../../redux/actionCreators/IncomeStreams';
 import {
   getRevenueStreams,
   createRevenueStreamsTarget
-} from "../../redux/actionCreators/RevenueStreams";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+} from '../../redux/actionCreators/RevenueStreams';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import {
   Card,
   Col,
@@ -20,16 +20,17 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle
-} from "reactstrap";
-import { NavLink } from "react-router-dom";
-import "./index.css";
-import ProgressBarCard from "../../components/progressBarCard";
-import Widget02 from "../Widgets/Widget02";
-import Targetmodal from "./../../components/Targetmodal";
-import TransactionsHelper from "../../utils/transactions";
-import BackButton from "../../components/backButton";
-import FormHelper from "../../utils/formHelpers"; 
-import { months, quarters } from "../../utils/constants";
+} from 'reactstrap';
+import { NavLink } from 'react-router-dom';
+import './index.css';
+import ProgressBarCard from '../../components/progressBarCard';
+import Widget02 from '../Widgets/Widget02';
+import Targetmodal from './../../components/Targetmodal';
+import TransactionsHelper from '../../utils/transactions';
+import BackButton from '../../components/backButton';
+import FormHelper from '../../utils/formHelpers';
+import AuthUtils from '../../utils/authFuncs';
+import { months, quarters } from '../../utils/constants';
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -54,20 +55,20 @@ class RevenueStream extends Component {
       dropdownOpen2: false,
       dropdownOpen3: false,
       radioSelected: 2,
-      period: "monthly",
-      year: "2019",
+      period: 'monthly',
+      year: '2019',
       modal: false,
-      amount: "",
-      metric: "",
-      description: "",
-      IncomeStream: "",
-      period_name: "",
-      period_type: "",
-      period_year: "",
+      amount: '',
+      metric: '',
+      description: '',
+      IncomeStream: '',
+      period_name: '',
+      period_type: '',
+      period_year: '',
       current_transactions_value: 0,
       current_number_transactions: 0,
-      initial_load: false, 
-      periodNames:[]
+      initial_load: false,
+      periodNames: []
     };
 
     this.toggle = this.toggle.bind(this);
@@ -89,8 +90,12 @@ class RevenueStream extends Component {
         params: { revenueID }
       }
     } = this.props;
-    getPeriodsAction();
-    getMetricsActions();
+    const token = localStorage.getItem('token');
+    const tokenInformation = AuthUtils.verifyToken(token);
+    const { company_id: companyId } = tokenInformation;
+    const payload = { companyId: companyId };
+    getPeriodsAction(payload);
+    getMetricsActions(payload);
 
     this.timer = setInterval(async () => {
       await getRevenueStreamsActions(
@@ -122,20 +127,26 @@ class RevenueStream extends Component {
     }
   }
 
-  setTheState = (type, stateName, periodState, periodMonths, periodQuarters) => {
-    if (type === "monthly") {
+  setTheState = (
+    type,
+    stateName,
+    periodState,
+    periodMonths,
+    periodQuarters
+  ) => {
+    if (type === 'monthly') {
       this.setState({
-        [stateName]:periodMonths, 
-        [periodState]:type
-    })
+        [stateName]: periodMonths,
+        [periodState]: type
+      });
     }
-    if (type === "quarterly") {
+    if (type === 'quarterly') {
       this.setState({
-        [stateName]:periodQuarters, 
-        [periodState]:type
-    })
+        [stateName]: periodQuarters,
+        [periodState]: type
+      });
     }
-  }
+  };
 
   openModal() {
     this.setState({
@@ -189,18 +200,17 @@ class RevenueStream extends Component {
   }
 
   determineCardColor(percentage) {
-    let className = "";
-    if(percentage === 0){
-      className = "danger";
-    }
-    else if (percentage <= 20) {
-      className = "danger";
+    let className = '';
+    if (percentage === 0) {
+      className = 'danger';
+    } else if (percentage <= 20) {
+      className = 'danger';
     } else if (percentage <= 40) {
-      className = "warning";
+      className = 'warning';
     } else if (percentage <= 50) {
-      className = "info";
+      className = 'info';
     } else if (percentage > 79) {
-      className = "primary";
+      className = 'primary';
     }
     return className;
   }
@@ -230,7 +240,7 @@ class RevenueStream extends Component {
             )}`}
             // target={`Ksh: ${}`}
             cardClassName={streams.color}
-            style={{ backgroundColor: "red !important" }}
+            style={{ backgroundColor: 'red !important' }}
             determineColor={this.determineCardColor(
               streams.achievement_percentage
             )}
@@ -245,7 +255,7 @@ class RevenueStream extends Component {
     const {
       current_number_transactions,
       current_transactions_value,
-      initial_load, 
+      initial_load,
       periodNames
     } = this.state;
     return !initial_load ? (
@@ -284,7 +294,7 @@ class RevenueStream extends Component {
           <Col lg="2" sm="4" xs="8">
             <Card>
               <ButtonDropdown
-                id={"card1"}
+                id={'card1'}
                 isOpen={this.state.dropdownOpen}
                 toggle={this.toggle}
               >
@@ -312,7 +322,7 @@ class RevenueStream extends Component {
             <Card>
               <ButtonDropdown
                 disabled
-                id={"card2"}
+                id={'card2'}
                 // isOpen={this.state.dropdownOpen2}
                 // toggle={this.toggle2}
               >
@@ -337,7 +347,7 @@ class RevenueStream extends Component {
           <Col lg="2" sm="4" xs="4">
             <Card>
               <ButtonDropdown
-                id={"card3"}
+                id={'card3'}
                 isOpen={this.state.dropdownOpen3}
                 toggle={this.toggle3}
               >
@@ -357,7 +367,16 @@ class RevenueStream extends Component {
                       metrics={metrics}
                       handleSubmit={this.handleSubmit}
                       title="Revenue Streams"
-                      onchangePeriod={(e) => (FormHelper.onchangePeriod(e, "periodNames","period_type", this.setTheState, months, quarters))}
+                      onchangePeriod={e =>
+                        FormHelper.onchangePeriod(
+                          e,
+                          'periodNames',
+                          'period_type',
+                          this.setTheState,
+                          months,
+                          quarters
+                        )
+                      }
                       periodNames={periodNames}
                     />
                   </DropdownItem>
@@ -370,7 +389,7 @@ class RevenueStream extends Component {
         <Row />
         <Row>
           <Col xs="12" sm="12" lg="12">
-            {LineGraph.plotLineGraphs(revenueStreams, "Revenue Stream(s)")}
+            {LineGraph.plotLineGraphs(revenueStreams, 'Revenue Stream(s)')}
           </Col>
         </Row>
       </div>

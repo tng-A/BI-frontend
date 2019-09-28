@@ -1,12 +1,9 @@
-import axios from "axios";
-import { resolveBaseUrl } from ".";
-
-const baseUrl = resolveBaseUrl();
+import {server} from './axiosConfig';
 
 class RevenueStreamsService {
   static getRevenueStreams(payload) {
     const { period, year, revenueID } = payload;
-    return axios.get(`${baseUrl}/api/revenue_stream/${revenueID}/${period}/${year}/`);
+    return server.get(`/api/revenue_stream/${revenueID}/${period}/${year}/`);
   }
 
   static postRevanueStreamsTarget(payload) {
@@ -27,8 +24,8 @@ class RevenueStreamsService {
       period_year,
       description
     };
-    return axios.post(
-      `${baseUrl}/api/revenue_stream_target/${IncomeStream}/`,
+    return server.post(
+      `/api/revenue_stream_target/${IncomeStream}/`,
       TargetData
     );
   }

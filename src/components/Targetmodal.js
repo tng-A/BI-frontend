@@ -33,7 +33,7 @@ class Targetmodal extends Component {
     let newMetrics = []
 
     metrics.map(metric => {
-      newMetrics.push(metric.name.toLowerCase())
+      return newMetrics.push(metric.name.toLowerCase())
     })
    
     const periodTypes = ["quarterly", "monthly"];
