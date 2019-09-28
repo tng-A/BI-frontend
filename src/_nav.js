@@ -15,7 +15,6 @@ class NavbarGenerator {
 
   static generateDropdownContents = (items, userRole) => {
     const dropDownItems = items.map((dropdownItem, index) => {
-      // show if item.onlyVisibleTo || if item.onlyVisibleTo and it includes the current users role
       const showItem = this.isLinkVisible(dropdownItem, userRole);
       return showItem ? dropdownItem : null;
     });
@@ -35,19 +34,26 @@ class NavbarGenerator {
       },
       {
         name: 'Value Centers',
-        icon: 'icon-puzzle',
+        icon: 'icon-anchor',
         children: [
         ]
       },
       {
         name: 'Products',
-        icon: 'icon-puzzle',
+        icon: 'icon-briefcase',
         children: []
       },
       {
         name: 'Revenue Streams',
-        icon: 'icon-puzzle',
+        icon: 'icon-chart',
         children: []
+      }, 
+      {
+        name: 'Settings', 
+        icon : 'icon-settings', 
+        children: [
+          {name: 'features', url:'/features', icon:'icon-minus'}
+        ]
       }
     ];
     let centerNames = '';
